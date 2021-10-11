@@ -3,6 +3,8 @@ from tkinter import *
 
 
 class Login:
+
+
     #Costruttore della classe
     def __init__(self, root):
         self.root = root
@@ -16,13 +18,19 @@ class Login:
 
         # Titolo del frame di login
         Frame_login_title = Label(Frame_login, text="Login", bg="white")
-        Frame_login_title.place(x=150, y=150)
+        Frame_login_title.place(x=20, y=25)
 
         # Campi di inserimento Username & password
         Username = Entry(Frame_login, bg="yellow")
-        Username.place(x=450, y=250, height=50, width=300)
+        Username.place(x=20, y=75, height=50, width=300)
         Password = Entry(Frame_login, bg="yellow")
-        Password.place(x=450, y=350, height=50, width=300)
+        Password.place(x=20, y=140, height=50, width=300)
+
+        #Bottoni di interazione
+        Accedi = Button(Frame_login, text="Accedi", command="set")
+        Accedi.place(x=20, y=210, height=50, width=150)
+        Registrati = Button(Frame_login, text="Registrati", command="set")
+        Registrati.place(x=190, y=210, height=50, width=150)
 
 
         print("La finestra è stata aperta")
