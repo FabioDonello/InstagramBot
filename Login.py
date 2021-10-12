@@ -3,7 +3,6 @@ from PIL import ImageTk
 
 class Login:
 
-
     #Costruttore della classe
     def __init__(self, root):
         self.root = root
@@ -36,11 +35,36 @@ class Login:
         Registrati.place(x=190, y=210, height=50, width=150)
 
 
-        #Gestione delle azioni
+        #Gestione dell'accesso
+
+        def AccessTry(event):
+            print("Hai cliccato il pulsante accedi")
+            UsernameText = Username.get()
+            PasswordText = Password.get()
+
+            if UsernameText == "Fabio" :
+                Username["background"] = "green"
+                if PasswordText == "Fabio":
+                    Password["background"] = "green"
+                    print("Puoi accedere all'applicazione")
+
+                else:
+                    Password["background"]="red"
+                    print("Hai sbagliato Password")
+            else:
+                Username["background"]="red"
+                print("Hai sbagliato Username")
+
+        # Gestione della registrazione
+        def RegisterTry(event):
+            print("Hai cliccato il pulsante registrati")
+
+
+        Accedi.bind("<Button-1>", AccessTry)
+        Registrati.bind("<Button-1>", RegisterTry)
 
 
 
-        print("La finestra è stata aperta")
 
 
 
