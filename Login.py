@@ -1,5 +1,6 @@
 from tkinter import *
 from PIL import ImageTk
+from MainPage import MainPage
 
 class Login:
 
@@ -42,11 +43,15 @@ class Login:
             UsernameText = Username.get()
             PasswordText = Password.get()
 
-            if UsernameText == "Fabio" :
+            if UsernameText == "F" :
                 Username["background"] = "green"
-                if PasswordText == "Fabio":
+                if PasswordText == "F":
                     Password["background"] = "green"
                     print("Puoi accedere all'applicazione")
+
+                    Frame_login.destroy()
+                    Main_Frame = MainPage(root)
+
 
                 else:
                     Password["background"]="red"
@@ -55,12 +60,17 @@ class Login:
                 Username["background"]="red"
                 print("Hai sbagliato Username")
 
+        Accedi.bind("<Button-1>",AccessTry)
+
+
+
+
         # Gestione della registrazione
         def RegisterTry(event):
             print("Hai cliccato il pulsante registrati")
 
 
-        Accedi.bind("<Button-1>", AccessTry)
+
         Registrati.bind("<Button-1>", RegisterTry)
 
 
