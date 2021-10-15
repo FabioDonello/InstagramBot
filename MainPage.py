@@ -5,10 +5,13 @@ class MainPage:
 
     def __init__(self, root):
         self.root = root
+        self.root.title("Instagram Tool")
+        self.root.geometry("1200x600")
+        self.root.resizable(False, False)
 
 
 
-        #Aggiunta dell'immagine di background
-        self.bg = ImageTk.PhotoImage(file="dim-gunger-oKN104dsNsY-unsplash.jpg")
-        self.bg_image = Label(self.root, image=self.bg).place(x=0, y=0, relheight=1, relwidth=1)
+
+
+
 

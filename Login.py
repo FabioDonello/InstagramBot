@@ -1,13 +1,16 @@
 from tkinter import *
 from PIL import ImageTk
 from MainPage import MainPage
+import DB_Add
+
+
 
 class Login:
 
     #Costruttore della classe
     def __init__(self, root):
         self.root = root
-        self.root.title("Instagram Manage")
+        self.root.title("Instagram Tool")
         self.root.geometry("1200x600")
         self.root.resizable(False, False)
 
@@ -50,8 +53,7 @@ class Login:
                     print("Puoi accedere all'applicazione")
 
                     Frame_login.destroy()
-                    Main_Frame = MainPage(root)
-
+                    Step2 = MainPage(self.root)
 
                 else:
                     Password["background"]="red"
@@ -69,9 +71,49 @@ class Login:
         def RegisterTry(event):
             print("Hai cliccato il pulsante registrati")
 
+            # Creazione del frame per il registrazione
+            Registration_Frame = Frame(self.root, bd=5, bg="black")
+            Registration_Frame.place(x=330, y=150, height=500, width=600)
+
+            # Titolo del frame di registrazione
+            Frame_login_title = Label(Registration_Frame, text="Registrazione", bg="white")
+            Frame_login_title.place(x=20, y=25)
+
+            # Campi di inserimento Username & password
+            first_name = Entry(Registration_Frame, bg="yellow")
+            first_name.place(x=20, y=75, height=50, width=300)
+            last_name = Entry(Registration_Frame, bg="yellow")
+            last_name.place(x=20, y=140, height=50, width=300)
+            email = Entry(Registration_Frame, bg="yellow")
+            email.place(x=20, y=205, height=50, width=300)
+
+            # Bottoni di interazione
+            Registrati_2 = Button(Registration_Frame, text="Registrati", command="set")
+            Registrati_2.place(x=20, y=280, height=50, width=150)
+
+            def Registration(event):
+                first_name_text = first_name.get()
+                last_name_text = last_name.get()
+                email_text = email.get()
+
+                DB_Add.main(first_name_text, last_name_text, email_text)
+
+                Registration_Frame.destroy()
+
+
+
+
+            Registrati_2.bind("<Button-1>", Registration)
+
+
+
+
+
+
 
 
         Registrati.bind("<Button-1>", RegisterTry)
+
 
 
 
