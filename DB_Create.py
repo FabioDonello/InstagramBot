@@ -36,7 +36,7 @@ def main():
 
     database = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_0/DB/IgDB.db"
 
-    sql_create_login_table = """ CREATE TABLE IF NOT EXISTS projects (
+    sql_create_login_table = """ CREATE TABLE IF NOT EXISTS login (
                                             first_name text NOT NULL,
                                             last_name text NOT NULL,
                                             email text NOT NULL

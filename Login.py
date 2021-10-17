@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk
 from MainPage import MainPage
 import DB_Add
+import DB_Update
 
 
 
@@ -46,21 +47,27 @@ class Login:
             UsernameText = Username.get()
             PasswordText = Password.get()
 
-            if UsernameText == "F" :
-                Username["background"] = "green"
-                if PasswordText == "F":
-                    Password["background"] = "green"
-                    print("Puoi accedere all'applicazione")
+            DB_Table = DB_Update.main()
 
+            for a in DB_Table:
+                print(a[0])
+                print(a[1])
+                if UsernameText == a[0] and PasswordText == a[1]:
                     Frame_login.destroy()
                     Step2 = MainPage(self.root)
-
                 else:
-                    Password["background"]="red"
-                    print("Hai sbagliato Password")
-            else:
-                Username["background"]="red"
-                print("Hai sbagliato Username")
+                    if UsernameText != a[0] and PasswordText == a[1]:
+                        Username["background"] = "red"
+                        Password["background"] = "green"
+
+                    if UsernameText == a[0] and PasswordText != a[1]:
+                        Username["background"] = "green"
+                        Password["background"] = "red"
+
+                    if UsernameText != a[0] and PasswordText != a[1]:
+                        Username["background"] = "red"
+                        Password["background"] = "red"
+
 
         Accedi.bind("<Button-1>",AccessTry)
 

@@ -23,7 +23,7 @@ def create_project(conn, project):
     :param project:
     :return: project id
     """
-    sql = ''' INSERT INTO projects(first_name, last_name, email)
+    sql = ''' INSERT INTO login(first_name, last_name, email)
               VALUES(?,?,?) '''
     cur = conn.cursor()
     cur.execute(sql, project)
