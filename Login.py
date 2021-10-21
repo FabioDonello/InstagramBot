@@ -1,8 +1,7 @@
 from tkinter import *
 from PIL import ImageTk
 from MainPage import MainPage
-import DB_Add
-import DB_Update
+import DB_Manager
 
 
 class Login:
@@ -63,7 +62,7 @@ class Login:
             username_text = email_entry.get()
             password_text = password_entry.get()
 
-            db_table = DB_Update.main()
+            db_table = DB_Manager.db_update()
 
             for a in db_table:
                 print(a[2])
@@ -76,7 +75,7 @@ class Login:
         access_button.bind("<Button-1>", access_try)
 
         # Registration manage
-        def register_try(event):
+        def register_try():
 
             # Creation of registration frame
             registration_frame = Frame(self.root, bd=5, bg="white")
@@ -117,18 +116,18 @@ class Login:
             registration_confirm.place(x=175, y=300, height=50, width=150)
 
             # Registration manage
-            def registration_manage(event):
+            def registration_manage():
 
                 first_name_text = first_name_entry_register.get()
                 last_name_text = last_name_entry_register.get()
                 email_text = email_entry_register.get()
                 password_text = password_entry_register.get()
 
-                DB_Add.main(first_name_text, last_name_text, email_text, password_text)
+                DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
 
                 registration_frame.destroy()
 
-            registration_confirm.bind("<Button-1>", registration_manage)
+            registration_confirm.bind("<Button-1>", registration_manage())
 
-        registration_button.bind("<Button-1>", register_try)
+        registration_button.bind("<Button-1>", register_try())
 
