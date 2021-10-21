@@ -47,6 +47,7 @@ class Login:
 
             db_table = DB_Update.main()
 
+
             for a in db_table:
                 print(a[0])
                 print(a[1])
