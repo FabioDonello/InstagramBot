@@ -39,7 +39,8 @@ def main():
     sql_create_login_table = """ CREATE TABLE IF NOT EXISTS login (
                                             first_name text NOT NULL,
                                             last_name text NOT NULL,
-                                            email text NOT NULL
+                                            email text NOT NULL,
+                                            password text NOT NULL
                                         ); """
 
     # create a database connection
