@@ -35,6 +35,9 @@ class Login:
         Registrati = Button(Frame_login, text="Registrati", command="set")
         Registrati.place(x=190, y=210, height=50, width=150)
 
+        Registrati = Button(Frame_login, text="Registrati", command="set")
+        Registrati.place(x=190, y=210, height=50, width=150)
+
 
         #Gestione delle azioni
 
