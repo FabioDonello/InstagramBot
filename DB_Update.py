@@ -1,6 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 
+database = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_0/DB/IgDB.db"
 
 def create_connection(db_file):
     """ create a database connection to the SQLite database
@@ -32,13 +33,10 @@ def select_all_tasks(conn):
 
 
 def main():
-    database = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_0/DB/IgDB.db"
 
     # create a database connection
     conn = create_connection(database)
     with conn:
-
-        print("2. Query all tasks")
         return select_all_tasks(conn)
 
 

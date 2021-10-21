@@ -20,86 +20,115 @@ class Login:
         self.bg_login = Label(self.root, image=self.bg_login_image).place(x=0, y=0, relheight=2, relwidth=2)
 
         # Create login frame
-        frame_login = Frame(self.root, bd=5, bg="black")
-        frame_login.place(x=330, y=150, height=400, width=500)
+        frame_login = Frame(self.root, bd=5, bg="white")
+        frame_login.place(x=400, y=100, height=300, width=400)
 
         # Set title of login frame
         frame_login_title = Label(frame_login, text="Login", bg="white")
-        frame_login_title.place(x=20, y=25)
+        frame_login_title.place(x=150, y=25)
 
-        # Insertion box username & password
-        username = Entry(frame_login, bg="yellow")
-        username.place(x=20, y=75, height=50, width=300)
-        password = Entry(frame_login, bg="yellow")
-        password.place(x=20, y=140, height=50, width=300)
+        # Insertion box Email & password
+
+        email_label = Label(frame_login, text="Email", bg="grey", fg="white")
+        email_label.place(x=0, y=85, height=50, width=150)
+        password_label = Label(frame_login, text="Password", bg="grey", fg="white")
+        password_label.place(x=0, y=136, height=50, width=150)
+
+        email_entry = Entry(frame_login, bg="yellow")
+        email_entry.place(x=150, y=85, height=50, width=240)
+        password_entry = Entry(frame_login, bg="yellow", show="*")
+        password_entry.place(x=150, y=135, height=50, width=240)
+
+        check_var1 = IntVar()
+
+        def show_password():
+            if check_var1.get() == 1:
+                password_entry["show"] = ""
+            if check_var1.get() == 0:
+                password_entry["show"] = "*"
+
+        password_check_box = Checkbutton(frame_login, text="show password",
+                                         variable=check_var1, command=show_password)
+        password_check_box.place(x=0, y=190)
 
         # Username & password button
         access_button = Button(frame_login, text="Login", command="set")
-        access_button.place(x=20, y=210, height=50, width=150)
+        access_button.place(x=20, y=230, height=50, width=150)
         registration_button = Button(frame_login, text="Registration", command="set")
-        registration_button.place(x=190, y=210, height=50, width=150)
+        registration_button.place(x=190, y=230, height=50, width=150)
 
         # Access management
 
         def access_try(event):
-            username_text = username.get()
-            password_text = password.get()
+            username_text = email_entry.get()
+            password_text = password_entry.get()
 
             db_table = DB_Update.main()
 
             for a in db_table:
-                print(a[0])
-                print(a[1])
-                if username_text == a[0] and password_text == a[1]:
+                print(a[2])
+                print(a[3])
+                if username_text == a[2] and password_text == a[3]:
                     frame_login.destroy()
                     MainPage(self.root)
-               # else:
-                    #     if username_text != a[0] and password_text == a[1]:
-                    #   username["background"] = "red"
-                    #   password["background"] = "green"
 
-                    # if username_text == a[0] and password_text != a[1]:
-                        #username["background"] = "green"
-                        #password["background"] = "red"
 
-                    # if username_text != a[0] and password_text != a[1]:
-                        #username["background"] = "red"
-                        #password["background"] = "red"
         access_button.bind("<Button-1>", access_try)
 
         # Registration manage
         def register_try(event):
+
             # Creation of registration frame
-            registration_frame = Frame(self.root, bd=5, bg="black")
-            registration_frame.place(x=330, y=150, height=500, width=600)
+            registration_frame = Frame(self.root, bd=5, bg="white")
+            registration_frame.place(x=350, y=100, height=400, width=500)
 
             # Registration frame title
             frame_registration_title = Label(registration_frame, text="Registration", bg="white")
             frame_registration_title.place(x=20, y=25)
 
-            # Username & password insertion box
-            first_name = Entry(registration_frame, bg="yellow")
-            first_name.place(x=20, y=75, height=50, width=300)
-            last_name = Entry(registration_frame, bg="yellow")
-            last_name.place(x=20, y=140, height=50, width=300)
-            email = Entry(registration_frame, bg="yellow")
-            email.place(x=20, y=205, height=50, width=300)
+            # Register label
+            name_label_register = Label(registration_frame, text="Name", bg="grey", fg="white")
+            name_label_register.place(x=0, y=85, height=50, width=150)
+
+            surname_label_register = Label(registration_frame, text="Surname", bg="grey", fg="white")
+            surname_label_register.place(x=0, y=136, height=50, width=150)
+
+            email_label_register = Label(registration_frame, text="Email", bg="grey", fg="white")
+            email_label_register.place(x=0, y=187, height=50, width=150)
+
+            password_label_register = Label(registration_frame, text="Password", bg="grey", fg="white")
+            password_label_register.place(x=0, y=238, height=50, width=150)
+
+            # Register insertion box
+            first_name_entry_register = Entry(registration_frame, bg="yellow")
+            first_name_entry_register.place(x=150, y=85, height=50, width=300)
+
+            last_name_entry_register = Entry(registration_frame, bg="yellow")
+            last_name_entry_register.place(x=150, y=136, height=50, width=300)
+
+            email_entry_register = Entry(registration_frame, bg="yellow")
+            email_entry_register.place(x=150, y=187, height=50, width=300)
+
+            password_entry_register = Entry(registration_frame, bg="yellow")
+            password_entry_register.place(x=150, y=238, height=50, width=300)
 
             # Registration button
             registration_confirm = Button(registration_frame, text="Registration", command="set")
-            registration_confirm.place(x=20, y=280, height=50, width=150)
+            registration_confirm.place(x=175, y=300, height=50, width=150)
 
             # Registration manage
+            def registration_manage(event):
 
-            def registration_manage():
-                first_name_text = first_name.get()
-                last_name_text = last_name.get()
-                email_text = email.get()
+                first_name_text = first_name_entry_register.get()
+                last_name_text = last_name_entry_register.get()
+                email_text = email_entry_register.get()
+                password_text = password_entry_register.get()
 
-                DB_Add.main(first_name_text, last_name_text, email_text)
+                DB_Add.main(first_name_text, last_name_text, email_text, password_text)
 
                 registration_frame.destroy()
 
             registration_confirm.bind("<Button-1>", registration_manage)
 
         registration_button.bind("<Button-1>", register_try)
+
