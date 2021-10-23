@@ -123,14 +123,14 @@ class Login:
                 email_text = email_entry_register.get()
                 password_text = password_entry_register.get()
 
-                is_valid = validate_email(email_text, check_mx=True)
-                if is_valid:
-                    messagebox.showinfo(title='Message', message='Email is valid')
+                # Check email
+                check_email = validate_email(email_text, check_mx=True)
+                if check_email:
                     DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
                     registration_frame.destroy()
                 else:
                     messagebox.showerror(title='Message', message='Email is not valid')
-                    
+
             registration_confirm.bind("<Button-1>", registration_manage)
 
         registration_button.bind("<Button-1>", register_try)
