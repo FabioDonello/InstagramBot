@@ -2,6 +2,8 @@ from tkinter import *
 from PIL import ImageTk
 from MainPage import MainPage
 import DB_Manager
+from tkinter import messagebox
+
 
 
 class Login:
@@ -62,15 +64,19 @@ class Login:
             username_text = email_entry.get()
             password_text = password_entry.get()
 
-            db_table = DB_Manager.db_update()
+            db_table = DB_Manager.db_update(username_text[0])
 
-            for a in db_table:
-                print(a[2])
-                print(a[3])
-                if username_text == a[2] and password_text == a[3]:
-                    frame_login.destroy()
-                    MainPage(self.root)
+            print(db_table)
 
+            if db_table:
+                for a in db_table:
+                    if username_text == a[0] and password_text == a[1]:
+                        frame_login.destroy()
+                        MainPage(self.root)
+                    else:
+                        messagebox.showinfo("Login fail", "Username or password wrong")
+            else:
+                messagebox.showinfo("Login fail", "Username or password wrong")
 
         access_button.bind("<Button-1>", access_try)
 
