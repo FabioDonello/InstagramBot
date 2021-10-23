@@ -75,7 +75,7 @@ class Login:
         access_button.bind("<Button-1>", access_try)
 
         # Registration manage
-        def register_try():
+        def register_try(event):
 
             # Creation of registration frame
             registration_frame = Frame(self.root, bd=5, bg="white")
@@ -116,7 +116,7 @@ class Login:
             registration_confirm.place(x=175, y=300, height=50, width=150)
 
             # Registration manage
-            def registration_manage():
+            def registration_manage(event):
 
                 first_name_text = first_name_entry_register.get()
                 last_name_text = last_name_entry_register.get()
@@ -127,7 +127,7 @@ class Login:
 
                 registration_frame.destroy()
 
-            registration_confirm.bind("<Button-1>", registration_manage())
+            registration_confirm.bind("<Button-1>", registration_manage)
 
-        registration_button.bind("<Button-1>", register_try())
+        registration_button.bind("<Button-1>", register_try)
 

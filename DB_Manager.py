@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 
 
-link = r"C:\Users\39377\Desktop\GiudoBot\DB\IgDB.db"
+link = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_0/DB/IgDB.db"
 
 
 def create_connection(db_file):
