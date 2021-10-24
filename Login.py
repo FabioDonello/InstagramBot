@@ -7,7 +7,6 @@ import DB_Manager
 from tkinter import messagebox
 
 
-
 class Login:
 
     # Constructor della class
@@ -70,7 +69,6 @@ class Login:
 
             print(db_table)
 
-
             if db_table:
                 for a in db_table:
                     if username_text == a[0] and password_text == a[1]:
@@ -80,7 +78,6 @@ class Login:
                         messagebox.showinfo("Login fail", "Username or password wrong")
             else:
                 messagebox.showinfo("Login fail", "Username or password wrong")
-
 
         access_button.bind("<Button-1>", access_try)
 
@@ -142,6 +139,5 @@ class Login:
                     messagebox.showerror(title='Message', message='Email is not valid')
 
             registration_confirm.bind("<Button-1>", registration_manage)
-
 
         registration_button.bind("<Button-1>", register_try)
