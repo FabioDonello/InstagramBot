@@ -2,7 +2,6 @@ from tkinter import *
 from PIL import ImageTk
 from MainPage import MainPage
 from validate_email import validate_email
-from tkinter import messagebox
 import DB_Manager
 from tkinter import messagebox
 
