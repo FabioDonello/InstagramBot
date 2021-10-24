@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 
 
-link = r"C:\Users\39377\Desktop\GiudoBot\DB\IgDB.db"
+link = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_0/DB/IgDB.db"
 
 
 def create_connection(db_file):
@@ -17,26 +17,30 @@ def create_connection(db_file):
     return conn
 
 
-def select_all_tasks(conn):
+def select_all_tasks(conn, username_command):
     """
     Query all rows in the tasks table
+    :param password_command: command for password selection
+    :param username_command: command for username selection
     :param conn: the Connection object
     :return:
     """
     cur = conn.cursor()
-    cur.execute("SELECT * FROM login")
-
+    cur.execute(username_command)
     rows = cur.fetchall()
 
     return rows
 
 
-def db_update():
+def db_update(username_initial):
 
     # create a database connection
     conn = create_connection(link)
+    username_command = "SELECT email, password FROM login WHERE email GLOB '" + username_initial + "*'"
+    print(username_command)
+
     with conn:
-        return select_all_tasks(conn)
+        return select_all_tasks(conn, username_command)
 
 
 def insert_data(conn, project):

@@ -4,6 +4,8 @@ from MainPage import MainPage
 from validate_email import validate_email
 from tkinter import messagebox
 import DB_Manager
+from tkinter import messagebox
+
 
 
 class Login:
@@ -64,14 +66,21 @@ class Login:
             username_text = email_entry.get()
             password_text = password_entry.get()
 
-            db_table = DB_Manager.db_update()
+            db_table = DB_Manager.db_update(username_text[0])
 
-            for a in db_table:
-                print(a[2])
-                print(a[3])
-                if username_text == a[2] and password_text == a[3]:
-                    frame_login.destroy()
-                    MainPage(self.root)
+            print(db_table)
+
+
+            if db_table:
+                for a in db_table:
+                    if username_text == a[0] and password_text == a[1]:
+                        frame_login.destroy()
+                        MainPage(self.root)
+                    else:
+                        messagebox.showinfo("Login fail", "Username or password wrong")
+            else:
+                messagebox.showinfo("Login fail", "Username or password wrong")
+
 
         access_button.bind("<Button-1>", access_try)
 
@@ -118,6 +127,7 @@ class Login:
 
             # Registration manage
             def registration_manage(event):
+
                 first_name_text = first_name_entry_register.get()
                 last_name_text = last_name_entry_register.get()
                 email_text = email_entry_register.get()
@@ -132,5 +142,6 @@ class Login:
                     messagebox.showerror(title='Message', message='Email is not valid')
 
             registration_confirm.bind("<Button-1>", registration_manage)
+
 
         registration_button.bind("<Button-1>", register_try)
