@@ -1,6 +1,8 @@
 from tkinter import *
 from PIL import ImageTk
 from MainPage import MainPage
+from validate_email import validate_email
+from tkinter import messagebox
 import DB_Manager
 
 
@@ -71,11 +73,10 @@ class Login:
                     frame_login.destroy()
                     MainPage(self.root)
 
-
         access_button.bind("<Button-1>", access_try)
 
         # Registration manage
-        def register_try():
+        def register_try(event):
 
             # Creation of registration frame
             registration_frame = Frame(self.root, bd=5, bg="white")
@@ -116,18 +117,20 @@ class Login:
             registration_confirm.place(x=175, y=300, height=50, width=150)
 
             # Registration manage
-            def registration_manage():
-
+            def registration_manage(event):
                 first_name_text = first_name_entry_register.get()
                 last_name_text = last_name_entry_register.get()
                 email_text = email_entry_register.get()
                 password_text = password_entry_register.get()
 
-                DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
+                # Check email
+                check_email = validate_email(email_text, check_mx=True)
+                if check_email:
+                    DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
+                    registration_frame.destroy()
+                else:
+                    messagebox.showerror(title='Message', message='Email is not valid')
 
-                registration_frame.destroy()
+            registration_confirm.bind("<Button-1>", registration_manage)
 
-            registration_confirm.bind("<Button-1>", registration_manage())
-
-        registration_button.bind("<Button-1>", register_try())
-
+        registration_button.bind("<Button-1>", register_try)
