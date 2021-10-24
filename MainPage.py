@@ -1,5 +1,6 @@
 from tkinter import *
 
+
 class MainPage:
 
     def __init__(self, root):
@@ -88,48 +89,3 @@ class MainPage:
         direct_button.bind("<Button-1>", direct())
         auto_publish_button.bind("<Button-1>", auto_publish())
         statistics_button.bind("<Button-1>", statistics())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

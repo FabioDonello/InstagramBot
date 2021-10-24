@@ -127,13 +127,21 @@ class Login:
                 last_name_text = last_name_entry_register.get()
                 email_text = email_entry_register.get()
                 password_text = password_entry_register.get()
+                db_check = DB_Manager.db_update(email_text[0])
 
-                # Check name and surname
+                print(db_check)
+                # Check Registration
                 if first_name_text and last_name_text:
                     if str.isalnum(password_text) and str.__len__(password_text) >= 6:
                         if validate_email(email_text, check_mx=True):
-                            DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
-                            registration_frame.destroy()
+                            if db_check:
+                                for control in db_check:
+                                    if email_text == control[0]:
+                                        messagebox.showerror(title='ERROR', message='This email has already been used')
+                                        break
+                                    else:
+                                        DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
+                                        registration_frame.destroy()
                         else:
                             messagebox.showerror(title='ERROR', message='Email is not valid')
                     else:
