@@ -1,5 +1,4 @@
 from tkinter import *
-from instabot import Bot
 
 class MainPage:
 
