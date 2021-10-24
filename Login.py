@@ -2,7 +2,6 @@ from tkinter import *
 from PIL import ImageTk
 from MainPage import MainPage
 from validate_email import validate_email
-from tkinter import messagebox
 import DB_Manager
 from tkinter import messagebox
 
@@ -124,19 +123,23 @@ class Login:
 
             # Registration manage
             def registration_manage(event):
-
                 first_name_text = first_name_entry_register.get()
                 last_name_text = last_name_entry_register.get()
                 email_text = email_entry_register.get()
                 password_text = password_entry_register.get()
 
-                # Check email
-                check_email = validate_email(email_text, check_mx=True)
-                if check_email:
-                    DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
-                    registration_frame.destroy()
+                # Check name and surname
+                if first_name_text and last_name_text:
+                    if str.isalnum(password_text) and str.__len__(password_text) >= 6:
+                        if validate_email(email_text, check_mx=True):
+                            DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
+                            registration_frame.destroy()
+                        else:
+                            messagebox.showerror(title='ERROR', message='Email is not valid')
+                    else:
+                        messagebox.showerror(title='ERROR', message='Password incorrect')
                 else:
-                    messagebox.showerror(title='Message', message='Email is not valid')
+                    messagebox.showerror(title='ERROR', message='Name or surname have not been entered')
 
             registration_confirm.bind("<Button-1>", registration_manage)
 
