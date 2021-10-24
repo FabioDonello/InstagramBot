@@ -66,8 +66,6 @@ class Login:
 
             db_table = DB_Manager.db_update(username_text[0])
 
-            print(db_table)
-
             if db_table:
                 for a in db_table:
                     if username_text == a[0] and password_text == a[1]:
