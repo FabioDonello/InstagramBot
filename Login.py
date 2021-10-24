@@ -1,6 +1,8 @@
 from tkinter import *
 from PIL import ImageTk
 from MainPage import MainPage
+from validate_email import validate_email
+from tkinter import messagebox
 import DB_Manager
 from tkinter import messagebox
 
@@ -68,6 +70,7 @@ class Login:
 
             print(db_table)
 
+
             if db_table:
                 for a in db_table:
                     if username_text == a[0] and password_text == a[1]:
@@ -77,6 +80,7 @@ class Login:
                         messagebox.showinfo("Login fail", "Username or password wrong")
             else:
                 messagebox.showinfo("Login fail", "Username or password wrong")
+
 
         access_button.bind("<Button-1>", access_try)
 
@@ -129,11 +133,15 @@ class Login:
                 email_text = email_entry_register.get()
                 password_text = password_entry_register.get()
 
-                DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
-
-                registration_frame.destroy()
+                # Check email
+                check_email = validate_email(email_text, check_mx=True)
+                if check_email:
+                    DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
+                    registration_frame.destroy()
+                else:
+                    messagebox.showerror(title='Message', message='Email is not valid')
 
             registration_confirm.bind("<Button-1>", registration_manage)
 
-        registration_button.bind("<Button-1>", register_try)
 
+        registration_button.bind("<Button-1>", register_try)
