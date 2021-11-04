@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f4eb1e22-21f6-4fb2-a5f8-af90a885d702" name="Default Changelist" comment="Confronto login database per lettera iniziale" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="Fabio" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1zHGfSqAf9BibKYukcw6uv8hUgK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+  </component>
+  <component name="RunManager" selected="Python.main">
+    <configuration name="Login" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="InstgramBot_0" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Login.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="InstgramBot_0" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.Login" />
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.Login" />
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>$USER_HOME$/.subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f4eb1e22-21f6-4fb2-a5f8-af90a885d702" name="Default Changelist" comment="" />
+      <created>1633797702517</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1633797702517</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Ho aggiunto una riga di commento">
+      <created>1633865121484</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1633865121484</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Ho aggiunto una riga di commento">
+      <created>1633865237882</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1633865237882</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Ho resettato le righe">
+      <created>1633866172717</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1633866172717</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Inizio creazione finestra di login">
+      <created>1633950282674</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1633950282674</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Inizio creazione finestra di login">
+      <created>1633959087885</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1633959087885</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Inizio creazione finestra di login 2">
+      <created>1633960501419</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1633960501419</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Aggiungo foto di sfondo dell'interfaccia di login">
+      <created>1634052721195</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1634052721195</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Aggiunta gestione dei pulsanti">
+      <created>1634055432193</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1634055432193</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Aggiornamenti">
+      <created>1634163231188</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1634163231188</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Inizio implementazione DB">
+      <created>1634305767075</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1634305767075</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Aggiunto login con database">
+      <created>1634485005395</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1634485005395</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Creato il passaggio nella pgina principale e creato menu generale">
+      <created>1634508098124</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1634508098124</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Inizio creazione gestione di ig">
+      <created>1634581608527</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1634581608527</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Prommit">
+      <created>1634807724982</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1634807724982</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Aggiornamenti grafica e db">
+      <created>1634827305565</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1634827305565</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Marge">
+      <created>1634831278388</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1634831278388</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Marge">
+      <created>1635017669997</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1635017669998</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Confronto login database per lettera iniziale">
+      <created>1635021076325</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1635021076325</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Confronto login database per lettera iniziale">
+      <created>1635078066793</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1635078066794</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Confronto login database per lettera iniziale">
+      <created>1635079764893</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1635079764893</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Ho aggiunto una riga di commento" />
+    <MESSAGE value="Ho resettato le righe" />
+    <MESSAGE value="Inizio creazione finestra di login" />
+    <MESSAGE value="Inizio creazione finestra di login 2" />
+    <MESSAGE value="Aggiungo foto di sfondo dell'interfaccia di login" />
+    <MESSAGE value="Aggiunta gestione dei pulsanti" />
+    <MESSAGE value="Aggiornamenti" />
+    <MESSAGE value="Inizio implementazione DB" />
+    <MESSAGE value="Aggiunto login con database" />
+    <MESSAGE value="Creato il passaggio nella pgina principale e creato menu generale" />
+    <MESSAGE value="Inizio creazione gestione di ig" />
+    <MESSAGE value="Prommit" />
+    <MESSAGE value="Aggiornamenti grafica e db" />
+    <MESSAGE value="Marge" />
+    <MESSAGE value="Confronto login database per lettera iniziale" />
+    <option name="LAST_COMMIT_MESSAGE" value="Confronto login database per lettera iniziale" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
