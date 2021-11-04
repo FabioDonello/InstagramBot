@@ -1,9 +1,9 @@
 from tkinter import *
 from PIL import ImageTk
 from MainPage import MainPage
+from validate_email import validate_email
 import DB_Manager
 from tkinter import messagebox
-
 
 
 class Login:
@@ -64,17 +64,27 @@ class Login:
             username_text = email_entry.get()
             password_text = password_entry.get()
 
-            db_table = DB_Manager.db_update(username_text[0])
 
-            print(db_table)
+            if username_text:
+                db_table = DB_Manager.db_update(username_text[0])
 
-            if db_table:
-                for a in db_table:
-                    if username_text == a[0] and password_text == a[1]:
-                        frame_login.destroy()
-                        MainPage(self.root)
-                    else:
-                        messagebox.showinfo("Login fail", "Username or password wrong")
+                print(db_table)
+
+                if db_table:
+                    x = 0
+                    for a in db_table:
+                        x += 1
+                        print(a[0])
+                        print(a[1])
+                        if username_text == a[0] and password_text == a[1]:
+                            frame_login.destroy()
+                            MainPage(self.root)
+                            continue
+                        if x == len(db_table):
+                            messagebox.showinfo("Login fail", "Username or password wrong")
+                else:
+                    messagebox.showinfo("Login fail", "Username or password wrong")
+
             else:
                 messagebox.showinfo("Login fail", "Username or password wrong")
 
@@ -117,9 +127,23 @@ class Login:
             password_entry_register = Entry(registration_frame, bg="yellow")
             password_entry_register.place(x=150, y=238, height=50, width=300)
 
+            # Password rules
+            password_rules_label = Label(registration_frame, text="* Password: minimum 6 characters with at least one"
+                                                                  " number *",
+                                         bg="grey", fg="white")
+            password_rules_label.place(x=0, y=290, height=25, width=450)
+
             # Registration button
             registration_confirm = Button(registration_frame, text="Registration", command="set")
-            registration_confirm.place(x=175, y=300, height=50, width=150)
+            registration_confirm.place(x=225, y=325, height=50, width=150)
+
+            # Return home button
+            return_home_button = Button(registration_frame, text="Cancel", command="set")
+            return_home_button.place(x=50, y=325, height=50, width=150)
+
+            # Return Home manage
+            def return_home(event):
+                registration_frame.destroy()
 
             # Registration manage
             def registration_manage(event):
@@ -133,7 +157,10 @@ class Login:
 
                 registration_frame.destroy()
 
-            registration_confirm.bind("<Button-1>", registration_manage)
+
+            return_home_button.bind("<Button-1>", return_home)
 
         registration_button.bind("<Button-1>", register_try)
+
+
 
