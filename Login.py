@@ -79,7 +79,7 @@ class Login:
                         if username_text == a[0] and password_text == a[1]:
                             frame_login.destroy()
                             MainPage(self.root)
-                            continue
+                            break
                         if x == len(db_table):
                             messagebox.showinfo("Login fail", "Username or password wrong")
                 else:
