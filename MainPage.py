@@ -13,8 +13,6 @@ class MainPage:
         frame_menu = Frame(self.root, bd=0, bg="black")
         frame_menu.place(x=0, y=0, height=600, width=300)
 
-        # Set button of main menu
-
         # Dashboard button
         dashboard_button = Button(frame_menu, text="Dashboard", command="set")
         dashboard_button.place(x=0, y=0, height=100, width=300)
@@ -40,52 +38,175 @@ class MainPage:
         statistics_button.place(x=0, y=500, height=100, width=300)
 
         # Frame manege
+        auto_publish_frame = Frame(self.root, bd=5, bg="white")
+        auto_publish_frame.place(x=300, y=0, height=600, width=900)
+
+        statistics_frame = Frame(self.root, bd=5, bg="white")
+        statistics_frame.place(x=300, y=0, height=600, width=900)
+
+        direct_frame = Frame(self.root, bd=5, bg="white")
+        direct_frame.place(x=300, y=0, height=600, width=900)
+
+        like_dislike_frame = Frame(self.root, bd=5, bg="white")
+        like_dislike_frame.place(x=300, y=0, height=600, width=900)
+
+        follow_unfollow_frame = Frame(self.root, bd=5, bg="white")
+        follow_unfollow_frame.place(x=300, y=0, height=600, width=900)
+
         dashboard_frame = Frame(self.root, bd=5, bg="white")
         dashboard_frame.place(x=300, y=0, height=600, width=900)
 
-        # Set title of login frame
-        dashboard_label = Label(dashboard_frame, text="Dashboard", bg="white")
-        dashboard_label.place(x=150, y=25)
+        # Page title
+        page_title_label = Label(self.root, text="Dashboard", bg="white")
+        page_title_label.place(x=350, y=50)
 
-        def auto_publish():
-            auto_publish_frame = Frame(self.root, bd=5, bg="white")
+        def auto_publish(event):
+
+            dashboard_frame.place(x=300, y=0, height=0, width=0)
+
+            follow_unfollow_frame.place(x=300, y=0, height=0, width=0)
+
+            like_dislike_frame.place(x=300, y=0, height=0, width=0)
+
+            direct_frame.place(x=300, y=0, height=0, width=0)
+
+            statistics_frame.place(x=300, y=0, height=0, width=0)
+
             auto_publish_frame.place(x=300, y=0, height=600, width=900)
-            auto_publish_label = Label(auto_publish_frame, text="auto public", bg="white")
-            auto_publish_label.place(x=150, y=25)
+            page_title_label["text"] = "Auto publish"
 
-        def statistics():
-            statistics_frame = Frame(self.root, bd=5, bg="white")
+        def statistics(event):
+            dashboard_frame.place(x=300, y=0, height=0, width=0)
+
+            follow_unfollow_frame.place(x=300, y=0, height=0, width=0)
+
+            like_dislike_frame.place(x=300, y=0, height=0, width=0)
+
+            direct_frame.place(x=300, y=0, height=0, width=0)
+
             statistics_frame.place(x=300, y=0, height=600, width=900)
-            statistics_label = Label(statistics_frame, text="statistics", bg="white")
-            statistics_label.place(x=150, y=25)
+            page_title_label["text"] = "Statistics"
 
-        def direct():
-            direct_frame = Frame(self.root, bd=5, bg="white")
+            auto_publish_frame.place(x=300, y=0, height=0, width=0)
+
+        def direct(event):
+            dashboard_frame.place(x=300, y=0, height=0, width=0)
+
+            follow_unfollow_frame.place(x=300, y=0, height=0, width=0)
+
+            like_dislike_frame.place(x=300, y=0, height=0, width=0)
+
             direct_frame.place(x=300, y=0, height=600, width=900)
-            direct_label = Label(direct_frame, text="direct", bg="white")
-            direct_label.place(x=150, y=25)
+            page_title_label["text"] = "Direct"
 
-        def like_dislike():
-            like_dislike_frame = Frame(self.root, bd=5, bg="white")
+            statistics_frame.place(x=300, y=0, height=0, width=0)
+
+            auto_publish_frame.place(x=300, y=0, height=0, width=0)
+
+        def like_dislike(event):
+
+            dashboard_frame.place(x=300, y=0, height=0, width=0)
+
+            follow_unfollow_frame.place(x=300, y=0, height=0, width=0)
+
             like_dislike_frame.place(x=300, y=0, height=600, width=900)
-            like_dislike_label = Label(like_dislike_frame, text="like & dislike", bg="white")
-            like_dislike_label.place(x=150, y=25)
+            page_title_label["text"] = "Like and dislike"
 
-        def follow_unfollow():
-            follow_unfollow_frame = Frame(self.root, bd=5, bg="white")
+            direct_frame.place(x=300, y=0, height=0, width=0)
+
+            statistics_frame.place(x=300, y=0, height=0, width=0)
+
+            auto_publish_frame.place(x=300, y=0, height=0, width=0)
+
+        def follow_unfollow(event):
+
+            dashboard_frame.place(x=300, y=0, height=0, width=0)
+
             follow_unfollow_frame.place(x=300, y=0, height=600, width=900)
-            follow_unfollow_label = Label(follow_unfollow_frame, text="follow & unfollow", bg="white")
-            follow_unfollow_label.place(x=150, y=25)
+            page_title_label["text"] = "Follow and unfollow"
 
-        def dashboard():
-            dashboard_frame = Frame(self.root, bd=5, bg="white")
+            like_dislike_frame.place(x=300, y=0, height=0, width=0)
+
+            direct_frame.place(x=300, y=0, height=0, width=0)
+
+            statistics_frame.place(x=300, y=0, height=0, width=0)
+
+            auto_publish_frame.place(x=300, y=0, height=0, width=0)
+
+        def dashboard(event):
+
             dashboard_frame.place(x=300, y=0, height=600, width=900)
-            dashboard_label = Label(dashboard_frame, text="dashboard", bg="white")
-            dashboard_label.place(x=150, y=25)
 
-        dashboard_button.bind("<Button-1>", dashboard())
-        follow_unfollow_button.bind("<Button-1>", follow_unfollow())
-        l_d_button.bind("<Button-1>", like_dislike())
-        direct_button.bind("<Button-1>", direct())
-        auto_publish_button.bind("<Button-1>", auto_publish())
-        statistics_button.bind("<Button-1>", statistics())
+            page_title_label["text"] = "Dashboard"
+
+            follow_unfollow_frame.place(x=300, y=0, height=0, width=0)
+
+            like_dislike_frame.place(x=300, y=0, height=0, width=0)
+
+            direct_frame.place(x=300, y=0, height=0, width=0)
+
+            statistics_frame.place(x=300, y=0, height=0, width=0)
+
+            auto_publish_frame.place(x=300, y=0, height=0, width=0)
+
+
+        auto_publish_button.bind("<Button-1>", auto_publish)
+        statistics_button.bind("<Button-1>", statistics)
+        direct_button.bind("<Button-1>", direct)
+        l_d_button.bind("<Button-1>", like_dislike)
+        follow_unfollow_button.bind("<Button-1>", follow_unfollow)
+        dashboard_button.bind("<Button-1>", dashboard)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
