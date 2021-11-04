@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f4eb1e22-21f6-4fb2-a5f8-af90a885d702" name="Default Changelist" comment="Confronto login database per lettera iniziale">
+    <list default="true" id="f4eb1e22-21f6-4fb2-a5f8-af90a885d702" name="Default Changelist" comment="Aggiustamenti vari">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DB_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/DB_Manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Login.py" beforeDir="false" afterPath="$PROJECT_DIR$/Login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainPage.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainPage.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635079764893</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Aggiustamenti vari">
+      <created>1636042857055</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1636042857055</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -284,7 +290,8 @@
     <MESSAGE value="Aggiornamenti grafica e db" />
     <MESSAGE value="Marge" />
     <MESSAGE value="Confronto login database per lettera iniziale" />
-    <option name="LAST_COMMIT_MESSAGE" value="Confronto login database per lettera iniziale" />
+    <MESSAGE value="Aggiustamenti vari" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiustamenti vari" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
