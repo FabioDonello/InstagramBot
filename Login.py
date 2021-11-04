@@ -166,6 +166,9 @@ class Login:
                                     else:
                                         DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
                                         registration_frame.destroy()
+                            else:
+                                DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
+                                registration_frame.destroy()
                         else:
                             messagebox.showerror(title='ERROR', message='Email is not valid')
                     else:
