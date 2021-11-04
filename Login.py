@@ -64,6 +64,7 @@ class Login:
             username_text = email_entry.get()
             password_text = password_entry.get()
 
+
             if username_text:
                 db_table = DB_Manager.db_update(username_text[0])
 
@@ -83,6 +84,7 @@ class Login:
                             messagebox.showinfo("Login fail", "Username or password wrong")
                 else:
                     messagebox.showinfo("Login fail", "Username or password wrong")
+
             else:
                 messagebox.showinfo("Login fail", "Username or password wrong")
 
@@ -145,23 +147,37 @@ class Login:
 
             # Registration manage
             def registration_manage(event):
-
                 first_name_text = first_name_entry_register.get()
                 last_name_text = last_name_entry_register.get()
                 email_text = email_entry_register.get()
                 password_text = password_entry_register.get()
+                db_check = DB_Manager.db_update(email_text[0])
 
-                # Check email
-                check_email = validate_email(email_text, check_mx=True)
-                if check_email:
-                    DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
-                    registration_frame.destroy()
+                print(db_check)
+                # Check Registration
+                if first_name_text and last_name_text:
+                    if str.isalnum(password_text) and str.__len__(password_text) >= 6:
+                        if validate_email(email_text, check_mx=True):
+                            if db_check:
+                                for control in db_check:
+                                    if email_text == control[0]:
+                                        messagebox.showerror(title='ERROR', message='This email has already been used')
+                                        break
+                                    else:
+                                        DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
+                                        registration_frame.destroy()
+                        else:
+                            messagebox.showerror(title='ERROR', message='Email is not valid')
+                    else:
+                        messagebox.showerror(title='ERROR', message='Password incorrect')
                 else:
-                    messagebox.showerror(title='Message', message='Email is not valid')
+                    messagebox.showerror(title='ERROR', message='Name or surname have not been entered')
 
             registration_confirm.bind("<Button-1>", registration_manage)
 
+
             return_home_button.bind("<Button-1>", return_home)
+
 
         registration_button.bind("<Button-1>", register_try)
 

@@ -1,5 +1,6 @@
 from tkinter import *
 
+
 class MainPage:
 
     def __init__(self, root):
@@ -135,6 +136,7 @@ class MainPage:
         def dashboard(event):
 
             dashboard_frame.place(x=300, y=0, height=600, width=900)
+
             page_title_label["text"] = "Dashboard"
 
             follow_unfollow_frame.place(x=300, y=0, height=0, width=0)
@@ -154,6 +156,7 @@ class MainPage:
         l_d_button.bind("<Button-1>", like_dislike)
         follow_unfollow_button.bind("<Button-1>", follow_unfollow)
         dashboard_button.bind("<Button-1>", dashboard)
+
 
 
 
