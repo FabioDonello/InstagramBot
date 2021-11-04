@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f4eb1e22-21f6-4fb2-a5f8-af90a885d702" name="Default Changelist" comment="Confronto login database per lettera iniziale" />
+    <list default="true" id="f4eb1e22-21f6-4fb2-a5f8-af90a885d702" name="Default Changelist" comment="Confronto login database per lettera iniziale">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DB_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/DB_Manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Login.py" beforeDir="false" afterPath="$PROJECT_DIR$/Login.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

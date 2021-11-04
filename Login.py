@@ -79,7 +79,7 @@ class Login:
                         if username_text == a[0] and password_text == a[1]:
                             frame_login.destroy()
                             MainPage(self.root)
-                            continue
+                            break
                         if x == len(db_table):
                             messagebox.showinfo("Login fail", "Username or password wrong")
                 else:
@@ -167,6 +167,9 @@ class Login:
                                     else:
                                         DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
                                         registration_frame.destroy()
+                            else:
+                                DB_Manager.db_add(first_name_text, last_name_text, email_text, password_text)
+                                registration_frame.destroy()
                         else:
                             messagebox.showerror(title='ERROR', message='Email is not valid')
                     else:
@@ -174,11 +177,9 @@ class Login:
                 else:
                     messagebox.showerror(title='ERROR', message='Name or surname have not been entered')
 
-
-
+            registration_confirm.bind("<Button-1>", registration_manage)
 
             return_home_button.bind("<Button-1>", return_home)
-
 
         registration_button.bind("<Button-1>", register_try)
 
