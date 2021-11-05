@@ -56,8 +56,6 @@ class MainPage:
         dashboard_frame = Frame(self.root, bd=5, bg="white")
         dashboard_frame.place(x=300, y=0, height=600, width=900)
 
-
-
         def auto_publish(event):
 
             dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -111,6 +109,52 @@ class MainPage:
             statistics_frame.place(x=300, y=0, height=0, width=0)
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
+
+            # Set Titles
+            likes_label = Label(like_dislike_frame, text="Like", bg="grey", fg="white")
+            likes_label.place(x=0, y=0, height=50, width=100)
+
+            # Start likes bot
+            start_likes_bot_button = Button(like_dislike_frame, text="Start", command="set")
+            start_likes_bot_button.place(x=100, y=0, height=50, width=100)
+
+            # Save like option button
+            save_likes_options_button = Button(like_dislike_frame, text="Save", command="set")
+            save_likes_options_button.place(x=200, y=0, height=50, width=100)
+
+            hashtag_check = IntVar()
+            location_check = IntVar()
+            account_check = IntVar()
+
+            def hashtag_options():
+                if hashtag_check.get() == 1:
+                    like_by_hashtag_check_button["bg"] = "green"
+                if hashtag_check.get() == 0:
+                    like_by_hashtag_check_button["bg"] = "grey"
+
+            def location_options():
+                if location_check.get() == 1:
+                    like_by_location_check_button["bg"] = "green"
+                if location_check.get() == 0:
+                    like_by_location_check_button["bg"] = "grey"
+
+            def account_options():
+                if account_check.get() == 1:
+                    like_by_account_check_button["bg"] = "green"
+                if account_check.get() == 0:
+                    like_by_account_check_button["bg"] = "grey"
+
+            like_by_hashtag_check_button = Checkbutton(like_dislike_frame, text="Likes by hashtag", bg="grey",
+                                                       variable=hashtag_check, command=hashtag_options)
+            like_by_hashtag_check_button.place(x=10, y=75, width=900)
+
+            like_by_location_check_button = Checkbutton(like_dislike_frame, text="Likes by location", bg="grey",
+                                                        variable=location_check, command=location_options)
+            like_by_location_check_button.place(x=10, y=275, width=900)
+
+            like_by_account_check_button = Checkbutton(like_dislike_frame, text="Likes by account", bg="grey",
+                                                       variable=account_check, command=account_options)
+            like_by_account_check_button.place(x=10, y=475, width=900)
 
         def follow(event):
 
@@ -191,64 +235,9 @@ class MainPage:
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
-
         auto_publish_button.bind("<Button-1>", auto_publish)
         unfollow_button.bind("<Button-1>", unfollow)
         direct_button.bind("<Button-1>", direct)
         l_d_button.bind("<Button-1>", like_dislike)
         follow_button.bind("<Button-1>", follow)
         dashboard_button.bind("<Button-1>", dashboard)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
