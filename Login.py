@@ -151,6 +151,7 @@ class Login:
                 last_name_text = last_name_entry_register.get()
                 email_text = email_entry_register.get()
                 password_text = password_entry_register.get()
+
                 db_check = DB_Manager.db_update(email_text[0])
 
                 print(db_check)
@@ -178,10 +179,9 @@ class Login:
 
             registration_confirm.bind("<Button-1>", registration_manage)
 
-
             return_home_button.bind("<Button-1>", return_home)
 
-
         registration_button.bind("<Button-1>", register_try)
+
 
 
