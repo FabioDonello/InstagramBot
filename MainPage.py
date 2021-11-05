@@ -61,7 +61,6 @@ class MainPage:
         page_title_label.place(x=350, y=50)
 
         def auto_publish(event):
-
             dashboard_frame.place(x=300, y=0, height=0, width=0)
 
             follow_unfollow_frame.place(x=300, y=0, height=0, width=0)
@@ -73,7 +72,6 @@ class MainPage:
             statistics_frame.place(x=300, y=0, height=0, width=0)
 
             auto_publish_frame.place(x=300, y=0, height=600, width=900)
-            page_title_label["text"] = "Auto publish"
 
         def statistics(event):
             dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -85,7 +83,6 @@ class MainPage:
             direct_frame.place(x=300, y=0, height=0, width=0)
 
             statistics_frame.place(x=300, y=0, height=600, width=900)
-            page_title_label["text"] = "Statistics"
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
@@ -97,20 +94,17 @@ class MainPage:
             like_dislike_frame.place(x=300, y=0, height=0, width=0)
 
             direct_frame.place(x=300, y=0, height=600, width=900)
-            page_title_label["text"] = "Direct"
 
             statistics_frame.place(x=300, y=0, height=0, width=0)
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
         def like_dislike(event):
-
             dashboard_frame.place(x=300, y=0, height=0, width=0)
 
             follow_unfollow_frame.place(x=300, y=0, height=0, width=0)
 
             like_dislike_frame.place(x=300, y=0, height=600, width=900)
-            page_title_label["text"] = "Like and dislike"
 
             direct_frame.place(x=300, y=0, height=0, width=0)
 
@@ -118,12 +112,14 @@ class MainPage:
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
-        def follow_unfollow(event):
+            # Set Titles
+            likes_label = Label(like_dislike_frame, text="Like", bg="blue", fg="white")
+            likes_label.place(x=0, y=0, height=50, width=100)
 
+        def follow_unfollow(event):
             dashboard_frame.place(x=300, y=0, height=0, width=0)
 
             follow_unfollow_frame.place(x=300, y=0, height=600, width=900)
-            page_title_label["text"] = "Follow and unfollow"
 
             like_dislike_frame.place(x=300, y=0, height=0, width=0)
 
@@ -134,10 +130,7 @@ class MainPage:
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
         def dashboard(event):
-
             dashboard_frame.place(x=300, y=0, height=600, width=900)
-
-            page_title_label["text"] = "Dashboard"
 
             follow_unfollow_frame.place(x=300, y=0, height=0, width=0)
 
@@ -149,64 +142,9 @@ class MainPage:
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
-
         auto_publish_button.bind("<Button-1>", auto_publish)
         statistics_button.bind("<Button-1>", statistics)
         direct_button.bind("<Button-1>", direct)
         l_d_button.bind("<Button-1>", like_dislike)
         follow_unfollow_button.bind("<Button-1>", follow_unfollow)
         dashboard_button.bind("<Button-1>", dashboard)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
