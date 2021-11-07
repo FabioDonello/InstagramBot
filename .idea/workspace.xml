@@ -1,7 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f4eb1e22-21f6-4fb2-a5f8-af90a885d702" name="Default Changelist" comment="Aggiustamenti vari">
+    <list default="true" id="f4eb1e22-21f6-4fb2-a5f8-af90a885d702" name="Default Changelist" comment="Creazione grafiche di follow">
+      <change afterPath="$PROJECT_DIR$/config/blacklist.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/comments.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/followed.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/friends.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/giudoinstambot.checkpoint" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/giudoinstambot_uuid_and_cookie.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140210072678992.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140239492467680.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140289696293168.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140295962475584.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140344322912848.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140372793844016.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140375865127456.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140375890955424.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140426742034976.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140472945330928.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140477853715424.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140480085193296.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140489681760848.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140497751601696.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140498632297440.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140499286657584.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140504545325648.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140505325470240.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140528704516640.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140529532974752.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140529551766048.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140545239511632.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140547377553712.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140581587350096.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140583114076704.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140595948646944.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140609244549472.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140642572530256.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140649737341920.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140649838427392.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140649838553552.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140661908271648.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140674734341088.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140676420563536.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140679591349216.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140685975188000.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140704361918576.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/log/instabot_140717506916944.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/skipped.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/unfollowed.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/whitelist.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MainPage.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainPage.py" afterDir="false" />
     </list>
@@ -37,11 +84,15 @@
     </file-type-list>
   </component>
   <component name="ProjectId" id="1zHGfSqAf9BibKYukcw6uv8hUgK" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -259,7 +310,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636042857055</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Creazione grafiche di follow">
+      <created>1636048677784</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1636048677784</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -275,6 +333,7 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Ho aggiunto una riga di commento" />
     <MESSAGE value="Ho resettato le righe" />
     <MESSAGE value="Inizio creazione finestra di login" />
@@ -291,7 +350,8 @@
     <MESSAGE value="Marge" />
     <MESSAGE value="Confronto login database per lettera iniziale" />
     <MESSAGE value="Aggiustamenti vari" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiustamenti vari" />
+    <MESSAGE value="Creazione grafiche di follow" />
+    <option name="LAST_COMMIT_MESSAGE" value="Creazione grafiche di follow" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
