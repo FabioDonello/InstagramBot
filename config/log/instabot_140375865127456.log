@@ -1,0 +1,49 @@
+2021-11-07 16:36:48,332 - instabot version: 0.117.0 (bot) - INFO - Instabot version: 0.117.0 Started
+2021-11-07 16:36:48,334 - instabot version: 0.117.0 (bot) - DEBUG - Bot imported from /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/instabot/bot/bot.py
+2021-11-07 16:36:48,336 - instabot version: 0.117.0 (api_login) - INFO - Not yet logged in starting: PRE-LOGIN FLOW!
+2021-11-07 16:36:48,687 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: accounts/get_prefill_candidates/ returned response: <Response [200]>
+2021-11-07 16:36:48,945 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: qe/sync/ returned response: <Response [200]>
+2021-11-07 16:36:49,183 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: launcher/sync/ returned response: <Response [200]>
+2021-11-07 16:36:49,416 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: accounts/contact_point_prefill/ returned response: <Response [200]>
+2021-11-07 16:37:28,157 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: accounts/login/ returned response: <Response [200]>
+2021-11-07 16:37:28,158 - instabot version: 0.117.0 (api) - INFO - Logged-in successfully as 'giudoinstambot'!
+2021-11-07 16:37:28,158 - instabot version: 0.117.0 (api_login) - INFO - LOGIN FLOW! Just logged-in: True
+2021-11-07 16:37:28,520 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: qe/sync/ returned response: <Response [200]>
+2021-11-07 16:37:28,834 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: launcher/sync/ returned response: <Response [200]>
+2021-11-07 16:37:48,428 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: zr/token/result/?device_id=android-0408bc8cf7269a3e&token_hash=&custom_device_id=android-0408bc8cf7269a3e&fetch_reason=token_expired returned response: <Response [200]>
+2021-11-07 16:37:48,788 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: multiple_accounts/get_account_family/ returned response: <Response [200]>
+2021-11-07 16:37:49,345 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: qe/sync/ returned response: <Response [200]>
+2021-11-07 16:37:50,269 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: igtv/browse_feed/?prefetch=1 returned response: <Response [200]>
+2021-11-07 16:37:50,881 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: creatives/ar_class/ returned response: <Response [200]>
+2021-11-07 16:37:51,524 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: feed/reels_tray/ returned response: <Response [200]>
+2021-11-07 16:37:53,643 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: feed/timeline/ returned response: <Response [200]>
+2021-11-07 16:37:54,269 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: media/blocked/ returned response: <Response [200]>
+2021-11-07 16:37:55,181 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: news/inbox/ returned response: <Response [200]>
+2021-11-07 16:37:55,796 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: loom/fetch_config/ returned response: <Response [200]>
+2021-11-07 16:37:56,279 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: scores/bootstrap/users/?surfaces=["autocomplete_user_list","coefficient_besties_list_ranking","coefficient_rank_recipient_user_suggestion","coefficient_ios_section_test_bootstrap_ranking","coefficient_direct_recipients_ranking_variant_2"] returned response: <Response [200]>
+2021-11-07 16:37:56,717 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: business/eligibility/get_monetization_products_eligibility_data/?product_types=branded_content returned response: <Response [200]>
+2021-11-07 16:37:57,332 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: business/branded_content/should_require_professional_account/ returned response: <Response [200]>
+2021-11-07 16:37:57,643 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: linked_accounts/get_linkage_status/ returned response: <Response [200]>
+2021-11-07 16:37:58,278 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: locations/request_country/ returned response: <Response [200]>
+2021-11-07 16:37:58,884 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: qp/get_cooldowns/?signed_body=signed_body=4b9c516a5410a3bc128e09c6104a7f042146b9c2023870560c63a43a7f66781c.4&ig_sig_key_version=4&ig_sig_key_version=4 returned response: <Response [200]>
+2021-11-07 16:37:59,788 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: users/arlink_download_info/?version_override=2.2.1 returned response: <Response [200]>
+2021-11-07 16:38:00,403 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: users/49818294203/info/ returned response: <Response [200]>
+2021-11-07 16:38:00,995 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: direct_v2/get_presence/ returned response: <Response [200]>
+2021-11-07 16:38:01,617 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: direct_v2/inbox/?visual_message_return_type=unseen&thread_message_limit=10&persistentBadging=true&limit=20 returned response: <Response [200]>
+2021-11-07 16:38:02,246 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: direct_v2/inbox/?visual_message_return_type=unseen&persistentBadging=true&limit=0 returned response: <Response [200]>
+2021-11-07 16:38:02,653 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: discover/topical_explore/?is_prefetch=true&omit_cover_media=true&use_sectional_payload=true&timezone_offset=0&session_id=98502340-7d3b-4239-9864-787965ee40c8&include_fixed_destinations=true returned response: <Response [200]>
+2021-11-07 16:38:03,167 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: notifications/badge/ returned response: <Response [200]>
+2021-11-07 16:38:39,108 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: qp/batch_fetch/ returned response: <Response [200]>
+2021-11-07 16:38:39,109 - instabot version: 0.117.0 (bot_checkpoint) - DEBUG - Loading Checkpoint file from: /Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/giudoinstambot.checkpoint
+2021-11-07 16:38:40,029 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: feed/tag/pkkjsa/?max_id=&rank_token=49818294203_0f3504ac-812c-4912-9bb2-59c0ecd29296&ranked_content=true& returned response: <Response [200]>
+2021-11-07 16:38:40,030 - instabot version: 0.117.0 (bot_follow) - INFO - Going to follow `user_id` 1550235391.
+2021-11-07 16:38:40,030 - instabot version: 0.117.0 (api) - DEBUG - post data: {"user_id": "1550235391", "radio_type": "wifi-none", "device_id": "android-0408bc8cf7269a3e", "_uuid": "0f3504ac-812c-4912-9bb2-59c0ecd29296", "_uid": "49818294203", "_csrftoken": "If7Bzam9vaJfdbgLCoi0MTJjGdTYcEdY"}
+2021-11-07 16:38:43,103 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: friendships/create/1550235391/ returned response: <Response [200]>
+2021-11-07 16:38:43,103 - instabot version: 0.117.0 (bot_follow) - INFO - Followed `user_id` 1550235391.
+2021-11-07 16:38:43,716 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: users/49818294203/info/ returned response: <Response [200]>
+2021-11-07 16:38:44,330 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: friendships/49818294203/following/?max_id=&ig_sig_key_version=4&rank_token=49818294203_0f3504ac-812c-4912-9bb2-59c0ecd29296 returned response: <Response [200]>
+2021-11-07 16:38:44,946 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: feed/tag/pkkjsa/?max_id=&rank_token=49818294203_0f3504ac-812c-4912-9bb2-59c0ecd29296&ranked_content=true& returned response: <Response [200]>
+2021-11-07 16:38:44,946 - instabot version: 0.117.0 (bot_follow) - INFO - Going to follow `user_id` 1550235391.
+2021-11-07 16:40:18,440 - instabot version: 0.117.0 (bot) - INFO - Instabot version: 0.117.0 Started
+2021-11-07 16:40:18,440 - instabot version: 0.117.0 (bot) - DEBUG - Bot imported from /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/instabot/bot/bot.py
+2021-11-07 16:40:18,442 - instabot version: 0.117.0 (api_login) - DEBUG - Loading cookies

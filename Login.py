@@ -67,14 +67,10 @@ class Login:
             if username_text:
                 db_table = DB_Manager.db_update(username_text[0])
 
-                print(db_table)
-
                 if db_table:
                     x = 0
                     for a in db_table:
                         x += 1
-                        print(a[0])
-                        print(a[1])
                         if username_text == a[0] and password_text == a[1]:
                             frame_login.destroy()
                             MainPage(self.root)
@@ -153,7 +149,6 @@ class Login:
 
                 db_check = DB_Manager.db_update(email_text[0])
 
-                print(db_check)
                 # Check Registration
                 if first_name_text and last_name_text:
                     if str.isalnum(password_text) and str.__len__(password_text) >= 6:
