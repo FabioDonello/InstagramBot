@@ -2,6 +2,14 @@ from tkinter import *
 from instabot import Bot
 import os
 import glob
+import argparse
+import sys
+from tkinter import ttk
+from threading import Thread
+from BOT_Manager import *
+import queue
+import requests
+from bs4 import BeautifulSoup
 
 
 
@@ -234,6 +242,7 @@ class MainPage:
             location_country_follow_check_button.place(x=70, y=330, width=175)
 
             country = [
+                "-------",
                 "Albania",
                 "Andorra",
                 "Armenia",
@@ -296,6 +305,7 @@ class MainPage:
             location_region_follow_check_button.place(x=356, y=330, width=175)
 
             region = [
+                "-------",
                 "Valle d’Aosta",
                 "Piemonte",
                 "Liguria",
@@ -332,6 +342,7 @@ class MainPage:
             location_city_follow_check_button.place(x=642, y=330, width=175)
 
             city = [
+                "-------",
                 "Bologna",
                 "Ferrara",
                 "Forlì-Cesena",
@@ -375,47 +386,151 @@ class MainPage:
             #  communicate back to the scrollbar
             text1['yscrollcommand'] = scrollbar1.set
 
-            def start_bot(event):
+            def start_follow_bot(event):
 
-                cookie_del = glob.glob("config/*cookie.json")
-                os.remove(cookie_del[0])
+                # Follow by hashtag:
+                if hashtag_check_var == 1:
+                    hashtags = text.get(1.0, "end-1c")
+                    hashtags = hashtags.split(' ')
+                    if hashtags:
+                        t_follow_hashtag = Thread(target=ig_follow_hashtag, args=(hashtags,))
+                        t_follow_hashtag.start()
+                # Follow by location
+                if location_check_var == 1:
+                    locations = variable1
+                    if locations:
+                        t_follow_location = Thread(target=ig_follow_location, args=(locations,))
+                        t_follow_location.start()
+                # Follow by account
+                if account_check_var == 1:
+                    print(account_check_var)
+                    accounts = text1.get(1.0, "end-1c")
+                    accounts = accounts.split(',')
+                    if accounts:
+                        t_follow_account = Thread(target=ig_follow_account, args=(accounts,))
+                        t_follow_account.start()
 
-                bot = Bot()
-                bot.login(username="giudoinstambot", password="Giuseppefabio1")
 
-                # Following by hashtag
-                print("Ho eseguito l'accesso correttamente")
 
-                hashtag_text = text.get(1.0, "end-1c")
-                print("il numero di hashtag ionseriti è" + hashtag_text)
-                for hashtag in hashtag_text:
-                    hashtag_users = bot.get_hashtag_users("vnhgb")
-                    print("il numero di utenti trovati con questo hashtag è" + str(len(hashtag_users)))
-                    bot.follow(hashtag_users)
 
-                """hashtag_users = bot.get_hashtag_users("#cfttbcs")
-                print(hashtag_users)
-
-                print("ho seguito tutti")
-                """
-            start_follower_bot_button.bind("<Button-1>", start_bot)
+            start_follower_bot_button.bind("<Button-1>", start_follow_bot)
 
 
 
         def dashboard(event):
 
-            dashboard_frame.place(x=300, y=0, height=600, width=900)
+            f = open("Credenziali", "r")
+            credential = f.read()
+            f.close()
 
-            follow_frame.place(x=300, y=0, height=0, width=0)
+            def getProxies():
+                r = requests.get('https://free-proxy-list.net/')
+                soup = BeautifulSoup(r.content, 'html.parser')
+                table = soup.find('tbody')
+                proxies = []
+                for row in table:
+                    if row.find_all('td')[4].text == 'elite proxy':
+                        proxy = ':'.join([row.find_all('td')[0].text, row.find_all('td')[1].text])
+                        proxies.append(proxy)
+                    else:
+                        pass
+                return proxies
 
-            like_dislike_frame.place(x=300, y=0, height=0, width=0)
+            if credential != "":
 
-            direct_frame.place(x=300, y=0, height=0, width=0)
+                dashboard_frame.place(x=300, y=0, height=600, width=900)
 
-            statistics_frame.place(x=300, y=0, height=0, width=0)
+                follow_frame.place(x=300, y=0, height=0, width=0)
 
-            auto_publish_frame.place(x=300, y=0, height=0, width=0)
+                like_dislike_frame.place(x=300, y=0, height=0, width=0)
 
+                direct_frame.place(x=300, y=0, height=0, width=0)
+
+                statistics_frame.place(x=300, y=0, height=0, width=0)
+
+                auto_publish_frame.place(x=300, y=0, height=0, width=0)
+
+                proxy_list0 = getProxies()
+                var0 = 0
+                t0_login = Thread(target=ig_login, args=(proxy_list0, "", "", var0))
+                t0_login.start()
+
+            else:
+                dashboard_frame.place(x=300, y=0, height=0, width=0)
+                # Create instagram login frame
+                instagram_login_frame = Frame(self.root, bd=5, bg="white")
+                instagram_login_frame.place(x=300, y=0, height=600, width=900)
+
+                # Set title of login frame
+                instagram_login_frame_title = Label(instagram_login_frame, text="Prima di accedere alle funzionalità "
+                                                                                "di giudoinstabot accedi al profilo"
+                                                                                " instagram che vuoi gestire: ",
+                                                    bg="white")
+                instagram_login_frame_title.place(x=0, y=30)
+
+                # Insertion box Email & password
+
+                instagram_username_label = Label(instagram_login_frame, text="Username", bg="white")
+                instagram_username_label.place(x=0, y=85, height=50, width=150)
+                instagram_password_label = Label(instagram_login_frame, text="Password", bg="white")
+                instagram_password_label.place(x=0, y=136, height=50, width=150)
+
+                instagram_username_entry = Entry(instagram_login_frame, bg="yellow")
+                instagram_username_entry.place(x=175, y=85, height=50, width=240)
+                instagram_password_entry = Entry(instagram_login_frame, bg="yellow", show="*")
+                instagram_password_entry.place(x=175, y=135, height=50, width=240)
+
+                check_var1 = IntVar()
+
+                def show_password():
+                    if check_var1.get() == 1:
+                        instagram_password_entry["show"] = ""
+                    if check_var1.get() == 0:
+                        instagram_password_entry["show"] = "*"
+
+                instagram_password_check_box = Checkbutton(instagram_login_frame, text="show password",
+                                                 variable=check_var1, command=show_password)
+
+                instagram_access_button = Button(instagram_login_frame, text="Login", command="set")
+                instagram_access_button.place(x=0, y=195, height=50, width=150)
+
+                # Access management
+
+                def access_try(event):
+                    username_text = instagram_username_entry.get()
+                    password_text = instagram_password_entry.get()
+                    print(username_text)
+                    print(password_text)
+                    if username_text and password_text:
+                        proxy_list1 = getProxies()
+                        instagram_access_button.destroy()
+                        instagram_info_label = Label(instagram_login_frame, text="Login in process: ", bg="white")
+                        instagram_info_label.place(x=0, y=195, height=50, width=150)
+                        progress = ttk.Progressbar(instagram_login_frame, orient=HORIZONTAL,
+                                                   length=30, mode='determinate', )
+                        progress.place(x=175, y=215)
+                        progress['value'] = 0
+
+                        def progress_control():
+                            for a in range(30):
+                                progress['value'] = a
+                                time.sleep(1)
+                            check()
+                        t_pb = Thread(target=progress_control)
+                        t_pb.start()
+                        var1 = 1
+
+                        t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
+                        t1_login.start()
+                        def check():
+                            """progress.destroy()
+                            time.sleep(3)
+                            file_log = open(file_id + "", "r")
+                            file_text = file_log.read()
+                            print(file_text)
+                            """
+
+                instagram_access_button.bind("<Button-1>", access_try)
 
         auto_publish_button.bind("<Button-1>", auto_publish)
         unfollow_button.bind("<Button-1>", unfollow)
@@ -423,3 +538,5 @@ class MainPage:
         l_d_button.bind("<Button-1>", like_dislike)
         follow_button.bind("<Button-1>", follow)
         dashboard_button.bind("<Button-1>", dashboard)
+
+        dashboard(0)

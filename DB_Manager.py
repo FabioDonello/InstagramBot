@@ -36,7 +36,6 @@ def db_update(username_initial):
     # create a database connection
     conn = create_connection(link)
     username_command = "SELECT email, password FROM login WHERE email GLOB '" + username_initial + "*'"
-    print(username_command)
 
     with conn:
         return select_all_tasks(conn, username_command)
