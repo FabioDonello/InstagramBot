@@ -17,8 +17,6 @@ import requests
 from bs4 import BeautifulSoup
 
 
-
-
 class MainPage:
 
     def __init__(self, root):
@@ -213,7 +211,6 @@ class MainPage:
             account_text['yscrollcommand'] = account_scrollbar.set
 
             # Set likes by location
-
 
         def follow(event):
 
@@ -500,15 +497,9 @@ class MainPage:
                         t_follow_account = Thread(target=ig_follow_account, args=(accounts,))
                         t_follow_account.start()
 
-
-
-
             start_follower_bot_button.bind("<Button-1>", start_follow_bot)
 
-
-
         def dashboard(event):
-
 
             f = open("Credenziali", "r")
             credential = f.read()
@@ -580,7 +571,7 @@ class MainPage:
                         instagram_password_entry["show"] = "*"
 
                 instagram_password_check_box = Checkbutton(instagram_login_frame, text="show password",
-                                                 variable=check_var1, command=show_password)
+                                                           variable=check_var1, command=show_password)
 
                 instagram_access_button = Button(instagram_login_frame, text="Login", command="set")
                 instagram_access_button.place(x=0, y=195, height=50, width=150)
@@ -607,12 +598,14 @@ class MainPage:
                                 progress['value'] = a
                                 time.sleep(1)
                             check()
+
                         t_pb = Thread(target=progress_control)
                         t_pb.start()
                         var1 = 1
 
                         t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
                         t1_login.start()
+
                         def check():
                             """progress.destroy()
                             time.sleep(3)
@@ -623,7 +616,6 @@ class MainPage:
 
                 instagram_access_button.bind("<Button-1>", access_try)
 
-
         auto_publish_button.bind("<Button-1>", auto_publish)
         unfollow_button.bind("<Button-1>", unfollow)
         direct_button.bind("<Button-1>", direct)
@@ -631,6 +623,4 @@ class MainPage:
         follow_button.bind("<Button-1>", follow)
         dashboard_button.bind("<Button-1>", dashboard)
 
-
         dashboard(0)
-
