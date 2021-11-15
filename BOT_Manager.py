@@ -2,7 +2,10 @@ from instabot import Bot
 import os
 import glob
 import time
+import shutil
 
+file_path = '/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/'
+shutil.rmtree(file_path)
 bot = Bot()
 file_id = format(id(bot))
 x = 0
@@ -11,7 +14,7 @@ def ig_login(proxy_list, username, password, var):
     #cookie_del = glob.glob("config/*cookie.json")
     #os.remove(cookie_del[0])
     if var == 1:
-        bot.login(username=username, password=password, is_threaded=True)
+        #bot.login(username=username, password=password, is_threaded=True)
         f = open("Credenziali", "w")
         f.write(username)
         f.write("\n")
@@ -25,7 +28,7 @@ def ig_login(proxy_list, username, password, var):
             f = open("Credenziali", "r")
             username = f.readline()
             password = f.readline()
-            bot.login(username=username, password=password)
+            #bot.login(username=username, password=password)
             f.close()
             x = 1
             print("Login riuscito")
@@ -45,10 +48,8 @@ def ig_follow_hashtag(hashtags):
             bot.follow(users)
             print(time.sleep(300))
 
-
 def ig_follow_location(location):
     print(location)
-
 
 def ig_follow_account(accounts):
     while x == 0:

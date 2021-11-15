@@ -15,9 +15,9 @@ from BOT_Manager import *
 import queue
 import requests
 from bs4 import BeautifulSoup
-
-
-
+from os import listdir
+from os.path import isfile, join
+from tkinter import messagebox
 
 class MainPage:
 
@@ -59,8 +59,8 @@ class MainPage:
         auto_publish_frame = Frame(self.root, bd=5, bg="white")
         auto_publish_frame.place(x=300, y=0, height=600, width=900)
 
-        statistics_frame = Frame(self.root, bd=5, bg="white")
-        statistics_frame.place(x=300, y=0, height=600, width=900)
+        unfollow_frame = Frame(self.root, bd=5, bg="white")
+        unfollow_frame.place(x=300, y=0, height=600, width=900)
 
         direct_frame = Frame(self.root, bd=5, bg="white")
         direct_frame.place(x=300, y=0, height=600, width=900)
@@ -84,7 +84,7 @@ class MainPage:
 
             direct_frame.place(x=300, y=0, height=0, width=0)
 
-            statistics_frame.place(x=300, y=0, height=0, width=0)
+            unfollow_frame.place(x=300, y=0, height=0, width=0)
 
             auto_publish_frame.place(x=300, y=0, height=600, width=900)
 
@@ -97,9 +97,183 @@ class MainPage:
 
             direct_frame.place(x=300, y=0, height=0, width=0)
 
-            statistics_frame.place(x=300, y=0, height=600, width=900)
+            unfollow_frame.place(x=300, y=0, height=600, width=900)
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
+
+            # Set titles
+
+            follow_label = Label(unfollow_frame, text="Unfollow", bg="grey", fg="white")
+            follow_label.place(x=0, y=0, height=50, width=100)
+
+            # Start unfollower bot
+
+            start_un_follower_bot_button = Button(unfollow_frame, text="Start", command="set")
+            start_un_follower_bot_button.place(x=100, y=0, height=50, width=100)
+
+            # Save unfollower options button
+
+            save_un_follower_option_button = Button(unfollow_frame, text="Save", command="set")
+            save_un_follower_option_button.place(x=200, y=0, height=50, width=100)
+
+            # Options label
+            un_follow_label = Label(unfollow_frame, text="Unfollow target:", bg="grey", fg="white")
+            un_follow_label.place(x=0, y=75, width=900)
+            un_follow_label = Label(unfollow_frame, text="Unfollow white list:", bg="grey", fg="white")
+            un_follow_label.place(x=0, y=225, width=900)
+
+            replacemant_check_var = IntVar()
+            account_follower_check_var = IntVar()
+            account_media_check_var = IntVar()
+            account_activity_check_var = IntVar()
+            def replacement():
+                if replacemant_check_var.get() == 1:
+                    un_follow_after_replacement_check_button["bg"] = "green"
+                if replacemant_check_var.get() == 0:
+                    un_follow_after_replacement_check_button["bg"] = "white"
+            def account_follower():
+                if account_follower_check_var.get() == 1:
+                    un_follow_by_follower_number_check_button["bg"] = "green"
+                if account_follower_check_var.get() == 0:
+                    un_follow_by_follower_number_check_button["bg"] = "white"
+            def account_media():
+                if account_media_check_var.get() == 1:
+                    un_follow_by_media_number_check_button["bg"] = "green"
+                if account_media_check_var.get() == 0:
+                    un_follow_by_media_number_check_button["bg"] = "white"
+            def account_activity():
+                if account_activity_check_var.get() == 1:
+                    un_follow_by_activity_check_button["bg"] = "green"
+                if account_activity_check_var.get() == 0:
+                    un_follow_by_activity_check_button["bg"] = "white"
+
+            un_follow_after_replacement_check_button = Checkbutton(unfollow_frame, text="Unfollow by replacemant:",
+                                                                   bg="white",
+                                                                   variable=replacemant_check_var,
+                                                                   command=replacement)
+            un_follow_after_replacement_check_button.place(x=25, y=125)
+
+            un_follow_by_follower_number_check_button = Checkbutton(unfollow_frame, text="Unfollow by account"
+                                                                                         " follower:",
+                                                                   bg="white",
+                                                                   variable=account_follower_check_var,
+                                                                   command=account_follower)
+            un_follow_by_follower_number_check_button.place(x=25, y=175)
+
+            un_follow_by_media_number_check_button = Checkbutton(unfollow_frame, text="Unfollow by account"
+                                                                                         " media:",
+                                                                    bg="white",
+                                                                    variable=account_media_check_var,
+                                                                    command=account_media)
+            un_follow_by_media_number_check_button.place(x=575, y=125)
+
+            un_follow_by_activity_check_button = Checkbutton(unfollow_frame, text="Unfollow by account"
+                                                                                      " activity:",
+                                                                 bg="white",
+                                                                 variable=account_activity_check_var,
+                                                                 command=account_activity)
+            un_follow_by_activity_check_button.place(x=575, y=175)
+
+            # ------------------------------------------------------------------------------------------------
+            replacemant_time = [
+                "",
+                "1 day",
+                "3 day",
+                "5 day",
+                "1 week",
+                "2 week",
+                "1 month",
+                "2 month",
+                "3 month",
+            ]  # etc
+
+            replacemant_time_var = StringVar(unfollow_frame)
+            replacemant_time_var.set(replacemant_time[0])  # default value
+
+            replacemant_option_menu = OptionMenu(unfollow_frame, replacemant_time_var, *replacemant_time)
+            replacemant_option_menu.place(x=210, y=125)
+
+            # ------------------------------------------------------------------------------------------------
+            follow_number = [
+                "",
+                "<50 followers",
+                "<100 followers",
+                "<150 followers",
+                "<200 followers",
+                "<400 followers",
+                "<800 followers",
+                "<1200 followers",
+                "<2000 followers",
+            ]  # etc
+
+            follow_number_var = StringVar(unfollow_frame)
+            follow_number_var.set(follow_number[0])  # default value
+
+            follow_number_option_menu = OptionMenu(unfollow_frame, follow_number_var, *follow_number)
+            follow_number_option_menu.place(x=230, y=175)
+
+            # ------------------------------------------------------------------------------------------------
+            media_number = [
+                "",
+                "<10 media",
+                "<20 media",
+                "<30 media",
+                "<40 media",
+                "<50 media",
+                "<60 media",
+                "<70 media",
+                "<80 media",
+            ]  # etc
+
+            media_number_var = StringVar(unfollow_frame)
+            media_number_var.set(media_number[0])  # default value
+
+            media_number_option_menu = OptionMenu(unfollow_frame, media_number_var, *media_number)
+            media_number_option_menu.place(x=770, y=125)
+
+            # ------------------------------------------------------------------------------------------------
+            activity_time = [
+                "",
+                "Last 1 day",
+                "Last 3 day",
+                "Last 5 day",
+                "Last 1 week",
+                "Last 2 week",
+                "Last 1 month",
+                "Last 2 month",
+                "Last 3 month",
+            ]  # etc
+
+            activity_time_var = StringVar(unfollow_frame)
+            activity_time_var.set(activity_time[0])  # default value
+
+            activity_time_option_menu = OptionMenu(unfollow_frame, activity_time_var, *activity_time)
+            activity_time_option_menu.place(x=780, y=175)
+
+
+
+
+
+
+            # White list
+            un_follow_white_list_frame = Frame(unfollow_frame, bd=5, bg="grey")
+            un_follow_white_list_frame.place(x=100, y=275, height=100, width=700)
+
+            # apply the grid layout
+            un_follow_white_list_frame.grid_columnconfigure(0, weight=1)
+            un_follow_white_list_frame.grid_rowconfigure(0, weight=1)
+
+            # create the text widget
+            white_list_text = Text(un_follow_white_list_frame, height=10)
+            white_list_text.grid(row=0, column=0, sticky='ew')
+
+            # create a scrollbar widget and set its command to the text widget
+            white_list_scrollbar = Scrollbar(un_follow_white_list_frame, orient='vertical', command=white_list_text.yview)
+            white_list_scrollbar.grid(row=0, column=1, sticky='ns')
+
+            #  communicate back to the scrollbar
+            white_list_text['yscrollcommand'] = white_list_scrollbar.set
+
 
         def direct(event):
             dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -110,7 +284,7 @@ class MainPage:
 
             direct_frame.place(x=300, y=0, height=600, width=900)
 
-            statistics_frame.place(x=300, y=0, height=0, width=0)
+            unfollow_frame.place(x=300, y=0, height=0, width=0)
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
@@ -124,7 +298,7 @@ class MainPage:
 
             direct_frame.place(x=300, y=0, height=0, width=0)
 
-            statistics_frame.place(x=300, y=0, height=0, width=0)
+            unfollow_frame.place(x=300, y=0, height=0, width=0)
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
@@ -225,7 +399,7 @@ class MainPage:
 
             direct_frame.place(x=300, y=0, height=0, width=0)
 
-            statistics_frame.place(x=300, y=0, height=0, width=0)
+            unfollow_frame.place(x=300, y=0, height=0, width=0)
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
@@ -537,7 +711,7 @@ class MainPage:
 
                 direct_frame.place(x=300, y=0, height=0, width=0)
 
-                statistics_frame.place(x=300, y=0, height=0, width=0)
+                unfollow_frame.place(x=300, y=0, height=0, width=0)
 
                 auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
@@ -598,28 +772,46 @@ class MainPage:
                         instagram_info_label = Label(instagram_login_frame, text="Login in process: ", bg="white")
                         instagram_info_label.place(x=0, y=195, height=50, width=150)
                         progress = ttk.Progressbar(instagram_login_frame, orient=HORIZONTAL,
-                                                   length=30, mode='determinate', )
+                                                   length=100, mode='determinate', )
                         progress.place(x=175, y=215)
                         progress['value'] = 0
 
                         def progress_control():
-                            for a in range(30):
+                            for a in range(100):
                                 progress['value'] = a
-                                time.sleep(1)
-                            check()
+                                time.sleep(0.3)
+                            ig_login_check()
                         t_pb = Thread(target=progress_control)
                         t_pb.start()
                         var1 = 1
 
                         t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
                         t1_login.start()
-                        def check():
-                            """progress.destroy()
+                        def ig_login_check():
+                            progress.destroy()
                             time.sleep(3)
-                            file_log = open(file_id + "", "r")
-                            file_text = file_log.read()
-                            print(file_text)
-                            """
+                            log_file_str = os.listdir("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
+                            log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
+                                            + log_file_str[0], "r")
+                            ll = StringVar
+                            for last_line in log_file:
+                                ll = last_line
+                                pass
+                            if "Username or password is incorrect" in ll:
+                                messagebox.showinfo("Login fail", "Username or password wrong")
+                                dashboard(0)
+                            if "too many requests" in ll:
+                                messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
+                                dashboard(0)
+
+                            dashboard(0)
+
+
+
+
+
+
+
 
                 instagram_access_button.bind("<Button-1>", access_try)
 
