@@ -1,7 +1,6 @@
 import sqlite3
 from sqlite3 import Error
 
-
 link = r"C:\Users\39377\Desktop\InstaBot\DB\IgDB.db"
 
 
@@ -32,7 +31,6 @@ def select_all_tasks(conn, username_command):
 
 
 def db_update(username_initial):
-
     # create a database connection
     conn = create_connection(link)
     username_command = "SELECT email, password FROM login WHERE email GLOB '" + username_initial + "*'"
@@ -58,7 +56,6 @@ def insert_data(conn, project):
 
 
 def db_add(first_name, last_name, email, password):
-
     # create a database connection
     conn = create_connection(link)
 
@@ -82,7 +79,6 @@ def create_table(conn, create_table_sql):
 
 
 def db_create():
-
     sql_create_login_table = """ CREATE TABLE IF NOT EXISTS login (
                                             first_name text NOT NULL,
                                             last_name text NOT NULL,
@@ -99,4 +95,3 @@ def db_create():
         create_table(conn, sql_create_login_table)
     else:
         print("Error! cannot create the database connection.")
-

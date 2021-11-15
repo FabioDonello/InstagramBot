@@ -64,7 +64,6 @@ class Login:
             username_text = email_entry.get()
             password_text = password_entry.get()
 
-
             if username_text:
                 db_table = DB_Manager.db_update(username_text[0])
 
@@ -182,6 +181,3 @@ class Login:
             return_home_button.bind("<Button-1>", return_home)
 
         registration_button.bind("<Button-1>", register_try)
-
-
-

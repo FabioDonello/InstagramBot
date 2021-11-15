@@ -1,4 +1,10 @@
 from tkinter import *
+import os
+
+if os.path.isfile("path/to/config/file.json"):
+    os.remove("path/to/config/file.json")
+
+from instabot import Bot
 
 
 class MainPage:
@@ -111,50 +117,91 @@ class MainPage:
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
             # Set Titles
-            likes_label = Label(like_dislike_frame, text="Like", bg="grey", fg="white")
+            likes_label = Label(like_dislike_frame, text="Like", bg="steelblue", fg="white")
             likes_label.place(x=0, y=0, height=50, width=100)
 
             # Start likes bot
             start_likes_bot_button = Button(like_dislike_frame, text="Start", command="set")
             start_likes_bot_button.place(x=100, y=0, height=50, width=100)
 
-            # Save like option button
+            # Save likes option button
             save_likes_options_button = Button(like_dislike_frame, text="Save", command="set")
             save_likes_options_button.place(x=200, y=0, height=50, width=100)
 
-            hashtag_check = IntVar()
-            location_check = IntVar()
-            account_check = IntVar()
+            hashtag = IntVar()
+            location = IntVar()
+            account = IntVar()
 
-            def hashtag_options():
-                if hashtag_check.get() == 1:
-                    like_by_hashtag_check_button["bg"] = "green"
-                if hashtag_check.get() == 0:
-                    like_by_hashtag_check_button["bg"] = "grey"
+            def hashtag_button():
+                if hashtag.get() == 1:
+                    hashtag_check_button["bg"] = "green"
+                if hashtag.get() == 0:
+                    hashtag_check_button["bg"] = "steelblue"
 
-            def location_options():
-                if location_check.get() == 1:
-                    like_by_location_check_button["bg"] = "green"
-                if location_check.get() == 0:
-                    like_by_location_check_button["bg"] = "grey"
+            def location_button():
+                if location.get() == 1:
+                    location_check_button["bg"] = "green"
+                if location.get() == 0:
+                    location_check_button["bg"] = "steelblue"
 
-            def account_options():
-                if account_check.get() == 1:
-                    like_by_account_check_button["bg"] = "green"
-                if account_check.get() == 0:
-                    like_by_account_check_button["bg"] = "grey"
+            def account_button():
+                if account.get() == 1:
+                    account_check_button["bg"] = "green"
+                if account.get() == 0:
+                    account_check_button["bg"] = "steelblue"
 
-            like_by_hashtag_check_button = Checkbutton(like_dislike_frame, text="Likes by hashtag", bg="grey",
-                                                       variable=hashtag_check, command=hashtag_options)
-            like_by_hashtag_check_button.place(x=10, y=75, width=900)
+            hashtag_check_button = Checkbutton(like_dislike_frame, text="Likes by hashtag", bg="steelblue",
+                                               variable=hashtag, command=hashtag_button)
+            hashtag_check_button.place(x=10, y=75, width=900)
 
-            like_by_location_check_button = Checkbutton(like_dislike_frame, text="Likes by location", bg="grey",
-                                                        variable=location_check, command=location_options)
-            like_by_location_check_button.place(x=10, y=275, width=900)
+            location_check_button = Checkbutton(like_dislike_frame, text="Likes by location", bg="steelblue",
+                                                variable=location, command=location_button)
+            location_check_button.place(x=10, y=275, width=900)
 
-            like_by_account_check_button = Checkbutton(like_dislike_frame, text="Likes by account", bg="grey",
-                                                       variable=account_check, command=account_options)
-            like_by_account_check_button.place(x=10, y=475, width=900)
+            account_check_button = Checkbutton(like_dislike_frame, text="Likes by account", bg="steelblue",
+                                               variable=account, command=account_button)
+            account_check_button.place(x=10, y=400, width=900)
+
+            # Set likes by hashtag
+            hashtag_likes_label = Label(like_dislike_frame, text="Enter hashtag", bg="whitesmoke")
+            hashtag_likes_label.place(x=20, y=100, height=50, width=100)
+
+            hashtag_likes_frame = Frame(like_dislike_frame, bd=5, bg="silver")
+            hashtag_likes_frame.place(x=20, y=140, height=100, width=700)
+
+            hashtag_likes_frame.grid_columnconfigure(0, weight=1)
+            hashtag_likes_frame.grid_rowconfigure(0, weight=1)
+
+            hashtag_text = Text(hashtag_likes_frame, height=10)
+            hashtag_text.grid(row=0, column=0, sticky="ew")
+
+            # Create a scrollbar for the hashtag text
+            hashtag_scrollbar = Scrollbar(hashtag_likes_frame, orient="vertical", command=hashtag_text.yview)
+            hashtag_scrollbar.grid(row=0, column=1, sticky="ns")
+
+            hashtag_text['yscrollcommand'] = hashtag_scrollbar.set
+
+            # Set likes by account
+            account_likes_label = Label(like_dislike_frame, text="Enter account")
+            account_likes_label.place(x=20, y=425, height=50, width=100)
+
+            account_likes_frame = Frame(like_dislike_frame, bd=5, bg="silver")
+            account_likes_frame.place(x=20, y=465, height=100, width=700)
+
+            account_likes_frame.grid_columnconfigure(0, weight=1)
+            account_likes_frame.grid_rowconfigure(0, weight=1)
+
+            account_text = Text(account_likes_frame, height=10)
+            account_text.grid(row=0, column=0, sticky="ew")
+
+            # Create a scrollbar for the account text
+            account_scrollbar = Scrollbar(account_likes_frame, orient="vertical", command=account_text.yview)
+            account_scrollbar.grid(row=0, column=1, sticky="ns")
+
+            account_text['yscrollcommand'] = account_scrollbar.set
+
+            # Set likes by location
+
 
         def follow(event):
 
