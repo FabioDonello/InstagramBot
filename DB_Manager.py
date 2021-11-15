@@ -2,7 +2,9 @@ import sqlite3
 from sqlite3 import Error
 
 
-link = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_1/DB/IgDB.db"
+
+link = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/DB/IgDB.db"
+
 
 
 def create_connection(db_file):
@@ -20,7 +22,6 @@ def create_connection(db_file):
 def select_all_tasks(conn, username_command):
     """
     Query all rows in the tasks table
-    :param password_command: command for password selection
     :param username_command: command for username selection
     :param conn: the Connection object
     :return:
