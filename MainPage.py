@@ -126,52 +126,52 @@ class MainPage:
             account_follower_check_var = IntVar()
             account_media_check_var = IntVar()
             account_activity_check_var = IntVar()
-            def replacement():
-                if replacemant_check_var.get() == 1:
-                    un_follow_after_replacement_check_button["bg"] = "green"
-                if replacemant_check_var.get() == 0:
-                    un_follow_after_replacement_check_button["bg"] = "white"
-            def account_follower():
-                if account_follower_check_var.get() == 1:
-                    un_follow_by_follower_number_check_button["bg"] = "green"
-                if account_follower_check_var.get() == 0:
-                    un_follow_by_follower_number_check_button["bg"] = "white"
-            def account_media():
-                if account_media_check_var.get() == 1:
-                    un_follow_by_media_number_check_button["bg"] = "green"
-                if account_media_check_var.get() == 0:
-                    un_follow_by_media_number_check_button["bg"] = "white"
-            def account_activity():
-                if account_activity_check_var.get() == 1:
-                    un_follow_by_activity_check_button["bg"] = "green"
-                if account_activity_check_var.get() == 0:
-                    un_follow_by_activity_check_button["bg"] = "white"
+
+            def tick_manage1():
+                un_follow_by_media_number_check_button.deselect()
+                un_follow_by_activity_check_button.deselect()
+                un_follow_by_follower_number_check_button.deselect()
+
+            def tick_manage2():
+                un_follow_after_replacement_check_button.deselect()
+                un_follow_by_media_number_check_button.deselect()
+                un_follow_by_activity_check_button.deselect()
+
+            def tick_manage3():
+                un_follow_after_replacement_check_button.deselect()
+                un_follow_by_follower_number_check_button.deselect()
+                un_follow_by_activity_check_button.deselect()
+
+            def tick_manage4():
+                un_follow_after_replacement_check_button.deselect()
+                un_follow_by_follower_number_check_button.deselect()
+                un_follow_by_media_number_check_button.deselect()
 
             un_follow_after_replacement_check_button = Checkbutton(unfollow_frame, text="Unfollow by replacemant:",
                                                                    bg="white",
                                                                    variable=replacemant_check_var,
-                                                                   command=replacement)
+                                                                   command=tick_manage1)
             un_follow_after_replacement_check_button.place(x=25, y=125)
 
             un_follow_by_follower_number_check_button = Checkbutton(unfollow_frame, text="Unfollow by account"
                                                                                          " follower:",
                                                                    bg="white",
                                                                    variable=account_follower_check_var,
-                                                                   command=account_follower)
+                                                                   command=tick_manage2)
             un_follow_by_follower_number_check_button.place(x=25, y=175)
 
             un_follow_by_media_number_check_button = Checkbutton(unfollow_frame, text="Unfollow by account"
                                                                                          " media:",
                                                                     bg="white",
                                                                     variable=account_media_check_var,
-                                                                    command=account_media)
+                                                                    command=tick_manage3)
             un_follow_by_media_number_check_button.place(x=575, y=125)
 
             un_follow_by_activity_check_button = Checkbutton(unfollow_frame, text="Unfollow by account"
                                                                                       " activity:",
                                                                  bg="white",
                                                                  variable=account_activity_check_var,
-                                                                 command=account_activity)
+                                                                 command=tick_manage4)
             un_follow_by_activity_check_button.place(x=575, y=175)
 
             # ------------------------------------------------------------------------------------------------
@@ -250,11 +250,6 @@ class MainPage:
             activity_time_option_menu = OptionMenu(unfollow_frame, activity_time_var, *activity_time)
             activity_time_option_menu.place(x=780, y=175)
 
-
-
-
-
-
             # White list
             un_follow_white_list_frame = Frame(unfollow_frame, bd=5, bg="grey")
             un_follow_white_list_frame.place(x=100, y=275, height=100, width=700)
@@ -273,6 +268,35 @@ class MainPage:
 
             #  communicate back to the scrollbar
             white_list_text['yscrollcommand'] = white_list_scrollbar.set
+
+            def start_unfollow_bot(event):
+                replacemant_value = replacemant_time_var.get()
+                follow_number_value = follow_number_var.get()
+                media_number_value = media_number_var.get()
+                activity_time_value = activity_time_var.get()
+                white_list_value = white_list_text
+                a1 = [0, replacemant_value]
+                a2 = [0, follow_number_value]
+                a3 = [0, media_number_value]
+                a4 = [0, activity_time_value]
+                if un_follow_after_replacement_check_button == 1:
+                    a1[0] = 1
+                if un_follow_by_follower_number_check_button == 1:
+                    a2[0] = 1
+                if un_follow_by_media_number_check_button == 1:
+                    a3[0] = 1
+                if un_follow_by_activity_check_button == 1:
+                    a4[0] = 1
+                tuple_value = (a1, a2, a3, a4)
+                t_unfollow = Thread(target=ig_unfollow, args=(tuple_value, white_list_value))
+                t_unfollow.start()
+
+
+
+
+            start_un_follower_bot_button.bind("<Button-1>", start_unfollow_bot)
+
+
 
 
         def direct(event):
