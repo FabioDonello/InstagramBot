@@ -1,17 +1,19 @@
-from tkinter import *
-
 import os
 
 if os.path.isfile("path/to/config/file.json"):
     os.remove("path/to/config/file.json")
 
+from tkinter import *
+from tkcalendar import *
+from tkinter import filedialog
+from threading import Thread
+from BOT_Manager import *
+from datetime import date
+from tkinter import ttk
 from instabot import Bot
 import glob
 import argparse
 import sys
-from tkinter import ttk
-from threading import Thread
-from BOT_Manager import *
 import queue
 import requests
 from bs4 import BeautifulSoup
@@ -86,6 +88,97 @@ class MainPage:
 
             auto_publish_frame.place(x=300, y=0, height=600, width=900)
 
+            # Set title
+            auto_publish_label = Label(auto_publish_frame, text="Auto-publish", bg="steelblue", fg="white")
+            auto_publish_label.place(x=0, y=0, height=50, width=200)
+
+            # Set auto-publish
+            """photo_upload_label = Label(auto_publish_frame, text="Upload photo", bg="steelblue", fg="white")
+            photo_upload_label.place(x=10, y=75, width=900)"""
+
+            def choose_file():
+                auto_publish_frame.filename = filedialog.askopenfilename(initialdir="/desktop", title="Select a file",
+                                                                         filetypes=(("jpg files", "*.jpg"),
+                                                                                    ("jpeg files", "*.jpeg"),
+                                                                                    ("gif files", "*.gif"),
+                                                                                    ("png files", "*.png")))
+                file_label = Label(auto_publish_frame, text=auto_publish_frame.filename)
+
+            choose_file_button = Button(auto_publish_frame, text="Choose file", command=choose_file, bg="whitesmoke")
+            choose_file_button.place(x=20, y=100, height=50, width=100)
+
+            # Set the publication date
+            cal = Calendar(auto_publish_frame, setmode='day', date_pattern='dd-mm-yyyy', mindate=date.today())
+            cal.place(x=350, y=100, height=150, width=300)
+
+            # Select datetime button
+            def select_date():
+                my_date = cal.get_date()
+                selected_date = Label(auto_publish_frame, text=my_date)
+                selected_date.place(x=500, y=300, height=50, width=100)
+
+            select_date_button = Button(auto_publish_frame, text="Select date", command=select_date)
+            select_date_button.place(x=300, y=300, height=50, width=100)
+
+            hours = list(range(1, 25))
+            minutes = list(range(00, 60))
+
+            var_hours = StringVar(auto_publish_frame)
+            var_hours.set(hours[0])
+
+            var_minutes = StringVar(auto_publish_frame)
+            var_minutes.set(minutes[0])
+
+            hours_menu = OptionMenu(auto_publish_frame, var_hours, *hours)
+            hours_menu.place(x=400, y=360, width=50)
+
+            minutes_menu = OptionMenu(auto_publish_frame, var_minutes, *minutes)
+            minutes_menu.place(x=450, y=360, width=50)
+
+            def select_time():
+                selected_time = Label(auto_publish_frame, text=" " + var_hours.get() + " : " + var_minutes.get())
+                selected_time.place(x=500, y=350, height=50, width=100)
+
+            select_time_button = Button(auto_publish_frame, text="Select time", command=select_time)
+            select_time_button.place(x=300, y=350, height=50, width=100)
+
+            # Set check button for upload photo/video/story
+            upload_photo_check = IntVar()
+            upload_video_check = IntVar()
+            upload_story_check = IntVar()
+
+            def upload_photo_button():
+                if upload_photo_check.get() == 1:
+                    upload_photo_check_button["bg"] = "green"
+                if upload_photo_check.get() == 0:
+                    upload_photo_check_button["bg"] = "steelblue"
+
+            def upload_video_button():
+                if upload_video_check.get() == 1:
+                    upload_video_check_button["bg"] = "green"
+                if upload_video_check.get() == 0:
+                    upload_video_check_button["bg"] = "steelblue"
+
+            def upload_story_button():
+                if upload_story_check.get() == 1:
+                    upload_story_check_button["bg"] = "green"
+                if upload_story_check.get() == 0:
+                    upload_story_check_button["bg"] = "steelblue"
+
+            upload_photo_check_button = Checkbutton(auto_publish_frame, text="Upload photo", bg="steelblue", fg="white",
+                                                    variable=upload_photo_check, command=upload_photo_button)
+            upload_photo_check_button.place(x=50, y=450, height=50, width=150)
+
+            upload_video_check_button = Checkbutton(auto_publish_frame, text="Upload video", bg="steelblue", fg="white",
+                                                    variable=upload_video_check, command=upload_video_button)
+            upload_video_check_button.place(x=300, y=450, height=50, width=150)
+
+            upload_story_check_button = Checkbutton(auto_publish_frame, text="Upload story", bg="steelblue", fg="white",
+                                                    variable=upload_story_check, command=upload_story_button)
+            upload_story_check_button.place(x=550, y=450, height=50, width=150)
+
+            # Create a scrollbar for the auto-publish frame
+
         def unfollow(event):
             dashboard_frame.place(x=300, y=0, height=0, width=0)
 
@@ -139,7 +232,7 @@ class MainPage:
             save_likes_options_button.place(x=200, y=0, height=50, width=100)
 
             hashtag = IntVar()
-            location = IntVar()
+            location_check = IntVar()
             account = IntVar()
 
             def hashtag_button():
@@ -149,9 +242,9 @@ class MainPage:
                     hashtag_check_button["bg"] = "steelblue"
 
             def location_button():
-                if location.get() == 1:
+                if location_check.get() == 1:
                     location_check_button["bg"] = "green"
-                if location.get() == 0:
+                if location_check.get() == 0:
                     location_check_button["bg"] = "steelblue"
 
             def account_button():
@@ -165,7 +258,7 @@ class MainPage:
             hashtag_check_button.place(x=10, y=75, width=900)
 
             location_check_button = Checkbutton(like_dislike_frame, text="Likes by location", bg="steelblue",
-                                                variable=location, command=location_button)
+                                                variable=location_check, command=location_button)
             location_check_button.place(x=10, y=275, width=900)
 
             account_check_button = Checkbutton(like_dislike_frame, text="Likes by account", bg="steelblue",
@@ -211,6 +304,22 @@ class MainPage:
             account_text['yscrollcommand'] = account_scrollbar.set
 
             # Set likes by location
+            location_likes_label = Label(like_dislike_frame, text="Enter the position you prefer")
+            location_likes_label.place(x=20, y=300, height=50, width=200)
+
+            location_likes_frame = Frame(like_dislike_frame, bd=5, bg="silver")
+            location_likes_frame.place(x=20, y=345, height=50, width=700)
+
+            location_likes_frame.grid_columnconfigure(0, weight=1)
+            location_likes_frame.grid_rowconfigure(0, weight=1)
+
+            location_text = Text(location_likes_frame, height=10)
+            location_text.grid(row=0, column=0, sticky="ew")
+
+            location_scrollbar = Scrollbar(location_likes_frame, orient="vertical", command=location_text.yview)
+            location_scrollbar.grid(row=0, column=1, sticky="ns")
+
+            location_text['yscrollcommand'] = location_scrollbar.set
 
         def follow(event):
 
@@ -500,121 +609,130 @@ class MainPage:
             start_follower_bot_button.bind("<Button-1>", start_follow_bot)
 
         def dashboard(event):
+            dashboard_frame.place(x=300, y=0, height=600, width=900)
 
-            f = open("Credenziali", "r")
-            credential = f.read()
-            f.close()
+            follow_frame.place(x=300, y=0, height=0, width=0)
 
-            def getProxies():
-                r = requests.get('https://free-proxy-list.net/')
-                soup = BeautifulSoup(r.content, 'html.parser')
-                table = soup.find('tbody')
-                proxies = []
-                for row in table:
-                    if row.find_all('td')[4].text == 'elite proxy':
-                        proxy = ':'.join([row.find_all('td')[0].text, row.find_all('td')[1].text])
-                        proxies.append(proxy)
-                    else:
-                        pass
-                return proxies
+            like_dislike_frame.place(x=300, y=0, height=0, width=0)
 
-            if credential != "":
+            direct_frame.place(x=300, y=0, height=0, width=0)
 
-                dashboard_frame.place(x=300, y=0, height=600, width=900)
+            statistics_frame.place(x=300, y=0, height=0, width=0)
 
-                follow_frame.place(x=300, y=0, height=0, width=0)
+        '''f = open("Credenziali", "r")
+        credential = f.read()
+        f.close()
 
-                like_dislike_frame.place(x=300, y=0, height=0, width=0)
+        def getProxies():
+            r = requests.get('https://free-proxy-list.net/')
+            soup = BeautifulSoup(r.content, 'html.parser')
+            table = soup.find('tbody')
+            proxies = []
+            for row in table:
+                if row.find_all('td')[4].text == 'elite proxy':
+                    proxy = ':'.join([row.find_all('td')[0].text, row.find_all('td')[1].text])
+                    proxies.append(proxy)
+                else:
+                    pass
+            return proxies
 
-                direct_frame.place(x=300, y=0, height=0, width=0)
+        if credential != "":
 
-                statistics_frame.place(x=300, y=0, height=0, width=0)
+            dashboard_frame.place(x=300, y=0, height=600, width=900)
 
-                auto_publish_frame.place(x=300, y=0, height=0, width=0)
+            follow_frame.place(x=300, y=0, height=0, width=0)
 
-                proxy_list0 = getProxies()
-                var0 = 0
-                t0_login = Thread(target=ig_login, args=(proxy_list0, "", "", var0))
-                t0_login.start()
+            like_dislike_frame.place(x=300, y=0, height=0, width=0)
 
-            else:
-                dashboard_frame.place(x=300, y=0, height=0, width=0)
-                # Create instagram login frame
-                instagram_login_frame = Frame(self.root, bd=5, bg="white")
-                instagram_login_frame.place(x=300, y=0, height=600, width=900)
+            direct_frame.place(x=300, y=0, height=0, width=0)
 
-                # Set title of login frame
-                instagram_login_frame_title = Label(instagram_login_frame, text="Prima di accedere alle funzionalità "
-                                                                                "di giudoinstabot accedi al profilo"
-                                                                                " instagram che vuoi gestire: ",
-                                                    bg="white")
-                instagram_login_frame_title.place(x=0, y=30)
+            statistics_frame.place(x=300, y=0, height=0, width=0)
 
-                # Insertion box Email & password
+            auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
-                instagram_username_label = Label(instagram_login_frame, text="Username", bg="white")
-                instagram_username_label.place(x=0, y=85, height=50, width=150)
-                instagram_password_label = Label(instagram_login_frame, text="Password", bg="white")
-                instagram_password_label.place(x=0, y=136, height=50, width=150)
+            proxy_list0 = getProxies()
+            var0 = 0
+            t0_login = Thread(target=ig_login, args=(proxy_list0, "", "", var0))
+            t0_login.start()
 
-                instagram_username_entry = Entry(instagram_login_frame, bg="yellow")
-                instagram_username_entry.place(x=175, y=85, height=50, width=240)
-                instagram_password_entry = Entry(instagram_login_frame, bg="yellow", show="*")
-                instagram_password_entry.place(x=175, y=135, height=50, width=240)
+        else:
+            dashboard_frame.place(x=300, y=0, height=0, width=0)
+            # Create instagram login frame
+            instagram_login_frame = Frame(self.root, bd=5, bg="white")
+            instagram_login_frame.place(x=300, y=0, height=600, width=900)
 
-                check_var1 = IntVar()
+            # Set title of login frame
+            instagram_login_frame_title = Label(instagram_login_frame, text="Prima di accedere alle funzionalità "
+                                                                            "di giudoinstabot accedi al profilo"
+                                                                            " instagram che vuoi gestire: ",
+                                                bg="white")
+            instagram_login_frame_title.place(x=0, y=30)
 
-                def show_password():
-                    if check_var1.get() == 1:
-                        instagram_password_entry["show"] = ""
-                    if check_var1.get() == 0:
-                        instagram_password_entry["show"] = "*"
+            # Insertion box Email & password
 
-                instagram_password_check_box = Checkbutton(instagram_login_frame, text="show password",
-                                                           variable=check_var1, command=show_password)
+            instagram_username_label = Label(instagram_login_frame, text="Username", bg="white")
+            instagram_username_label.place(x=0, y=85, height=50, width=150)
+            instagram_password_label = Label(instagram_login_frame, text="Password", bg="white")
+            instagram_password_label.place(x=0, y=136, height=50, width=150)
 
-                instagram_access_button = Button(instagram_login_frame, text="Login", command="set")
-                instagram_access_button.place(x=0, y=195, height=50, width=150)
+            instagram_username_entry = Entry(instagram_login_frame, bg="yellow")
+            instagram_username_entry.place(x=175, y=85, height=50, width=240)
+            instagram_password_entry = Entry(instagram_login_frame, bg="yellow", show="*")
+            instagram_password_entry.place(x=175, y=135, height=50, width=240)
 
-                # Access management
+            check_var1 = IntVar()
 
-                def access_try(event):
-                    username_text = instagram_username_entry.get()
-                    password_text = instagram_password_entry.get()
-                    print(username_text)
-                    print(password_text)
-                    if username_text and password_text:
-                        proxy_list1 = getProxies()
-                        instagram_access_button.destroy()
-                        instagram_info_label = Label(instagram_login_frame, text="Login in process: ", bg="white")
-                        instagram_info_label.place(x=0, y=195, height=50, width=150)
-                        progress = ttk.Progressbar(instagram_login_frame, orient=HORIZONTAL,
-                                                   length=30, mode='determinate', )
-                        progress.place(x=175, y=215)
-                        progress['value'] = 0
+            def show_password():
+                if check_var1.get() == 1:
+                    instagram_password_entry["show"] = ""
+                if check_var1.get() == 0:
+                    instagram_password_entry["show"] = "*"
 
-                        def progress_control():
-                            for a in range(30):
-                                progress['value'] = a
-                                time.sleep(1)
-                            check()
+            instagram_password_check_box = Checkbutton(instagram_login_frame, text="show password",
+                                                       variable=check_var1, command=show_password)
 
-                        t_pb = Thread(target=progress_control)
-                        t_pb.start()
-                        var1 = 1
+            instagram_access_button = Button(instagram_login_frame, text="Login", command="set")
+            instagram_access_button.place(x=0, y=195, height=50, width=150)
 
-                        t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
-                        t1_login.start()
+            # Access management
 
-                        def check():
-                            """progress.destroy()
-                            time.sleep(3)
-                            file_log = open(file_id + "", "r")
-                            file_text = file_log.read()
-                            print(file_text)
-                            """
+            def access_try(event):
+                username_text = instagram_username_entry.get()
+                password_text = instagram_password_entry.get()
+                print(username_text)
+                print(password_text)
+                if username_text and password_text:
+                    proxy_list1 = getProxies()
+                    instagram_access_button.destroy()
+                    instagram_info_label = Label(instagram_login_frame, text="Login in process: ", bg="white")
+                    instagram_info_label.place(x=0, y=195, height=50, width=150)
+                    progress = ttk.Progressbar(instagram_login_frame, orient=HORIZONTAL,
+                                               length=30, mode='determinate', )
+                    progress.place(x=175, y=215)
+                    progress['value'] = 0
 
-                instagram_access_button.bind("<Button-1>", access_try)
+                    def progress_control():
+                        for a in range(30):
+                            progress['value'] = a
+                            time.sleep(1)
+                        check()
+
+                    t_pb = Thread(target=progress_control)
+                    t_pb.start()
+                    var1 = 1
+
+                    t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
+                    t1_login.start()
+
+                    def check():
+                        """progress.destroy()
+                        time.sleep(3)
+                        file_log = open(file_id + "", "r")
+                        file_text = file_log.read()
+                        print(file_text)
+                        """
+
+            instagram_access_button.bind("<Button-1>", access_try)'''
 
         auto_publish_button.bind("<Button-1>", auto_publish)
         unfollow_button.bind("<Button-1>", unfollow)
