@@ -33,9 +33,6 @@ def ig_login(proxy_list, username, password, var):
         print("Login riuscito")
 
 
-
-
-
 def ig_follow_hashtag(hashtags):
     while x == 0:
         print("aspetto il login")
@@ -49,8 +46,10 @@ def ig_follow_hashtag(hashtags):
             bot.follow(users)
             print(time.sleep(300))
 
+
 def ig_follow_location(location):
     print(location)
+
 
 def ig_follow_account(accounts):
     while x == 0:
@@ -65,6 +64,7 @@ def ig_follow_account(accounts):
             bot.follow(user)
             print(time.sleep(300))
 
+
 def ig_unfollow(list_value, white_list):
     f_name = "followed.txt"
     def file_len(f_name):
@@ -73,11 +73,13 @@ def ig_unfollow(list_value, white_list):
                 pass
         return i + 1
     followed_file_len = file_len(f_name)
+    print(followed_file_len)
     f = open("followed.txt", "r")
     with open(f_name) as followed_file:
         for y in range(followed_file_len):
             user_id = followed_file.readline()
             user_info = bot.get_user_info(user_id)
+            print(user_info)
             time.sleep(3)
             if list_value[0][0] == 1:
                 if user_info['giorno in cui mi ha iniziato a seguire'] + list_value[0][1] > "data odierna":
@@ -99,6 +101,40 @@ def ig_unfollow(list_value, white_list):
                     if user_info['username'] not in white_list:
                         bot.unfollow(user_id)
                         time.sleep(3)
+
+
+def ig_direct(list_value, message):
+    if list_value[0][0]==1:
+        f_name = "followed.txt"
+        def file_len(f_name):
+            with open(f_name) as followed_file:
+                for i, l in enumerate(followed_file):
+                    pass
+            return i + 1
+
+        followed_file_len = file_len(f_name)
+        print(followed_file_len)
+        with open(f_name) as followed_file:
+            for y in range(followed_file_len):
+                user_id = followed_file.readline()
+                bot.send_message(user_id,message)
+                time.sleep(3)
+
+    if list_value[1][0]==1:
+        f = open("Credenziali", "r")
+        username = f.readline()
+        f.close()
+        following = bot.get_user_following(username)
+        following_id = bot.convert_to_user_id(following)
+        for user in following_id:
+            bot.send_message(user,message)
+
+    if list_value[2][0]==1:
+        print("ciao")
+
+    if list_value[3][0]==1:
+        print("ciao")
+
 
 
 

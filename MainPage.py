@@ -296,9 +296,6 @@ class MainPage:
 
             start_un_follower_bot_button.bind("<Button-1>", start_unfollow_bot)
 
-
-
-
         def direct(event):
             dashboard_frame.place(x=300, y=0, height=0, width=0)
 
@@ -311,6 +308,118 @@ class MainPage:
             unfollow_frame.place(x=300, y=0, height=0, width=0)
 
             auto_publish_frame.place(x=300, y=0, height=0, width=0)
+
+            # Set titles
+
+            direct_title_label = Label(direct_frame, text="Direct", bg="grey", fg="white")
+            direct_title_label.place(x=0, y=0, height=50, width=100)
+
+            # Start direct bot
+
+            start_direct_bot_button = Button(direct_frame, text="Start", command="set")
+            start_direct_bot_button.place(x=100, y=0, height=50, width=100)
+
+            # Save direct options button
+
+            save_direct_option_button = Button(direct_frame, text="Save", command="set")
+            save_direct_option_button.place(x=200, y=0, height=50, width=100)
+
+            # Options label
+            direct_target_label = Label(direct_frame, text="Direct target:", bg="grey", fg="white")
+            direct_target_label.place(x=0, y=75, width=900)
+            direct_message_label = Label(direct_frame, text="Direct message:", bg="grey", fg="white")
+            direct_message_label.place(x=0, y=225, width=900)
+
+            follower_check_var = IntVar()
+            following_check_var = IntVar()
+            account_follower_check_var = IntVar()
+            account_hashtag_check_var = IntVar()
+
+            def tick_manage1():
+                direct_following_check_button.deselect()
+                direct_account_follower_check_button.deselect()
+                direct_account_hashtag_check_button.deselect()
+
+            def tick_manage2():
+                direct_follower_check_button.deselect()
+                direct_account_follower_check_button.deselect()
+                direct_account_hashtag_check_button.deselect()
+
+            def tick_manage3():
+                direct_follower_check_button.deselect()
+                direct_following_check_button.deselect()
+                direct_account_hashtag_check_button.deselect()
+
+            def tick_manage4():
+                direct_follower_check_button.deselect()
+                direct_following_check_button.deselect()
+                direct_account_follower_check_button.deselect()
+
+            direct_follower_check_button = Checkbutton(direct_frame, text="Direct your follower",
+                                                                   bg="white",
+                                                                   variable=follower_check_var,
+                                                                   command=tick_manage1)
+            direct_follower_check_button.place(x=25, y=125)
+
+            direct_following_check_button = Checkbutton(direct_frame, text="Direct your following",
+                                                                    bg="white",
+                                                                    variable=following_check_var,
+                                                                    command=tick_manage2)
+            direct_following_check_button.place(x=575, y=125)
+
+            direct_account_follower_check_button = Checkbutton(direct_frame, text="Direct an account follower",
+                                                                 bg="white",
+                                                                 variable=account_follower_check_var,
+                                                                 command=tick_manage3)
+            direct_account_follower_check_button.place(x=25, y=175)
+
+            direct_account_hashtag_check_button = Checkbutton(direct_frame, text="Direct an account hashtag",
+                                                             bg="white",
+                                                             variable=account_hashtag_check_var,
+                                                             command=tick_manage4)
+            direct_account_hashtag_check_button.place(x=575, y=175)
+
+            # Message box
+            direct_message_frame = Frame(direct_frame, bd=5, bg="grey")
+            direct_message_frame.place(x=100, y=275, height=100, width=700)
+
+            # apply the grid layout
+            direct_message_frame.grid_columnconfigure(0, weight=1)
+            direct_message_frame.grid_rowconfigure(0, weight=1)
+
+            # create the text widget
+            message_text = Text(direct_message_frame, height=10)
+            message_text.grid(row=0, column=0, sticky='ew')
+
+            # create a scrollbar widget and set its command to the text widget
+            message_scrollbar = Scrollbar(direct_message_frame, orient='vertical',
+                                             command=message_text.yview)
+            message_scrollbar.grid(row=0, column=1, sticky='ns')
+
+            #  communicate back to the scrollbar
+            message_text['yscrollcommand'] = message_scrollbar.set
+
+            def start_unfollow_bot(event):
+                account_follower_value = "ciao"
+                account_hashtag_value = "ciao"
+                direct_message_value = message_text
+                a1 = [0]
+                a2 = [0]
+                a3 = [0, account_follower_value]
+                a4 = [0, account_hashtag_value]
+                if direct_follower_check_button == 1:
+                    a1[0] = 1
+                if direct_following_check_button == 1:
+                    a2[0] = 1
+                if direct_account_follower_check_button == 1:
+                    a3[0] = 1
+                if direct_account_hashtag_check_button == 1:
+                    a4[0] = 1
+                tuple_value = (a1, a2, a3, a4)
+                t_unfollow = Thread(target=ig_unfollow, args=(tuple_value, direct_message_value))
+                t_unfollow.start()
+
+            start_direct_bot_button.bind("<Button-1>", start_unfollow_bot)
 
         def like_dislike(event):
 
