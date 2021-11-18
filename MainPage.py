@@ -5,19 +5,15 @@ import os
 if os.path.isfile("path/to/config/file.json"):
     os.remove("path/to/config/file.json")
 
-from instabot import Bot
-import glob
-import argparse
-import sys
 from tkinter import ttk
 from threading import Thread
 from BOT_Manager import *
-import queue
 import requests
 from bs4 import BeautifulSoup
-from os import listdir
-from os.path import isfile, join
 from tkinter import messagebox
+import re
+
+is_login = 0
 
 class MainPage:
 
@@ -155,23 +151,23 @@ class MainPage:
 
             un_follow_by_follower_number_check_button = Checkbutton(unfollow_frame, text="Unfollow by account"
                                                                                          " follower:",
-                                                                   bg="white",
-                                                                   variable=account_follower_check_var,
-                                                                   command=tick_manage2)
+                                                                    bg="white",
+                                                                    variable=account_follower_check_var,
+                                                                    command=tick_manage2)
             un_follow_by_follower_number_check_button.place(x=25, y=175)
 
             un_follow_by_media_number_check_button = Checkbutton(unfollow_frame, text="Unfollow by account"
-                                                                                         " media:",
-                                                                    bg="white",
-                                                                    variable=account_media_check_var,
-                                                                    command=tick_manage3)
+                                                                                      " media:",
+                                                                 bg="white",
+                                                                 variable=account_media_check_var,
+                                                                 command=tick_manage3)
             un_follow_by_media_number_check_button.place(x=575, y=125)
 
             un_follow_by_activity_check_button = Checkbutton(unfollow_frame, text="Unfollow by account"
-                                                                                      " activity:",
-                                                                 bg="white",
-                                                                 variable=account_activity_check_var,
-                                                                 command=tick_manage4)
+                                                                                  " activity:",
+                                                             bg="white",
+                                                             variable=account_activity_check_var,
+                                                             command=tick_manage4)
             un_follow_by_activity_check_button.place(x=575, y=175)
 
             # ------------------------------------------------------------------------------------------------
@@ -180,11 +176,11 @@ class MainPage:
                 "1 day",
                 "3 day",
                 "5 day",
-                "1 week",
-                "2 week",
-                "1 month",
-                "2 month",
-                "3 month",
+                "10 day",
+                "20 day",
+                "30 day",
+                "70 day",
+                "120 day",
             ]  # etc
 
             replacemant_time_var = StringVar(unfollow_frame)
@@ -196,14 +192,14 @@ class MainPage:
             # ------------------------------------------------------------------------------------------------
             follow_number = [
                 "",
-                "<50 followers",
-                "<100 followers",
-                "<150 followers",
-                "<200 followers",
-                "<400 followers",
-                "<800 followers",
-                "<1200 followers",
-                "<2000 followers",
+                "< 50 followers",
+                "< 100 followers",
+                "< 150 followers",
+                "< 200 followers",
+                "< 400 followers",
+                "< 800 followers",
+                "< 1200 followers",
+                "< 2000 followers",
             ]  # etc
 
             follow_number_var = StringVar(unfollow_frame)
@@ -215,14 +211,14 @@ class MainPage:
             # ------------------------------------------------------------------------------------------------
             media_number = [
                 "",
-                "<10 media",
-                "<20 media",
-                "<30 media",
-                "<40 media",
-                "<50 media",
-                "<60 media",
-                "<70 media",
-                "<80 media",
+                "< 10 media",
+                "< 20 media",
+                "< 30 media",
+                "< 40 media",
+                "< 50 media",
+                "< 60 media",
+                "< 70 media",
+                "< 80 media",
             ]  # etc
 
             media_number_var = StringVar(unfollow_frame)
@@ -234,14 +230,14 @@ class MainPage:
             # ------------------------------------------------------------------------------------------------
             activity_time = [
                 "",
-                "Last 1 day",
-                "Last 3 day",
-                "Last 5 day",
-                "Last 1 week",
-                "Last 2 week",
-                "Last 1 month",
-                "Last 2 month",
-                "Last 3 month",
+                "1 day",
+                "3 day",
+                "5 day",
+                "10 day",
+                "20 day",
+                "30 day",
+                "70 day",
+                "120 day",
             ]  # etc
 
             activity_time_var = StringVar(unfollow_frame)
@@ -263,37 +259,35 @@ class MainPage:
             white_list_text.grid(row=0, column=0, sticky='ew')
 
             # create a scrollbar widget and set its command to the text widget
-            white_list_scrollbar = Scrollbar(un_follow_white_list_frame, orient='vertical', command=white_list_text.yview)
+            white_list_scrollbar = Scrollbar(un_follow_white_list_frame, orient='vertical',
+                                             command=white_list_text.yview)
             white_list_scrollbar.grid(row=0, column=1, sticky='ns')
 
             #  communicate back to the scrollbar
             white_list_text['yscrollcommand'] = white_list_scrollbar.set
 
             def start_unfollow_bot(event):
-                replacemant_value = replacemant_time_var.get()
-                follow_number_value = follow_number_var.get()
-                media_number_value = media_number_var.get()
-                activity_time_value = activity_time_var.get()
+                replacemant_value = re.findall("\d+", replacemant_time_var.get())
+                follow_number_value = re.findall("\d+", follow_number_var.get())
+                media_number_value = re.findall("\d+", media_number_var.get())
+                activity_time_value = re.findall("\d+", activity_time_var.get())
                 white_list_value = white_list_text
                 a1 = [0, replacemant_value]
                 a2 = [0, follow_number_value]
                 a3 = [0, media_number_value]
                 a4 = [0, activity_time_value]
-                if un_follow_after_replacement_check_button == 1:
+                if replacemant_check_var.get() == 1:
                     a1[0] = 1
-                if un_follow_by_follower_number_check_button == 1:
+                if account_follower_check_var.get() == 1:
                     a2[0] = 1
-                if un_follow_by_media_number_check_button == 1:
+                if account_media_check_var.get() == 1:
                     a3[0] = 1
-                if un_follow_by_activity_check_button == 1:
+                if account_media_check_var.get() == 1:
                     a4[0] = 1
                 tuple_value = (a1, a2, a3, a4)
+                print(tuple_value)
                 t_unfollow = Thread(target=ig_unfollow, args=(tuple_value, white_list_value))
                 t_unfollow.start()
-
-
-
-
             start_un_follower_bot_button.bind("<Button-1>", start_unfollow_bot)
 
         def direct(event):
@@ -328,7 +322,7 @@ class MainPage:
             direct_target_label = Label(direct_frame, text="Direct target:", bg="grey", fg="white")
             direct_target_label.place(x=0, y=75, width=900)
             direct_message_label = Label(direct_frame, text="Direct message:", bg="grey", fg="white")
-            direct_message_label.place(x=0, y=225, width=900)
+            direct_message_label.place(x=0, y=325, width=900)
 
             follower_check_var = IntVar()
             following_check_var = IntVar()
@@ -356,32 +350,75 @@ class MainPage:
                 direct_account_follower_check_button.deselect()
 
             direct_follower_check_button = Checkbutton(direct_frame, text="Direct your follower",
-                                                                   bg="white",
-                                                                   variable=follower_check_var,
-                                                                   command=tick_manage1)
+                                                       bg="white",
+                                                       variable=follower_check_var,
+                                                       command=tick_manage1)
             direct_follower_check_button.place(x=25, y=125)
 
             direct_following_check_button = Checkbutton(direct_frame, text="Direct your following",
-                                                                    bg="white",
-                                                                    variable=following_check_var,
-                                                                    command=tick_manage2)
+                                                        bg="white",
+                                                        variable=following_check_var,
+                                                        command=tick_manage2)
             direct_following_check_button.place(x=575, y=125)
 
-            direct_account_follower_check_button = Checkbutton(direct_frame, text="Direct an account follower",
-                                                                 bg="white",
-                                                                 variable=account_follower_check_var,
-                                                                 command=tick_manage3)
+            direct_account_follower_check_button = Checkbutton(direct_frame, text="Direct an account follower:",
+                                                               bg="white",
+                                                               variable=account_follower_check_var,
+                                                               command=tick_manage3)
             direct_account_follower_check_button.place(x=25, y=175)
 
-            direct_account_hashtag_check_button = Checkbutton(direct_frame, text="Direct an account hashtag",
-                                                             bg="white",
-                                                             variable=account_hashtag_check_var,
-                                                             command=tick_manage4)
+            direct_account_hashtag_check_button = Checkbutton(direct_frame, text="Direct an account hashtag:",
+                                                              bg="white",
+                                                              variable=account_hashtag_check_var,
+                                                              command=tick_manage4)
             direct_account_hashtag_check_button.place(x=575, y=175)
 
+            # ---------------------------------------------------------------------------------------------------------
+            # Account text box
+            direct_account_frame = Frame(direct_frame, bd=5, bg="grey")
+            direct_account_frame.place(x=25, y=200, height=100, width=250)
+
+            # apply the grid layout
+            direct_account_frame.grid_columnconfigure(0, weight=1)
+            direct_account_frame.grid_rowconfigure(0, weight=1)
+
+            # create the text widget
+            account_text = Text(direct_account_frame, height=10)
+            account_text.grid(row=0, column=0, sticky='ew')
+
+            # create a scrollbar widget and set its command to the text widget
+            direct_account_scrollbar = Scrollbar(direct_account_frame, orient='vertical',
+                                                 command=account_text.yview)
+            direct_account_scrollbar.grid(row=0, column=1, sticky='ns')
+
+            #  communicate back to the scrollbar
+            account_text['yscrollcommand'] = direct_account_scrollbar.set
+
+            # ---------------------------------------------------------------------------------------------------------
+            # Account text box
+            direct_hashtag_frame = Frame(direct_frame, bd=5, bg="grey")
+            direct_hashtag_frame.place(x=575, y=200, height=100, width=250)
+
+            # apply the grid layout
+            direct_hashtag_frame.grid_columnconfigure(0, weight=1)
+            direct_hashtag_frame.grid_rowconfigure(0, weight=1)
+
+            # create the text widget
+            hashtag_text = Text(direct_hashtag_frame, height=10)
+            hashtag_text.grid(row=0, column=0, sticky='ew')
+
+            # create a scrollbar widget and set its command to the text widget
+            direct_hashtag_scrollbar = Scrollbar(direct_hashtag_frame, orient='vertical',
+                                                 command=account_text.yview)
+            direct_hashtag_scrollbar.grid(row=0, column=1, sticky='ns')
+
+            #  communicate back to the scrollbar
+            hashtag_text['yscrollcommand'] = direct_hashtag_scrollbar.set
+
+            # ---------------------------------------------------------------------------------------------------------
             # Message box
             direct_message_frame = Frame(direct_frame, bd=5, bg="grey")
-            direct_message_frame.place(x=100, y=275, height=100, width=700)
+            direct_message_frame.place(x=100, y=375, height=100, width=700)
 
             # apply the grid layout
             direct_message_frame.grid_columnconfigure(0, weight=1)
@@ -393,33 +430,36 @@ class MainPage:
 
             # create a scrollbar widget and set its command to the text widget
             message_scrollbar = Scrollbar(direct_message_frame, orient='vertical',
-                                             command=message_text.yview)
+                                          command=message_text.yview)
             message_scrollbar.grid(row=0, column=1, sticky='ns')
 
             #  communicate back to the scrollbar
             message_text['yscrollcommand'] = message_scrollbar.set
 
-            def start_unfollow_bot(event):
-                account_follower_value = "ciao"
-                account_hashtag_value = "ciao"
+            def start_direct_bot(event):
+                account_follower_value = account_text.get(1.0, "end-1c")
+                account_follower_value = account_follower_value.split(' ')
+                account_hashtag_value = hashtag_text.get(1.0, "end-1c")
+                account_hashtag_value = account_hashtag_value.split(' ')
                 direct_message_value = message_text
                 a1 = [0]
                 a2 = [0]
                 a3 = [0, account_follower_value]
                 a4 = [0, account_hashtag_value]
-                if direct_follower_check_button == 1:
+                if follower_check_var.get() == 1:
                     a1[0] = 1
-                if direct_following_check_button == 1:
+                if following_check_var.get() == 1:
                     a2[0] = 1
-                if direct_account_follower_check_button == 1:
+                if account_follower_check_var.get() == 1:
                     a3[0] = 1
-                if direct_account_hashtag_check_button == 1:
+                if account_hashtag_check_var.get() == 1:
                     a4[0] = 1
                 tuple_value = (a1, a2, a3, a4)
-                t_unfollow = Thread(target=ig_unfollow, args=(tuple_value, direct_message_value))
-                t_unfollow.start()
+                print(tuple_value)
+                t_direct = Thread(target=ig_direct, args=(tuple_value, direct_message_value))
+                t_direct.start()
 
-            start_direct_bot_button.bind("<Button-1>", start_unfollow_bot)
+            start_direct_bot_button.bind("<Button-1>", start_direct_bot)
 
         def like_dislike(event):
 
@@ -520,7 +560,6 @@ class MainPage:
             account_text['yscrollcommand'] = account_scrollbar.set
 
             # Set likes by location
-
 
         def follow(event):
 
@@ -807,15 +846,9 @@ class MainPage:
                         t_follow_account = Thread(target=ig_follow_account, args=(accounts,))
                         t_follow_account.start()
 
-
-
-
             start_follower_bot_button.bind("<Button-1>", start_follow_bot)
 
-
-
         def dashboard(event):
-
 
             f = open("Credenziali", "r")
             credential = f.read()
@@ -835,6 +868,7 @@ class MainPage:
                 return proxies
 
             if credential != "":
+                print("okkkk")
 
                 dashboard_frame.place(x=300, y=0, height=600, width=900)
 
@@ -854,6 +888,7 @@ class MainPage:
                 t0_login.start()
 
             else:
+                print("maaaa")
                 dashboard_frame.place(x=300, y=0, height=0, width=0)
                 # Create instagram login frame
                 instagram_login_frame = Frame(self.root, bd=5, bg="white")
@@ -887,7 +922,7 @@ class MainPage:
                         instagram_password_entry["show"] = "*"
 
                 instagram_password_check_box = Checkbutton(instagram_login_frame, text="show password",
-                                                 variable=check_var1, command=show_password)
+                                                           variable=check_var1, command=show_password)
 
                 instagram_access_button = Button(instagram_login_frame, text="Login", command="set")
                 instagram_access_button.place(x=0, y=195, height=50, width=150)
@@ -914,12 +949,14 @@ class MainPage:
                                 progress['value'] = a
                                 time.sleep(0.3)
                             ig_login_check()
+
                         t_pb = Thread(target=progress_control)
                         t_pb.start()
                         var1 = 1
 
                         t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
                         t1_login.start()
+
                         def ig_login_check():
                             progress.destroy()
                             time.sleep(3)
@@ -936,18 +973,9 @@ class MainPage:
                             if "too many requests" in ll:
                                 messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
                                 dashboard(0)
-
                             dashboard(0)
 
-
-
-
-
-
-
-
                 instagram_access_button.bind("<Button-1>", access_try)
-
 
         auto_publish_button.bind("<Button-1>", auto_publish)
         unfollow_button.bind("<Button-1>", unfollow)
@@ -956,6 +984,4 @@ class MainPage:
         follow_button.bind("<Button-1>", follow)
         dashboard_button.bind("<Button-1>", dashboard)
 
-
         dashboard(0)
-
