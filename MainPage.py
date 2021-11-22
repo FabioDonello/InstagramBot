@@ -7,18 +7,7 @@ if os.path.isfile("path/to/config/file.json"):
 from tkinter import *
 from tkcalendar import *
 from tkinter import filedialog
-from threading import Thread
-from BOT_Manager import *
 from datetime import date
-from tkinter import ttk
-from PIL import ImageTk, Image
-from instabot import Bot
-import glob
-import argparse
-import sys
-import queue
-import requests
-from bs4 import BeautifulSoup
 from tkinter import ttk
 from threading import Thread
 from BOT_Manager import *
@@ -26,11 +15,6 @@ import requests
 from bs4 import BeautifulSoup
 from tkinter import messagebox
 import re
-import matplotlib
-matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-from matplotlib.figure import Figure
-
 
 class MainPage:
 

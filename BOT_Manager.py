@@ -2,11 +2,8 @@ from instabot import Bot
 import os
 import glob
 import time
-
-import datetime
-import MainPage
 from geopy.geocoders import Nominatim
-from apscheduler.schedulers.blocking import BlockingScheduler
+
 
 import shutil
 
@@ -144,7 +141,7 @@ def schedule_upload_photo():
 
 scheduler.start()
 '''
-=======
+
 def ig_unfollow(list_value, white_list):
 
     f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/followed.txt"
