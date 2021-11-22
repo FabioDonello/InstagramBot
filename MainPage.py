@@ -15,6 +15,16 @@ import requests
 from bs4 import BeautifulSoup
 from tkinter import messagebox
 import re
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPDF, renderPM
+import leather
+from PIL import Image, ImageTk
+from tkinter import *
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
+NavigationToolbar2Tk)
+
+
 
 class MainPage:
 
@@ -1072,6 +1082,68 @@ class MainPage:
                     t_logout.start()
                     self.is_login = 0
                     dashboard(0)
+
+                """data = [
+                    (0, 3),
+                    (4, 5),
+                    (7, 9),
+                    (8, 4),
+                    (9, 6)
+
+                ]
+
+                chart = leather.Chart('Linear')
+                chart.add_x_scale(0, 20)
+                chart.add_y_scale(0, 10)
+                chart.add_line(data)
+                chart.to_svg('examples/charts/linear.svg')
+                drawing = svg2rlg('examples/charts/linear.svg')
+                renderPM.drawToFile(drawing, "temp.png", fmt="PNG")
+                img = Image.open('temp.png')
+                img = img.resize((300, 300), Image.ANTIALIAS)
+                img.save(fp="temp.png")
+                self.pimg = ImageTk.PhotoImage(img)
+                size = img.size
+                print(size)
+
+                img_frame = Frame(dashboard_frame, bd=2, bg="black")
+                img_frame.place(x=0, y=100, height=300, width=300)
+                img_label = Label(img_frame, image=self.pimg)
+                img_label.pack()"""
+
+                def plot():
+
+                    # the figure that will contain the plot
+                    fig = Figure(figsize=(5, 5),
+                                 dpi=100)
+
+                    # list of squares
+                    y = [i ** 2 for i in range(101)]
+
+                    # adding the subplot
+                    plot1 = fig.add_subplot(111)
+
+                    # plotting the graph
+                    plot1.plot(y)
+
+                    # creating the Tkinter canvas
+                    # containing the Matplotlib figure
+                    canvas = FigureCanvasTkAgg(fig,
+                                               master=dashboard_frame)
+                    canvas.draw()
+
+                    # placing the canvas on the Tkinter window
+                    canvas.get_tk_widget().place(x=0, y=100)
+
+                    # creating the Matplotlib toolbar
+                    toolbar = NavigationToolbar2Tk(canvas,
+                                                   dashboard_frame)
+                    toolbar.update()
+
+                    # placing the toolbar on the Tkinter window
+                    canvas.get_tk_widget().place(x=0, y=100)
+                plot()
+
                 logout_button.bind("<Button-1>", logout)
 
             else:
@@ -1123,6 +1195,7 @@ class MainPage:
                         dashboard(0)
                     self.is_login = 1
                     instagram_background_login_frame.destroy()
+                    log_file.close()
                     dashboard(0)
 
                 # ----------------------------------------------------------------------------------------------------
