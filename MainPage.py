@@ -1,10 +1,24 @@
-from tkinter import *
-
 import os
 
 if os.path.isfile("path/to/config/file.json"):
     os.remove("path/to/config/file.json")
 
+
+from tkinter import *
+from tkcalendar import *
+from tkinter import filedialog
+from threading import Thread
+from BOT_Manager import *
+from datetime import date
+from tkinter import ttk
+from PIL import ImageTk, Image
+from instabot import Bot
+import glob
+import argparse
+import sys
+import queue
+import requests
+from bs4 import BeautifulSoup
 from tkinter import ttk
 from threading import Thread
 from BOT_Manager import *
@@ -16,6 +30,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
+
 
 class MainPage:
 
@@ -43,7 +58,7 @@ class MainPage:
         unfollow_button.place(x=0, y=200, height=100, width=300)
 
         # Like and dislike button
-        l_d_button = Button(frame_menu, text="Like & Dislike", command="set")
+        l_d_button = Button(frame_menu, text="Like", command="set")
         l_d_button.place(x=0, y=300, height=100, width=300)
 
         # Direct button
@@ -86,6 +101,154 @@ class MainPage:
             unfollow_frame.place(x=300, y=0, height=0, width=0)
 
             auto_publish_frame.place(x=300, y=0, height=600, width=900)
+
+            # Set title
+            auto_publish_label = Label(auto_publish_frame, text="Auto-publish", bg="steelblue", fg="white")
+            auto_publish_label.place(x=0, y=0, height=50, width=200)
+
+            # Set auto-publish
+            save_button = Button(auto_publish_frame, text="Save", command="set")
+            save_button.place(x=350, y=0, height=50, width=100)
+
+            # Set calendar
+
+            cal = Calendar(auto_publish_frame, setmode='day', date_pattern='dd-mm-yyyy', mindate=date.today(),
+                           background="steelblue", headersbackground="lightsteelblue", headersforeground="whitesmoke")
+
+            cal.place(x=0, y=100, height=150, width=300)
+
+            # Select datetime button
+
+            def select_date():
+                my_date = cal.get_date()
+                selected_date = Label(auto_publish_frame, text=my_date)
+                selected_date.place(x=550, y=100, height=50, width=100)
+                return my_date
+
+            select_date_button = Button(auto_publish_frame, text="Select date", command=select_date)
+            select_date_button.place(x=350, y=100, height=50, width=100)
+
+            # Set time button
+
+            hours = list(range(1, 25))
+            minutes = list(range(00, 60))
+
+            var_hours = StringVar(auto_publish_frame)
+            var_hours.set(hours[0])
+
+            var_minutes = StringVar(auto_publish_frame)
+            var_minutes.set(minutes[0])
+
+            hours_menu = OptionMenu(auto_publish_frame, var_hours, *hours)
+            hours_menu.place(x=450, y=175, width=50)
+
+            minutes_menu = OptionMenu(auto_publish_frame, var_minutes, *minutes)
+            minutes_menu.place(x=500, y=175, width=50)
+
+            def select_time():
+                selected_time = Label(auto_publish_frame, text=" " + var_hours.get() + " : " + var_minutes.get())
+                selected_time.place(x=550, y=165, height=50, width=100)
+
+            select_time_button = Button(auto_publish_frame, text="Select time", command=select_time)
+            select_time_button.place(x=350, y=165, height=50, width=100)
+
+            # Set view files selected
+
+            table = ttk.Treeview(auto_publish_frame)
+            table.place(x=0, y=285, height=150, width=450)
+            table_scroll = ttk.Scrollbar(auto_publish_frame, orient="vertical", command=table.yview)
+            table_scroll.place(x=450, y=285, height=150)
+            table.configure(yscrollcommand=table_scroll.set)
+
+            table['columns'] = ('File', 'Date', 'Time', 'View', 'Delete')
+
+            table.column('#0', width=0, stretch=False)
+            table.column("File", anchor=CENTER, width=200)
+            table.column("Date", anchor=CENTER, width=70)
+            table.column("Time", anchor=CENTER, width=70)
+            table.column("View", anchor=CENTER, width=50)
+            table.column("Delete", anchor=CENTER, width=50)
+
+            table.heading("#0", text="", anchor=CENTER)
+            table.heading("File", text="File", anchor=CENTER)
+            table.heading("Date", text="Date", anchor=CENTER)
+            table.heading("Time", text="Time", anchor=CENTER)
+            table.heading("View", text="View", anchor=CENTER)
+            table.heading("Delete", text="Delete", anchor=CENTER)
+
+            # Set Enter the caption
+            caption_label = Label(auto_publish_frame, text="Enter the caption", bg="whitesmoke")
+            caption_label.place(x=500, y=285, height=50, width=100)
+
+            caption_frame = Frame(auto_publish_frame, bd=5, bg="silver")
+            caption_frame.place(x=500, y=325, height=110, width=300)
+            caption_frame.grid_columnconfigure(0, weight=1)
+            caption_frame.grid_rowconfigure(0, weight=1)
+
+            caption_text = Text(caption_frame, height=10)
+            caption_text.grid(row=0, column=0, sticky="ew")
+
+            caption_scroll = Scrollbar(caption_frame, orient="vertical", command=caption_text.yview)
+            caption_scroll.grid(row=0, column=1, sticky="ns")
+
+            caption_text['yscrollcommand'] = caption_scroll.set
+
+            # Set Choose file button
+
+            def choose_file():
+                auto_publish_frame.filename = filedialog.askopenfilename(initialdir="/desktop", title="Select a file",
+                                                                         filetypes=(
+                                                                             ("all files", "*.*"),
+                                                                             ("jpg files", "*.jpg"),
+                                                                             ("jpeg files", "*.jpeg"),
+                                                                             ("gif files", "*.gif"),
+                                                                             ("png files", "*.png"),
+                                                                             ("mp4 files", "*.mp4"),
+                                                                             ("wmv files", "*.wmv"),
+                                                                             ("mkv files", "*.mkv"),
+                                                                             ("webm files", "*.webm")))
+                name_file = os.path.basename(auto_publish_frame.filename)
+                print(name_file)
+                table.insert(parent='', index='end', iid=0, text="ciao",
+                             values=(name_file, "21-12-2021", "12:20", "edd", "wee"))
+
+            choose_file_button = Button(auto_publish_frame, text="Choose file", command=choose_file, bg="whitesmoke")
+            choose_file_button.place(x=230, y=0, height=50, width=100)
+
+            # Set check button for upload photo/video/story
+            upload_photo_check = IntVar()
+            upload_video_check = IntVar()
+            upload_story_check = IntVar()
+
+            def upload_photo_button():
+                if upload_photo_check.get() == 1:
+                    upload_photo_check_button["bg"] = "green"
+                if upload_photo_check.get() == 0:
+                    upload_photo_check_button["bg"] = "steelblue"
+
+            def upload_video_button():
+                if upload_video_check.get() == 1:
+                    upload_video_check_button["bg"] = "green"
+                if upload_video_check.get() == 0:
+                    upload_video_check_button["bg"] = "steelblue"
+
+            def upload_story_button():
+                if upload_story_check.get() == 1:
+                    upload_story_check_button["bg"] = "green"
+                if upload_story_check.get() == 0:
+                    upload_story_check_button["bg"] = "steelblue"
+
+            upload_photo_check_button = Checkbutton(auto_publish_frame, text="Upload photo", bg="steelblue", fg="white",
+                                                    variable=upload_photo_check, command=upload_photo_button)
+            upload_photo_check_button.place(x=50, y=500, height=50, width=150)
+
+            upload_video_check_button = Checkbutton(auto_publish_frame, text="Upload video", bg="steelblue", fg="white",
+                                                    variable=upload_video_check, command=upload_video_button)
+            upload_video_check_button.place(x=300, y=500, height=50, width=150)
+
+            upload_story_check_button = Checkbutton(auto_publish_frame, text="Upload story", bg="steelblue", fg="white",
+                                                    variable=upload_story_check, command=upload_story_button)
+            upload_story_check_button.place(x=550, y=500, height=50, width=150)
 
         def unfollow(event):
             dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -491,7 +654,7 @@ class MainPage:
             save_likes_options_button.place(x=200, y=0, height=50, width=100)
 
             hashtag = IntVar()
-            location = IntVar()
+            location_check = IntVar()
             account = IntVar()
 
             def hashtag_button():
@@ -501,9 +664,9 @@ class MainPage:
                     hashtag_check_button["bg"] = "steelblue"
 
             def location_button():
-                if location.get() == 1:
+                if location_check.get() == 1:
                     location_check_button["bg"] = "green"
-                if location.get() == 0:
+                if location_check.get() == 0:
                     location_check_button["bg"] = "steelblue"
 
             def account_button():
@@ -517,7 +680,7 @@ class MainPage:
             hashtag_check_button.place(x=10, y=75, width=900)
 
             location_check_button = Checkbutton(like_dislike_frame, text="Likes by location", bg="steelblue",
-                                                variable=location, command=location_button)
+                                                variable=location_check, command=location_button)
             location_check_button.place(x=10, y=275, width=900)
 
             account_check_button = Checkbutton(like_dislike_frame, text="Likes by account", bg="steelblue",
@@ -563,6 +726,24 @@ class MainPage:
             account_text['yscrollcommand'] = account_scrollbar.set
 
             # Set likes by location
+            location_likes_label = Label(like_dislike_frame, text="Enter the position you prefer")
+            location_likes_label.place(x=20, y=300, height=50, width=200)
+
+            location_likes_frame = Frame(like_dislike_frame, bd=5, bg="silver")
+            location_likes_frame.place(x=20, y=345, height=50, width=700)
+
+            location_likes_frame.grid_columnconfigure(0, weight=1)
+            location_likes_frame.grid_rowconfigure(0, weight=1)
+
+            location_text = Text(location_likes_frame, height=10)
+            location_text.grid(row=0, column=0, sticky="ew")
+
+
+            location_scrollbar = Scrollbar(location_likes_frame, orient="vertical", command=location_text.yview)
+            location_scrollbar.grid(row=0, column=1, sticky="ns")
+
+            location_text['yscrollcommand'] = location_scrollbar.set
+
 
         def follow(event):
 
@@ -851,6 +1032,7 @@ class MainPage:
 
             start_follower_bot_button.bind("<Button-1>", start_follow_bot)
 
+
         def dashboard(event):
 
             f = open("Credenziali", "r")
@@ -1053,6 +1235,7 @@ class MainPage:
                                 dashboard(0)
 
                     instagram_access_button.bind("<Button-1>", access_try)
+
 
         auto_publish_button.bind("<Button-1>", auto_publish)
         unfollow_button.bind("<Button-1>", unfollow)

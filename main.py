@@ -6,7 +6,6 @@ import shutil
 
 
 if __name__ == "__main__":
-
     DB_Manager.db_create()
     root = Tk()
     step1 = Login(root)
