@@ -2,8 +2,10 @@ from instabot import Bot
 import os
 import glob
 import time
+import datetime
 import MainPage
 from geopy.geocoders import Nominatim
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 bot = Bot()
 file_id = format(id(bot))
@@ -111,4 +113,20 @@ def ig_likes_account(accounts):
 
 
 # Set auto-publish
-'''def ig_upload_photo(photo,date)'''
+'''def ig_upload_photo():
+    print("Done")
+    print(datetime.datetime.now())
+
+def schedule_upload_photo():
+
+    scheduler = BlockingScheduler(timezone='Europe/Rome')
+    n = 2
+    while n != 0:
+        scheduler.add_job(ig_upload_photo, 'interval', seconds=20)
+         print(datetime.datetime.now())
+        n = n - 1
+        scheduler.get_jobs()
+        time.sleep(10)
+
+scheduler.start()
+'''
