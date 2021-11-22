@@ -12,13 +12,16 @@ import requests
 from bs4 import BeautifulSoup
 from tkinter import messagebox
 import re
-
-is_login = 0
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.figure import Figure
 
 class MainPage:
 
     def __init__(self, root):
         self.root = root
+        self.is_login = 0
         self.root.title("Instagram Tool")
         self.root.geometry("1200x600")
         self.root.resizable(False, False)
@@ -866,10 +869,7 @@ class MainPage:
                     else:
                         pass
                 return proxies
-
-            if credential != "":
-                print("okkkk")
-
+            if self.is_login == 1:
                 dashboard_frame.place(x=300, y=0, height=600, width=900)
 
                 follow_frame.place(x=300, y=0, height=0, width=0)
@@ -882,100 +882,177 @@ class MainPage:
 
                 auto_publish_frame.place(x=300, y=0, height=0, width=0)
 
-                proxy_list0 = getProxies()
-                var0 = 0
-                t0_login = Thread(target=ig_login, args=(proxy_list0, "", "", var0))
-                t0_login.start()
+                # Set titles
+
+                dashboard_label = Label(dashboard_frame, text="Dashboard", bg="grey", fg="white")
+                dashboard_label.place(x=0, y=0, height=50, width=100)
+
+                # Logout
+                logout_button = Button(dashboard_frame, text="Logout", command="set")
+                logout_button.place(x=100, y=0, height=50, width=100)
+                f = open("Credenziali", "r")
+                username = f.readline()
+                f.close()
+                account_text = "Actually account: " + str(username)
+                print(account_text)
+                dashboard_label = Label(dashboard_frame, text=account_text, bg="grey", fg="white")
+                dashboard_label.place(x=225, y=0, height=50)
+                statistics_label = Label(dashboard_frame, text="Statistics:", bg="grey", fg="white")
+                statistics_label.place(x=0, y=75, width=900)
+
+                # Actually account:
+                def logout(event):
+                    t_logout = Thread(target=ig_logout)
+                    t_logout.start()
+                    self.is_login = 0
+                    dashboard(0)
+                logout_button.bind("<Button-1>", logout)
 
             else:
-                print("maaaa")
+                # Login with ig credential in a file
                 dashboard_frame.place(x=300, y=0, height=0, width=0)
                 # Create instagram login frame
-                instagram_login_frame = Frame(self.root, bd=5, bg="white")
-                instagram_login_frame.place(x=300, y=0, height=600, width=900)
+                instagram_background_login_frame = Frame(self.root, bd=5, bg="white")
+                instagram_background_login_frame.place(x=300, y=0, height=600, width=900)
 
                 # Set title of login frame
-                instagram_login_frame_title = Label(instagram_login_frame, text="Prima di accedere alle funzionalità "
-                                                                                "di giudoinstabot accedi al profilo"
-                                                                                " instagram che vuoi gestire: ",
+                instagram_login_frame_title = Label(instagram_background_login_frame,
+                                                    text="Login in corso:",
                                                     bg="white")
-                instagram_login_frame_title.place(x=0, y=30)
+                instagram_login_frame_title.place(x=400, y=250)
 
-                # Insertion box Email & password
+                background_progress = ttk.Progressbar(instagram_background_login_frame, orient=HORIZONTAL,
+                                                      length=100, mode='determinate', )
+                background_progress.place(x=400, y=275)
+                background_progress['value'] = 0
 
-                instagram_username_label = Label(instagram_login_frame, text="Username", bg="white")
-                instagram_username_label.place(x=0, y=85, height=50, width=150)
-                instagram_password_label = Label(instagram_login_frame, text="Password", bg="white")
-                instagram_password_label.place(x=0, y=136, height=50, width=150)
+                def progress_control():
+                    for a in range(100):
+                        background_progress['value'] = a
+                        time.sleep(0.01)
+                    ig_background_login_check()
 
-                instagram_username_entry = Entry(instagram_login_frame, bg="yellow")
-                instagram_username_entry.place(x=175, y=85, height=50, width=240)
-                instagram_password_entry = Entry(instagram_login_frame, bg="yellow", show="*")
-                instagram_password_entry.place(x=175, y=135, height=50, width=240)
+                t_bk_pb = Thread(target=progress_control)
+                t_bk_pb.start()
+                var1 = 0
+                proxy_list1 = getProxies()
+                t1_bk_login = Thread(target=ig_login, args=(proxy_list1, "", "", var1))
+                t1_bk_login.start()
 
-                check_var1 = IntVar()
+                def ig_background_login_check():
+                    background_progress.destroy()
+                    log_file_str = os.listdir(
+                        "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
+                    log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
+                                    + log_file_str[0], "r")
+                    ll = StringVar
+                    for last_line in log_file:
+                        ll = last_line
+                        pass
+                    if "Username or password is incorrect" in ll:
+                        messagebox.showinfo("Login fail", "Username or password wrong")
+                        dashboard(0)
+                    if "too many requests" in ll:
+                        messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
+                        dashboard(0)
+                    self.is_login = 1
+                    instagram_background_login_frame.destroy()
+                    dashboard(0)
 
-                def show_password():
-                    if check_var1.get() == 1:
-                        instagram_password_entry["show"] = ""
-                    if check_var1.get() == 0:
-                        instagram_password_entry["show"] = "*"
+                # ----------------------------------------------------------------------------------------------------
+                # Login with a request of ig credential
+                if credential == "":
+                    print("maaaa")
+                    dashboard_frame.place(x=300, y=0, height=0, width=0)
+                    # Create instagram login frame
+                    instagram_login_frame = Frame(self.root, bd=5, bg="white")
+                    instagram_login_frame.place(x=300, y=0, height=600, width=900)
 
-                instagram_password_check_box = Checkbutton(instagram_login_frame, text="show password",
-                                                           variable=check_var1, command=show_password)
+                    # Set title of login frame
+                    instagram_login_frame_title = Label(instagram_login_frame,
+                                                        text="Prima di accedere alle funzionalità "
+                                                             "di giudoinstabot accedi al profilo"
+                                                             " instagram che vuoi gestire: ",
+                                                        bg="white")
+                    instagram_login_frame_title.place(x=0, y=30)
 
-                instagram_access_button = Button(instagram_login_frame, text="Login", command="set")
-                instagram_access_button.place(x=0, y=195, height=50, width=150)
+                    # Insertion box Email & password
 
-                # Access management
+                    instagram_username_label = Label(instagram_login_frame, text="Username", bg="white")
+                    instagram_username_label.place(x=0, y=85, height=50, width=150)
+                    instagram_password_label = Label(instagram_login_frame, text="Password", bg="white")
+                    instagram_password_label.place(x=0, y=136, height=50, width=150)
 
-                def access_try(event):
-                    username_text = instagram_username_entry.get()
-                    password_text = instagram_password_entry.get()
-                    print(username_text)
-                    print(password_text)
-                    if username_text and password_text:
-                        proxy_list1 = getProxies()
-                        instagram_access_button.destroy()
-                        instagram_info_label = Label(instagram_login_frame, text="Login in process: ", bg="white")
-                        instagram_info_label.place(x=0, y=195, height=50, width=150)
-                        progress = ttk.Progressbar(instagram_login_frame, orient=HORIZONTAL,
-                                                   length=100, mode='determinate', )
-                        progress.place(x=175, y=215)
-                        progress['value'] = 0
+                    instagram_username_entry = Entry(instagram_login_frame, bg="yellow")
+                    instagram_username_entry.place(x=175, y=85, height=50, width=240)
+                    instagram_password_entry = Entry(instagram_login_frame, bg="yellow", show="*")
+                    instagram_password_entry.place(x=175, y=135, height=50, width=240)
 
-                        def progress_control():
-                            for a in range(100):
-                                progress['value'] = a
-                                time.sleep(0.3)
-                            ig_login_check()
+                    check_var1 = IntVar()
 
-                        t_pb = Thread(target=progress_control)
-                        t_pb.start()
-                        var1 = 1
+                    def show_password():
+                        if check_var1.get() == 1:
+                            instagram_password_entry["show"] = ""
+                        if check_var1.get() == 0:
+                            instagram_password_entry["show"] = "*"
 
-                        t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
-                        t1_login.start()
+                    instagram_password_check_box = Checkbutton(instagram_login_frame, text="show password",
+                                                               variable=check_var1, command=show_password)
 
-                        def ig_login_check():
-                            progress.destroy()
-                            time.sleep(3)
-                            log_file_str = os.listdir("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
-                            log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
-                                            + log_file_str[0], "r")
-                            ll = StringVar
-                            for last_line in log_file:
-                                ll = last_line
-                                pass
-                            if "Username or password is incorrect" in ll:
-                                messagebox.showinfo("Login fail", "Username or password wrong")
+                    instagram_access_button = Button(instagram_login_frame, text="Login", command="set")
+                    instagram_access_button.place(x=0, y=195, height=50, width=150)
+
+                    # Access management
+
+                    def access_try(event):
+                        username_text = instagram_username_entry.get()
+                        password_text = instagram_password_entry.get()
+                        print(username_text)
+                        print(password_text)
+                        if username_text and password_text:
+                            proxy_list1 = getProxies()
+                            instagram_access_button.destroy()
+                            instagram_info_label = Label(instagram_login_frame, text="Login in process: ", bg="white")
+                            instagram_info_label.place(x=0, y=195, height=50, width=150)
+                            progress = ttk.Progressbar(instagram_login_frame, orient=HORIZONTAL,
+                                                       length=100, mode='determinate', )
+                            progress.place(x=175, y=215)
+                            progress['value'] = 0
+
+                            def progress_control():
+                                for a in range(100):
+                                    progress['value'] = a
+                                    time.sleep(0.3)
+                                ig_login_check()
+
+                            t_pb = Thread(target=progress_control)
+                            t_pb.start()
+                            var1 = 1
+
+                            t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
+                            t1_login.start()
+
+                            def ig_login_check():
+                                progress.destroy()
+                                log_file_str = os.listdir(
+                                    "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
+                                log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
+                                                + log_file_str[0], "r")
+                                ll = StringVar
+                                for last_line in log_file:
+                                    ll = last_line
+                                    pass
+                                if "Username or password is incorrect" in ll:
+                                    messagebox.showinfo("Login fail", "Username or password wrong")
+                                    dashboard(0)
+                                if "too many requests" in ll:
+                                    messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
+                                    dashboard(0)
+                                self.is_login = 1
+                                instagram_login_frame.destroy()
                                 dashboard(0)
-                            if "too many requests" in ll:
-                                messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
-                                dashboard(0)
-                            dashboard(0)
 
-                instagram_access_button.bind("<Button-1>", access_try)
+                    instagram_access_button.bind("<Button-1>", access_try)
 
         auto_publish_button.bind("<Button-1>", auto_publish)
         unfollow_button.bind("<Button-1>", unfollow)

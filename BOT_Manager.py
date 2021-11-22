@@ -10,6 +10,7 @@ bot = Bot()
 file_id = format(id(bot))
 x = 0
 
+
 def ig_login(proxy_list, username, password, var):
     #cookie_del = glob.glob("config/*cookie.json")
     #os.remove(cookie_del[0])
@@ -21,16 +22,25 @@ def ig_login(proxy_list, username, password, var):
         f.write(password)
         f.close()
 
-        print("Login riuscito")
+        print("Login riuscito A")
 
     if var == 0:
         f = open("Credenziali", "r")
         username = f.readline()
         password = f.readline()
-        #bot.login(username=username, password=password, is_threaded=True)
         f.close()
+        #bot.login(username=username, password=password, is_threaded=True)
         x = 1
-        print("Login riuscito")
+        print("Login riuscito B")
+
+
+def ig_logout():
+    f = open("Credenziali", "r")
+    username = f.readline()
+    f.close()
+    f = open("Credenziali", "w").close()
+    #bot.logout(username=username, is_threaded=True)
+    print("Logout eseguito")
 
 
 def ig_follow_hashtag(hashtags):
