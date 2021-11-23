@@ -229,3 +229,33 @@ def ig_direct(list_value, message):
                 bot.send_message(hashtag_user, message)
                 time.sleep(3)
 
+
+def ig_get_follow_number():
+    """f = open("Credenziali", "r")
+    username = f.readline()
+    f.close()
+    bot.get_user_followers(username)
+    n_folloewr = len(username)
+    f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/data/followed_data.txt"
+    f1 = open(f_name, "a")
+    print(str(n_folloewr)+":")
+    f1.close()"""
+
+
+def ig_get_like_number():
+    """f = open("Credenziali", "r")
+    username = f.readline()
+    f.close()
+    medias_id = bot.get_user_medias(username)
+    n_like = 0
+    n_post = len(medias_id)
+    for media in medias_id:
+        like = 20
+        media_info = bot.get_media_info(media)
+        like = like + media['like']
+    f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/data/like_data.txt"
+    f2 = open(f_name, "a")
+    print(str(n_like) + ":")
+    f2.close()"""
+
+

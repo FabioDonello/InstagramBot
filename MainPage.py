@@ -21,8 +21,7 @@ import leather
 from PIL import Image, ImageTk
 from tkinter import *
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
-NavigationToolbar2Tk)
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 
@@ -1111,40 +1110,107 @@ class MainPage:
                 img_label = Label(img_frame, image=self.pimg)
                 img_label.pack()"""
 
-                def plot():
+                def set_follower_plot(follower_data):
 
                     # the figure that will contain the plot
-                    fig = Figure(figsize=(5, 5),
+                    follower_fig = Figure(figsize=(4, 4),
                                  dpi=100)
-
-                    # list of squares
-                    y = [i ** 2 for i in range(101)]
-
                     # adding the subplot
-                    plot1 = fig.add_subplot(111)
+                    follower_plot = follower_fig.add_subplot(111)
+                    print(follower_data)
 
                     # plotting the graph
-                    plot1.plot(y)
+                    follower_plot.plot(follower_data)
+                    follower_plot.title.set_text("Follower statistic")
+                    follower_plot.set_xlabel("Data numbers")
+                    follower_plot.set_ylabel("Follower")
+                    # creating the Tkinter canvas
+                    # containing the Matplotlib figure
+                    follower_canvas = FigureCanvasTkAgg(follower_fig,
+                                               master=dashboard_frame)
+
+                    # placing the canvas on the Tkinter window
+                    follower_canvas.draw()
+                    follower_canvas.get_tk_widget().place(x=100, y=100)
+
+                    """creating the Matplotlib toolbar
+                    toolbar = NavigationToolbar2Tk(canvas,
+                                                 dashboard_frame)
+                    toolbar.update()"""
+
+                    # placing the toolbar on the Tkinter window
+                    follower_canvas.get_tk_widget().place(x=100, y=100)
+
+                def set_like_plot(like_data):
+                    # the figure that will contain the plot
+                    like_fig = Figure(figsize=(4, 4),
+                                          dpi=100)
+                    # adding the subplot
+                    like_plot = like_fig.add_subplot(111)
+                    like_plot.set_ylabel("Like")
+                    like_plot.set_xlabel("Data numbers")
+                    # plotting the graph
+                    like_plot.plot(like_data)
+                    like_plot.title.set_text("Like statistic")
+
+
 
                     # creating the Tkinter canvas
                     # containing the Matplotlib figure
-                    canvas = FigureCanvasTkAgg(fig,
-                                               master=dashboard_frame)
-                    canvas.draw()
+                    like_canvas = FigureCanvasTkAgg(like_fig,
+                                                        master=dashboard_frame)
 
                     # placing the canvas on the Tkinter window
-                    canvas.get_tk_widget().place(x=0, y=100)
+                    like_canvas.draw()
+                    like_canvas.get_tk_widget().place(x=500, y=100)
 
-                    # creating the Matplotlib toolbar
+                    """creating the Matplotlib toolbar
                     toolbar = NavigationToolbar2Tk(canvas,
-                                                   dashboard_frame)
-                    toolbar.update()
+                                                 dashboard_frame)
+                    toolbar.update()"""
 
                     # placing the toolbar on the Tkinter window
-                    canvas.get_tk_widget().place(x=0, y=100)
-                plot()
+                    like_canvas.get_tk_widget().place(x=500, y=100)
+                set_follower_plot(0)
+                set_like_plot(0)
+
+                refresh_follow_button = Button(dashboard_frame, text="Refresh follow", command="set")
+                refresh_follow_button.place(x=150, y=400)
+                refresh_like_button = Button(dashboard_frame, text="Refresh like", command="set")
+                refresh_like_button.place(x=550, y=400)
+
+                def get_follower_data(event):
+                    t_follow_number = Thread(target=ig_get_follow_number)
+                    t_follow_number.start()
+                    if not t_follow_number.is_alive():
+                        f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/data/followed_data.txt"
+                        f1 = open(f_name, "r")
+                        follower_data = f1.read()
+                        follower_data = follower_data.split(':')
+                        f1.close()
+                        follower_data.remove("")
+                        follower_int_data = [int(i) for i in follower_data]
+                        set_follower_plot(follower_int_data)
+
+
+
+                def get_like_data(event):
+                    t_like_number = Thread(target=ig_get_like_number())
+                    t_like_number.start()
+                    if not t_like_number.is_alive():
+                        f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/data/like_data.txt"
+                        f2 = open(f_name, "r")
+                        like_data = f2.read()
+                        like_data = like_data.split(':')
+                        f2.close()
+                        like_data.remove("")
+                        like_int_data = [int(i) for i in like_data]
+                        set_like_plot(like_int_data)
+
 
                 logout_button.bind("<Button-1>", logout)
+                refresh_follow_button.bind("<Button-1>", get_follower_data)
+                refresh_like_button.bind("<Button-1>", get_like_data)
 
             else:
                 # Login with ig credential in a file
@@ -1201,7 +1267,6 @@ class MainPage:
                 # ----------------------------------------------------------------------------------------------------
                 # Login with a request of ig credential
                 if credential == "":
-                    print("maaaa")
                     dashboard_frame.place(x=300, y=0, height=0, width=0)
                     # Create instagram login frame
                     instagram_login_frame = Frame(self.root, bd=5, bg="white")
