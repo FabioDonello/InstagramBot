@@ -18,22 +18,30 @@ x = 0
 def ig_login(proxy_list, username, password, var):
     # cookie_del = glob.glob("config/*cookie.json")
     # os.remove(cookie_del[0])
+    pp = {"http_proxy": "http://45.8.197.222:45785",
+          "https_proxy": "http://45.8.197.222:45785"}
+
+
+    proxys ={"Selfabiodonello989":"J0q9FyC",
+             "https://proxy-seller.com/?partner=V0GCQx9NDoLmpw": "45785"}
+
     if var == 1:
-        #bot.login(username=username, password=password, is_threaded=True)
+        bot.login(username=username, password=password, is_threaded=True, proxy=str(pp))
         f = open("Credenziali", "w")
         f.write(username)
         f.write("\n")
         f.write(password)
         f.close()
-
         print("Login riuscito A")
 
     if var == 0:
         f = open("Credenziali", "r")
         username = f.readline()
         password = f.readline()
+        print(username)
+        print(password)
         f.close()
-        #bot.login(username=username, password=password, is_threaded=True)
+        bot.login(username=username, password=password, is_threaded=True, proxies=proxys)
         x = 1
         print("Login riuscito B")
 
@@ -257,5 +265,6 @@ def ig_get_like_number():
     f2 = open(f_name, "a")
     print(str(n_like) + ":")
     f2.close()"""
+
 
 
