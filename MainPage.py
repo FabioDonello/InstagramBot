@@ -7,18 +7,7 @@ if os.path.isfile("path/to/config/file.json"):
 from tkinter import *
 from tkcalendar import *
 from tkinter import filedialog
-from threading import Thread
-from BOT_Manager import *
 from datetime import date
-from tkinter import ttk
-from PIL import ImageTk, Image
-from instabot import Bot
-import glob
-import argparse
-import sys
-import queue
-import requests
-from bs4 import BeautifulSoup
 from tkinter import ttk
 from threading import Thread
 from BOT_Manager import *
@@ -26,10 +15,14 @@ import requests
 from bs4 import BeautifulSoup
 from tkinter import messagebox
 import re
-import matplotlib
-matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPDF, renderPM
+import leather
+from PIL import Image, ImageTk
+from tkinter import *
 from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
 
 class MainPage:
@@ -278,6 +271,9 @@ class MainPage:
             save_un_follower_option_button = Button(unfollow_frame, text="Save", command="set")
             save_un_follower_option_button.place(x=200, y=0, height=50, width=100)
 
+            upload_un_follower_option_button = Button(unfollow_frame, text="Upload", command="set")
+            upload_un_follower_option_button.place(x=300, y=0, height=50, width=100)
+
             # Options label
             un_follow_label = Label(unfollow_frame, text="Unfollow target:", bg="grey", fg="white")
             un_follow_label.place(x=0, y=75, width=900)
@@ -454,7 +450,33 @@ class MainPage:
                 print(tuple_value)
                 t_unfollow = Thread(target=ig_unfollow, args=(tuple_value, white_list_value))
                 t_unfollow.start()
+            def save_unfollow_options(event):
+                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/unfollow_options"
+                saved_file = open(dir, "w")
+
+                saved_file.write(str(replacemant_time_var.get()) + ":")
+                saved_file.write(str(follow_number_var.get()) + ":")
+                saved_file.write(str(media_number_var.get()) + ":")
+                saved_file.write(str(activity_time_var.get()) + ":")
+                saved_file.write(white_list_text.get(1.0, "end-1c") + ":")
+
+                saved_file.close()
+            def upload_unfollow_options(event):
+                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/unfollow_options"
+                saved_file = open(dir, "r")
+                data = saved_file.read()
+                data_split = data.split(":")
+                replacemant_time_var.set(data_split[0])
+                follow_number_var.set(data_split[1])
+                media_number_var.set(data_split[2])
+                activity_time_var.set(data_split[3])
+                white_list_text.insert("1.0", data_split[4])
+                saved_file.close()
+
+
             start_un_follower_bot_button.bind("<Button-1>", start_unfollow_bot)
+            save_un_follower_option_button.bind("<Button-1>", save_unfollow_options)
+            upload_un_follower_option_button.bind("<Button-1>", upload_unfollow_options)
 
         def direct(event):
             dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -483,6 +505,8 @@ class MainPage:
 
             save_direct_option_button = Button(direct_frame, text="Save", command="set")
             save_direct_option_button.place(x=200, y=0, height=50, width=100)
+            upload_direct_option_button = Button(direct_frame, text="Upload", command="set")
+            upload_direct_option_button.place(x=300, y=0, height=50, width=100)
 
             # Options label
             direct_target_label = Label(direct_frame, text="Direct target:", bg="grey", fg="white")
@@ -625,7 +649,29 @@ class MainPage:
                 t_direct = Thread(target=ig_direct, args=(tuple_value, direct_message_value))
                 t_direct.start()
 
+            def save_direct_options(event):
+                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/direct_options"
+                saved_file = open(dir, "w").close()
+                saved_file = open(dir, "w")
+                saved_file.write(account_text.get(1.0, "end-1c") + ":")
+                saved_file.write(hashtag_text.get(1.0, "end-1c") + ":")
+                saved_file.write(message_text.get(1.0, "end-1c") + ":")
+
+
+                saved_file.close()
+            def upload_direct_options(event):
+                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/direct_options"
+                saved_file = open(dir, "r")
+                data = saved_file.read()
+                data_split = data.split(":")
+                account_text.insert("1.0", data_split[0])
+                hashtag_text.insert("1.0", data_split[1])
+                message_text.insert("1.0", data_split[2])
+                saved_file.close()
+
             start_direct_bot_button.bind("<Button-1>", start_direct_bot)
+            save_direct_option_button.bind("<Button-1>", save_direct_options)
+            upload_direct_option_button.bind("<Button-1>", upload_direct_options)
 
         def like_dislike(event):
 
@@ -776,39 +822,18 @@ class MainPage:
             save_follower_option_button = Button(follow_frame, text="Save", command="set")
             save_follower_option_button.place(x=200, y=0, height=50, width=100)
 
-            hashtag_check_var = IntVar()
-            location_check_var = IntVar()
-            account_check_var = IntVar()
+            upload_follower_option_button = Button(follow_frame, text="Upload", command="set")
+            upload_follower_option_button.place(x=300, y=0, height=50, width=100)
 
-            def hashtag_options():
-                if hashtag_check_var.get() == 1:
-                    follow_by_hashtag_check_button["bg"] = "green"
-                if hashtag_check_var.get() == 0:
-                    follow_by_hashtag_check_button["bg"] = "grey"
 
-            def location_option():
-                if location_check_var.get() == 1:
-                    follow_by_location_check_button["bg"] = "green"
-                if location_check_var.get() == 0:
-                    follow_by_location_check_button["bg"] = "grey"
+            follow_by_hashtag_label = Label(follow_frame, text="Follow by hashtag:", bg="grey")
+            follow_by_hashtag_label.place(x=0, y=75, width=900)
 
-            def account_options():
-                if account_check_var.get() == 1:
-                    follow_by_account_check_button["bg"] = "green"
-                if account_check_var.get() == 0:
-                    follow_by_account_check_button["bg"] = "grey"
+            follow_by_location_label = Label(follow_frame, text="Follow by location:", bg="grey")
+            follow_by_location_label.place(x=0, y=275, width=900)
 
-            follow_by_hashtag_check_button = Checkbutton(follow_frame, text="Follow by hashtag:", bg="grey",
-                                                         variable=hashtag_check_var, command=hashtag_options)
-            follow_by_hashtag_check_button.place(x=10, y=75, width=900)
-
-            follow_by_location_check_button = Checkbutton(follow_frame, text="Follow by location:", bg="grey",
-                                                          variable=location_check_var, command=location_option)
-            follow_by_location_check_button.place(x=10, y=275, width=900)
-
-            follow_by_account_check_button = Checkbutton(follow_frame, text="Follow by account:", bg="grey",
-                                                         variable=account_check_var, command=account_options)
-            follow_by_account_check_button.place(x=10, y=400, width=900)
+            follow_by_account_label = Label(follow_frame, text="Follow by account:", bg="grey")
+            follow_by_account_label.place(x=0, y=400, width=900)
 
             # Follow by hashtag options
 
@@ -823,18 +848,17 @@ class MainPage:
             hashtag_follow_frame.grid_rowconfigure(0, weight=1)
 
             # create the text widget
-            text = Text(hashtag_follow_frame, height=10)
-            text.grid(row=0, column=0, sticky='ew')
+            hashtag_text = Text(hashtag_follow_frame, height=10)
+            hashtag_text.grid(row=0, column=0, sticky='ew')
 
             # create a scrollbar widget and set its command to the text widget
-            scrollbar = Scrollbar(hashtag_follow_frame, orient='vertical', command=text.yview)
+            scrollbar = Scrollbar(hashtag_follow_frame, orient='vertical', command=hashtag_text.yview)
             scrollbar.grid(row=0, column=1, sticky='ns')
 
             #  communicate back to the scrollbar
-            text['yscrollcommand'] = scrollbar.set
+            hashtag_text['yscrollcommand'] = scrollbar.set
 
             # Follow by location option
-
             country_check_var = IntVar()
             region_check_var = IntVar()
             city_check_var = IntVar()
@@ -862,7 +886,7 @@ class MainPage:
             location_country_follow_check_button.place(x=70, y=330, width=175)
 
             country = [
-                "-------",
+                "Select country",
                 "Albania",
                 "Andorra",
                 "Armenia",
@@ -911,22 +935,17 @@ class MainPage:
 
             ]  # etc
 
-            variable1 = StringVar(follow_frame)
-            variable1.set(country[0])  # default value
+            country_text = StringVar(follow_frame)
+            country_text.set(country[0])  # default value
 
-            w1 = OptionMenu(follow_frame, variable1, *country)
+            w1 = OptionMenu(follow_frame, country_text, *country)
             w1.place(x=70, y=350, width=175)
-
-            #  communicate back to the scrollbar
-            text['yscrollcommand'] = scrollbar.set
-
             location_region_follow_check_button = Checkbutton(follow_frame, text="Follow by region:", bg="grey",
                                                               variable=region_check_var, command=region_option)
             location_region_follow_check_button.place(x=356, y=330, width=175)
 
             region = [
-                "-------",
-                "Valle d’Aosta",
+                "Select region",
                 "Piemonte",
                 "Liguria",
                 "Lombardia",
@@ -948,24 +967,20 @@ class MainPage:
                 "Sardegna",
             ]  # etc
 
-            variable2 = StringVar(follow_frame)
-            variable2.set(region[0])  # default value
+            region_text = StringVar(follow_frame)
+            region_text.set(region[0])  # default value
 
-            w2 = OptionMenu(follow_frame, variable2, *region)
+            w2 = OptionMenu(follow_frame, region_text, *region)
             w2.place(x=356, y=350, width=175)
-
-            #  communicate back to the scrollbar
-            text['yscrollcommand'] = scrollbar.set
 
             location_city_follow_check_button = Checkbutton(follow_frame, text="Follow by city:", bg="grey",
                                                             variable=city_check_var, command=city_options)
             location_city_follow_check_button.place(x=642, y=330, width=175)
 
             city = [
-                "-------",
+                "Select city",
                 "Bologna",
                 "Ferrara",
-                "Forlì-Cesena",
                 "Modena",
                 "Parma",
                 "Piacenza",
@@ -974,14 +989,11 @@ class MainPage:
                 "Rimini",
             ]  # etc
 
-            variable3 = StringVar(follow_frame)
-            variable3.set(city[0])  # default value
+            city_text = StringVar(follow_frame)
+            city_text.set(city[0])  # default value
 
-            w3 = OptionMenu(follow_frame, variable3, *city)
+            w3 = OptionMenu(follow_frame, city_text, *city)
             w3.place(x=642, y=350, width=175)
-
-            #  communicate back to the scrollbar
-            text['yscrollcommand'] = scrollbar.set
 
             # Follow by account
 
@@ -996,41 +1008,75 @@ class MainPage:
             account_follow_frame.grid_rowconfigure(0, weight=1)
 
             # create the text widget
-            text1 = Text(account_follow_frame, height=10)
-            text1.grid(row=0, column=0, sticky='ew')
+            account_text = Text(account_follow_frame, height=10)
+            account_text.grid(row=0, column=0, sticky='ew')
 
             # create a scrollbar widget and set its command to the text widget
-            scrollbar1 = Scrollbar(account_follow_frame, orient='vertical', command=text1.yview)
+            scrollbar1 = Scrollbar(account_follow_frame, orient='vertical', command=account_text.yview)
             scrollbar1.grid(row=0, column=1, sticky='ns')
 
             #  communicate back to the scrollbar
-            text1['yscrollcommand'] = scrollbar1.set
+            account_text['yscrollcommand'] = scrollbar1.set
 
             def start_follow_bot(event):
-
-                # Follow by hashtag:
-                if hashtag_check_var == 1:
-                    hashtags = text.get(1.0, "end-1c")
+                if hashtag_text != "":
+                    hashtags = hashtag_text.get(1.0, "end-1c")
                     hashtags = hashtags.split(' ')
-                    if hashtags:
-                        t_follow_hashtag = Thread(target=ig_follow_hashtag, args=(hashtags,))
-                        t_follow_hashtag.start()
-                # Follow by location
-                if location_check_var == 1:
-                    locations = variable1
-                    if locations:
-                        t_follow_location = Thread(target=ig_follow_location, args=(locations,))
-                        t_follow_location.start()
-                # Follow by account
-                if account_check_var == 1:
-                    print(account_check_var)
-                    accounts = text1.get(1.0, "end-1c")
-                    accounts = accounts.split(',')
-                    if accounts:
-                        t_follow_account = Thread(target=ig_follow_account, args=(accounts,))
-                        t_follow_account.start()
+                    t_follow_hashtag = Thread(target=ig_follow_hashtag, args=(hashtags,))
+                    t_follow_hashtag.start()
 
+                if country_check_var:
+                    if country_text != "Select region":
+                        t_follow_country = Thread(target=ig_follow_location, args=(country_text,))
+                        t_follow_country.start()
+
+                if region_check_var:
+                    if region_text != "Select region":
+                        t_follow_region = Thread(target=ig_follow_location, args=(region_text,))
+                        t_follow_region.start()
+
+                if city_check_var:
+                    if city_text != "Select region":
+                        t_follow_city = Thread(target=ig_follow_location, args=(city_text,))
+                        t_follow_city.start()
+
+                if account_text != "":
+                    accounts = account_text.get(1.0, "end-1c")
+                    accounts = accounts.split(',')
+                    t_follow_account = Thread(target=ig_follow_account, args=(accounts,))
+                    t_follow_account.start()
+
+
+
+            def save_options(event):
+                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/follow_options"
+                saved_file = open(dir, "w")
+
+
+                saved_file.write(hashtag_text.get(1.0, "end-1c")+":")
+                saved_file.write(str(country_text.get())+":")
+                saved_file.write(str(region_text.get()) + ":")
+                saved_file.write(str(city_text.get()) + ":")
+                saved_file.write(account_text.get(1.0, "end-1c")+":")
+
+                saved_file.close()
+
+            def upload_options(event):
+                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/follow_options"
+                saved_file = open(dir, "r")
+                data = saved_file.read()
+                data_split = data.split()
+                hashtag_text.insert("1.0", data_split[0])
+                country_text.set(data_split[1])
+                region_text.set(data_split[2])
+                city_text.set(data_split[3])
+                account_text.insert("1.0", data_split[4])
+
+                saved_file.close()
             start_follower_bot_button.bind("<Button-1>", start_follow_bot)
+            save_follower_option_button.bind("<Button-1>", save_options)
+            upload_follower_option_button.bind("<Button-1>", upload_options)
+
 
 
         def dashboard(event):
@@ -1088,63 +1134,210 @@ class MainPage:
                     t_logout.start()
                     self.is_login = 0
                     dashboard(0)
+
+                """data = [
+                    (0, 3),
+                    (4, 5),
+                    (7, 9),
+                    (8, 4),
+                    (9, 6)
+
+                ]
+
+                chart = leather.Chart('Linear')
+                chart.add_x_scale(0, 20)
+                chart.add_y_scale(0, 10)
+                chart.add_line(data)
+                chart.to_svg('examples/charts/linear.svg')
+                drawing = svg2rlg('examples/charts/linear.svg')
+                renderPM.drawToFile(drawing, "temp.png", fmt="PNG")
+                img = Image.open('temp.png')
+                img = img.resize((300, 300), Image.ANTIALIAS)
+                img.save(fp="temp.png")
+                self.pimg = ImageTk.PhotoImage(img)
+                size = img.size
+                print(size)
+
+                img_frame = Frame(dashboard_frame, bd=2, bg="black")
+                img_frame.place(x=0, y=100, height=300, width=300)
+                img_label = Label(img_frame, image=self.pimg)
+                img_label.pack()"""
+
+                def set_follower_plot(follower_data):
+
+                    # the figure that will contain the plot
+                    follower_fig = Figure(figsize=(4, 4),
+                                 dpi=100)
+                    # adding the subplot
+                    follower_plot = follower_fig.add_subplot(111)
+                    print(follower_data)
+
+                    # plotting the graph
+                    follower_plot.plot(follower_data)
+                    follower_plot.title.set_text("Follower statistic")
+                    follower_plot.set_xlabel("Data numbers")
+                    follower_plot.set_ylabel("Follower")
+                    # creating the Tkinter canvas
+                    # containing the Matplotlib figure
+                    follower_canvas = FigureCanvasTkAgg(follower_fig,
+                                               master=dashboard_frame)
+
+                    # placing the canvas on the Tkinter window
+                    follower_canvas.draw()
+                    follower_canvas.get_tk_widget().place(x=100, y=100)
+
+                    """creating the Matplotlib toolbar
+                    toolbar = NavigationToolbar2Tk(canvas,
+                                                 dashboard_frame)
+                    toolbar.update()"""
+
+                    # placing the toolbar on the Tkinter window
+                    follower_canvas.get_tk_widget().place(x=100, y=100)
+
+                def set_like_plot(like_data):
+                    # the figure that will contain the plot
+                    like_fig = Figure(figsize=(4, 4),
+                                          dpi=100)
+                    # adding the subplot
+                    like_plot = like_fig.add_subplot(111)
+                    like_plot.set_ylabel("Like")
+                    like_plot.set_xlabel("Data numbers")
+                    # plotting the graph
+                    like_plot.plot(like_data)
+                    like_plot.title.set_text("Like statistic")
+
+
+
+                    # creating the Tkinter canvas
+                    # containing the Matplotlib figure
+                    like_canvas = FigureCanvasTkAgg(like_fig,
+                                                        master=dashboard_frame)
+
+                    # placing the canvas on the Tkinter window
+                    like_canvas.draw()
+                    like_canvas.get_tk_widget().place(x=500, y=100)
+
+                    """creating the Matplotlib toolbar
+                    toolbar = NavigationToolbar2Tk(canvas,
+                                                 dashboard_frame)
+                    toolbar.update()"""
+
+                    # placing the toolbar on the Tkinter window
+                    like_canvas.get_tk_widget().place(x=500, y=100)
+                set_follower_plot(0)
+                set_like_plot(0)
+
+                refresh_follow_button = Button(dashboard_frame, text="Refresh follow", command="set")
+                refresh_follow_button.place(x=150, y=400)
+                refresh_like_button = Button(dashboard_frame, text="Refresh like", command="set")
+                refresh_like_button.place(x=550, y=400)
+
+                def get_follower_data(event):
+                    t_follow_number = Thread(target=ig_get_follow_number)
+                    t_follow_number.start()
+                    if not t_follow_number.is_alive():
+                        f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/data/followed_data.txt"
+                        f1 = open(f_name, "r")
+                        follower_data = f1.read()
+                        follower_data = follower_data.split(':')
+                        f1.close()
+                        follower_data.remove("")
+                        follower_int_data = [int(i) for i in follower_data]
+                        set_follower_plot(follower_int_data)
+
+
+
+                def get_like_data(event):
+                    t_like_number = Thread(target=ig_get_like_number())
+                    t_like_number.start()
+                    if not t_like_number.is_alive():
+                        f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/data/like_data.txt"
+                        f2 = open(f_name, "r")
+                        like_data = f2.read()
+                        like_data = like_data.split(':')
+                        f2.close()
+                        like_data.remove("")
+                        like_int_data = [int(i) for i in like_data]
+                        set_like_plot(like_int_data)
+
+
                 logout_button.bind("<Button-1>", logout)
+                refresh_follow_button.bind("<Button-1>", get_follower_data)
+                refresh_like_button.bind("<Button-1>", get_like_data)
 
             else:
-                # Login with ig credential in a file
-                dashboard_frame.place(x=300, y=0, height=0, width=0)
-                # Create instagram login frame
-                instagram_background_login_frame = Frame(self.root, bd=5, bg="white")
-                instagram_background_login_frame.place(x=300, y=0, height=600, width=900)
+                if credential != "":
 
-                # Set title of login frame
-                instagram_login_frame_title = Label(instagram_background_login_frame,
-                                                    text="Login in corso:",
-                                                    bg="white")
-                instagram_login_frame_title.place(x=400, y=250)
+                    # Login with ig credential in a file
+                    dashboard_frame.place(x=300, y=0, height=0, width=0)
+                    # Create instagram login frame
+                    instagram_background_login_frame = Frame(self.root, bd=5, bg="white")
+                    instagram_background_login_frame.place(x=300, y=0, height=600, width=900)
 
-                background_progress = ttk.Progressbar(instagram_background_login_frame, orient=HORIZONTAL,
-                                                      length=100, mode='determinate', )
-                background_progress.place(x=400, y=275)
-                background_progress['value'] = 0
+                    # Set title of login frame
+                    instagram_login_frame_title = Label(instagram_background_login_frame,
+                                                        text="Login in corso:",
+                                                        bg="white")
+                    instagram_login_frame_title.place(x=400, y=250)
 
-                def progress_control():
-                    for a in range(100):
-                        background_progress['value'] = a
-                        time.sleep(0.01)
-                    ig_background_login_check()
+                    background_progress = ttk.Progressbar(instagram_background_login_frame, orient=HORIZONTAL,
+                                                          length=100, mode='determinate', )
+                    background_progress.place(x=400, y=275)
+                    background_progress['value'] = 0
 
-                t_bk_pb = Thread(target=progress_control)
-                t_bk_pb.start()
-                var1 = 0
-                proxy_list1 = getProxies()
-                t1_bk_login = Thread(target=ig_login, args=(proxy_list1, "", "", var1))
-                t1_bk_login.start()
+                    def progress_control():
+                        for a in range(100):
+                            background_progress['value'] = a
+                            time.sleep(0.1)
+                        ig_background_login_check()
+                    t_bk_pb = Thread(target=progress_control)
+                    t_bk_pb.start()
+                    var1 = 0
+                    proxy_list1 = getProxies()
+                    t1_bk_login = Thread(target=ig_login, args=(proxy_list1, "", "", var1))
+                    t1_bk_login.start()
 
-                def ig_background_login_check():
-                    background_progress.destroy()
-                    log_file_str = os.listdir(
-                        "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
-                    log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
-                                    + log_file_str[0], "r")
-                    ll = StringVar
-                    for last_line in log_file:
-                        ll = last_line
-                        pass
-                    if "Username or password is incorrect" in ll:
-                        messagebox.showinfo("Login fail", "Username or password wrong")
+                    def ig_background_login_check():
+                        log_file_str = os.listdir(
+                            "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
+                        log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
+                                        + log_file_str[0], "r")
+                        ll = StringVar
+                        for last_line in log_file:
+                            ll = last_line
+                            pass
+                        if "Username or password is incorrect" in ll:
+                            instagram_background_login_frame.destroy()
+                            messagebox.showinfo("Login fail", "Username or password wrong")
+                            dashboard(0)
+                        if "too many requests" in ll:
+                            messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
+
+                            def progress_wait_control():
+                                instagram_wait_label = Label(instagram_background_login_frame,
+                                                             text="Aspetto 5 minuti:",
+                                                             bg="white")
+                                instagram_wait_label.place(x=400, y=250)
+
+                                background_wait = ttk.Progressbar(instagram_background_login_frame, orient=HORIZONTAL,
+                                                                  length=300, mode='determinate', )
+                                background_wait.place(x=400, y=275)
+                                background_wait['value'] = 0
+
+                                for a in range(300):
+                                    background_wait['value'] = a
+                                    time.sleep(1)
+                                instagram_background_login_frame.destroy()
+                                dashboard(0)
+                            progress_wait_control()
+                        self.is_login = 1
+                        instagram_background_login_frame.destroy()
+                        log_file.close()
                         dashboard(0)
-                    if "too many requests" in ll:
-                        messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
-                        dashboard(0)
-                    self.is_login = 1
-                    instagram_background_login_frame.destroy()
-                    dashboard(0)
 
                 # ----------------------------------------------------------------------------------------------------
                 # Login with a request of ig credential
                 if credential == "":
-                    print("maaaa")
                     dashboard_frame.place(x=300, y=0, height=0, width=0)
                     # Create instagram login frame
                     instagram_login_frame = Frame(self.root, bd=5, bg="white")
@@ -1152,9 +1345,7 @@ class MainPage:
 
                     # Set title of login frame
                     instagram_login_frame_title = Label(instagram_login_frame,
-                                                        text="Prima di accedere alle funzionalità "
-                                                             "di giudoinstabot accedi al profilo"
-                                                             " instagram che vuoi gestire: ",
+                                                        text="Hello",
                                                         bg="white")
                     instagram_login_frame_title.place(x=0, y=30)
 
@@ -1215,6 +1406,7 @@ class MainPage:
                             t1_login.start()
 
                             def ig_login_check():
+
                                 progress.destroy()
                                 log_file_str = os.listdir(
                                     "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")

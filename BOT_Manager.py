@@ -2,11 +2,8 @@ from instabot import Bot
 import os
 import glob
 import time
-
-import datetime
-import MainPage
 from geopy.geocoders import Nominatim
-from apscheduler.schedulers.blocking import BlockingScheduler
+
 
 import shutil
 
@@ -21,22 +18,30 @@ x = 0
 def ig_login(proxy_list, username, password, var):
     # cookie_del = glob.glob("config/*cookie.json")
     # os.remove(cookie_del[0])
+    pp = {"http_proxy": "http://45.8.197.222:45785",
+          "https_proxy": "http://45.8.197.222:45785"}
+
+
+    proxys ={"Selfabiodonello989":"J0q9FyC",
+             "https://proxy-seller.com/?partner=V0GCQx9NDoLmpw": "45785"}
+
     if var == 1:
-        #bot.login(username=username, password=password, is_threaded=True)
+        bot.login(username=username, password=password, is_threaded=True, proxy=str(pp))
         f = open("Credenziali", "w")
         f.write(username)
         f.write("\n")
         f.write(password)
         f.close()
-
         print("Login riuscito A")
 
     if var == 0:
         f = open("Credenziali", "r")
         username = f.readline()
         password = f.readline()
+        print(username)
+        print(password)
         f.close()
-        #bot.login(username=username, password=password, is_threaded=True)
+        bot.login(username=username, password=password, is_threaded=True, proxies=proxys)
         x = 1
         print("Login riuscito B")
 
@@ -144,7 +149,7 @@ def schedule_upload_photo():
 
 scheduler.start()
 '''
-=======
+
 def ig_unfollow(list_value, white_list):
 
     f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/followed.txt"
@@ -231,4 +236,35 @@ def ig_direct(list_value, message):
             for hashtag_user in hashtag_users:
                 bot.send_message(hashtag_user, message)
                 time.sleep(3)
+
+
+def ig_get_follow_number():
+    """f = open("Credenziali", "r")
+    username = f.readline()
+    f.close()
+    bot.get_user_followers(username)
+    n_folloewr = len(username)
+    f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/data/followed_data.txt"
+    f1 = open(f_name, "a")
+    print(str(n_folloewr)+":")
+    f1.close()"""
+
+
+def ig_get_like_number():
+    """f = open("Credenziali", "r")
+    username = f.readline()
+    f.close()
+    medias_id = bot.get_user_medias(username)
+    n_like = 0
+    n_post = len(medias_id)
+    for media in medias_id:
+        like = 20
+        media_info = bot.get_media_info(media)
+        like = like + media['like']
+    f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/data/like_data.txt"
+    f2 = open(f_name, "a")
+    print(str(n_like) + ":")
+    f2.close()"""
+
+
 
