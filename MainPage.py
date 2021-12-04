@@ -3,22 +3,10 @@ import os
 if os.path.isfile("path/to/config/file.json"):
     os.remove("path/to/config/file.json")
 
-
 from tkinter import *
 from tkcalendar import *
 from tkinter import filedialog
-from threading import Thread
-from BOT_Manager import *
 from datetime import date
-from tkinter import ttk
-from PIL import ImageTk, Image
-from instabot import Bot
-import glob
-import argparse
-import sys
-import queue
-import requests
-from bs4 import BeautifulSoup
 from tkinter import ttk
 from threading import Thread
 from BOT_Manager import *
@@ -26,10 +14,9 @@ import requests
 from bs4 import BeautifulSoup
 from tkinter import messagebox
 import re
-import matplotlib
-matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-from matplotlib.figure import Figure
+import threading
+import csv
+from datetime import datetime
 
 
 class MainPage:
@@ -106,13 +93,9 @@ class MainPage:
             auto_publish_label = Label(auto_publish_frame, text="Auto-publish", bg="steelblue", fg="white")
             auto_publish_label.place(x=0, y=0, height=50, width=200)
 
-            # Set auto-publish
-            save_button = Button(auto_publish_frame, text="Save", command="set")
-            save_button.place(x=350, y=0, height=50, width=100)
-
             # Set calendar
 
-            cal = Calendar(auto_publish_frame, setmode='day', date_pattern='dd-mm-yyyy', mindate=date.today(),
+            cal = Calendar(auto_publish_frame, setmode='day', date_pattern='dd/mm/yyyy', mindate=date.today(),
                            background="steelblue", headersbackground="lightsteelblue", headersforeground="whitesmoke")
 
             cal.place(x=0, y=100, height=150, width=300)
@@ -130,8 +113,12 @@ class MainPage:
 
             # Set time button
 
-            hours = list(range(1, 25))
-            minutes = list(range(00, 60))
+            hours = ["--", "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
+                     "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"]
+            minutes = ["--", "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
+                       "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+                       "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46",
+                       "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"]
 
             var_hours = StringVar(auto_publish_frame)
             var_hours.set(hours[0])
@@ -139,49 +126,71 @@ class MainPage:
             var_minutes = StringVar(auto_publish_frame)
             var_minutes.set(minutes[0])
 
-            hours_menu = OptionMenu(auto_publish_frame, var_hours, *hours)
+            hours_menu = ttk.Combobox(auto_publish_frame, textvariable=var_hours, values=hours, state='readonly')
             hours_menu.place(x=450, y=175, width=50)
 
-            minutes_menu = OptionMenu(auto_publish_frame, var_minutes, *minutes)
+            minutes_menu = ttk.Combobox(auto_publish_frame, textvariable=var_minutes, values=minutes, state='readonly')
             minutes_menu.place(x=500, y=175, width=50)
 
             def select_time():
-                selected_time = Label(auto_publish_frame, text=" " + var_hours.get() + " : " + var_minutes.get())
+                time_selected = var_hours.get() + " : " + var_minutes.get()
+                selected_time = Label(auto_publish_frame, text=time_selected)
                 selected_time.place(x=550, y=165, height=50, width=100)
+                return time_selected
 
             select_time_button = Button(auto_publish_frame, text="Select time", command=select_time)
             select_time_button.place(x=350, y=165, height=50, width=100)
 
             # Set view files selected
-
             table = ttk.Treeview(auto_publish_frame)
-            table.place(x=0, y=285, height=150, width=450)
+            table.place(x=0, y=285, height=150, width=350)
             table_scroll = ttk.Scrollbar(auto_publish_frame, orient="vertical", command=table.yview)
-            table_scroll.place(x=450, y=285, height=150)
+            table_scroll.place(x=350, y=285, height=150)
             table.configure(yscrollcommand=table_scroll.set)
 
-            table['columns'] = ('File', 'Date', 'Time', 'View', 'Delete')
+            table['columns'] = ('File', 'Datetime')
 
-            table.column('#0', width=0, stretch=False)
-            table.column("File", anchor=CENTER, width=200)
-            table.column("Date", anchor=CENTER, width=70)
-            table.column("Time", anchor=CENTER, width=70)
-            table.column("View", anchor=CENTER, width=50)
-            table.column("Delete", anchor=CENTER, width=50)
+            table.column('#0', width=0, stretch=NO)
+            table.column("File", anchor=W, width=200)
+            table.column("Datetime", anchor=W, width=140)
 
-            table.heading("#0", text="", anchor=CENTER)
-            table.heading("File", text="File", anchor=CENTER)
-            table.heading("Date", text="Date", anchor=CENTER)
-            table.heading("Time", text="Time", anchor=CENTER)
-            table.heading("View", text="View", anchor=CENTER)
-            table.heading("Delete", text="Delete", anchor=CENTER)
+            table.heading("#0", text="")
+            table.heading("File", text="File", anchor=W)
+            table.heading("Datetime", text="Datetime", anchor=W)
+
+            # Remove selected file
+            def remove_file():
+                global item_text
+                for item in table.selection():
+                    item_text = table.item(item, 'values')[0]
+                    print(item_text + "\n")
+                    table.delete(item)
+
+                with open("File photo.txt", "r") as my_file:
+                    lines = my_file.readlines()
+                with open("File photo.txt", "w")as my_file:
+                    for line in lines:
+                        if line.split(sep=', ')[0] != item_text:
+                            print(line.split(sep=', ')[0])
+                            my_file.write(line)
+
+            remove = Button(auto_publish_frame, text="Remove", command=remove_file)
+            remove.place(x=380, y=285, height=50, width=150)
+
+            # Sort column
+            def tree_view_sort_column(tv, col):
+                l = [(tv.set(k, col), k) for k in tv.get_children('')]
+                l.sort(key=lambda x: datetime.strptime(x[0], '%d/%m/%Y %H:%M'))
+
+                for index, (val, k) in enumerate(l):
+                    tv.move(k, '', index)
 
             # Set Enter the caption
             caption_label = Label(auto_publish_frame, text="Enter the caption", bg="whitesmoke")
-            caption_label.place(x=500, y=285, height=50, width=100)
+            caption_label.place(x=580, y=285, height=50, width=100)
 
             caption_frame = Frame(auto_publish_frame, bd=5, bg="silver")
-            caption_frame.place(x=500, y=325, height=110, width=300)
+            caption_frame.place(x=580, y=325, height=110, width=300)
             caption_frame.grid_columnconfigure(0, weight=1)
             caption_frame.grid_rowconfigure(0, weight=1)
 
@@ -196,59 +205,93 @@ class MainPage:
             # Set Choose file button
 
             def choose_file():
-                auto_publish_frame.filename = filedialog.askopenfilename(initialdir="/desktop", title="Select a file",
+                auto_publish_frame.filename = filedialog.askopenfilename(initialdir="/desktop",
+                                                                         title="Select a file",
                                                                          filetypes=(
                                                                              ("all files", "*.*"),
                                                                              ("jpg files", "*.jpg"),
                                                                              ("jpeg files", "*.jpeg"),
                                                                              ("gif files", "*.gif"),
-                                                                             ("png files", "*.png"),
-                                                                             ("mp4 files", "*.mp4"),
-                                                                             ("wmv files", "*.wmv"),
-                                                                             ("mkv files", "*.mkv"),
-                                                                             ("webm files", "*.webm")))
-                name_file = os.path.basename(auto_publish_frame.filename)
-                print(name_file)
-                table.insert(parent='', index='end', iid=0, text="ciao",
-                             values=(name_file, "21-12-2021", "12:20", "edd", "wee"))
+                                                                             ("png files", "*.png")))
+                ext = os.path.splitext(auto_publish_frame.filename)
+                name_file = os.path.relpath(auto_publish_frame.filename)
+                date_time = (select_date() + " " + var_hours.get() + ":" + var_minutes.get())
 
-            choose_file_button = Button(auto_publish_frame, text="Choose file", command=choose_file, bg="whitesmoke")
+                if name_file:
+                    if ext[1] == ".jpeg" or ext[1] == ".jpg" or ext[1] == ".png" or ext[1] == ".gif":
+                        if select_time() != "-- : --":
+                            table.insert(parent='', index='end', values=(name_file, date_time))
+                            tree_view_sort_column(table, "Datetime")
+                            with open("File photo.txt", "a") as my_file:
+                                my_file.write(name_file + ", " + date_time + "\n")
+                        else:
+                            messagebox.showerror(title='ERROR', message='Select date and time')
+                    else:
+                        messagebox.showerror(title='ERROR', message='The file chosen is not a photo')
+
+            choose_file_button = Button(auto_publish_frame, text="Choose file", command=choose_file,
+                                        bg="whitesmoke")
             choose_file_button.place(x=230, y=0, height=50, width=100)
 
-            # Set check button for upload photo/video/story
-            upload_photo_check = IntVar()
-            upload_video_check = IntVar()
-            upload_story_check = IntVar()
+            # Search for files by comparing dates to upload
+            def search_file():
+                while True:
+                    with open("File photo.txt") as my_file:
+                        while True:
+                            try:
+                                line = my_file.readline().split(sep=', ')[1]
+                            except IndexError:
+                                break
+                            datetime.strptime(line.strip(), '%d/%m/%Y %H:%M')
+                            date_curr = datetime.now().strftime('%d/%m/%Y %H:%M')
+                            print(line.strip())
+                            print(date_curr)
+                            if line.strip() == date_curr:
+                                print("done")
+                                # add method to shoot it on IG
+                            time.sleep(10)
 
-            def upload_photo_button():
-                if upload_photo_check.get() == 1:
-                    upload_photo_check_button["bg"] = "green"
-                if upload_photo_check.get() == 0:
-                    upload_photo_check_button["bg"] = "steelblue"
+            threading.Thread(target=lambda: search_file()).start()
 
-            def upload_video_button():
-                if upload_video_check.get() == 1:
-                    upload_video_check_button["bg"] = "green"
-                if upload_video_check.get() == 0:
-                    upload_video_check_button["bg"] = "steelblue"
+            # Function set to save user options
+            def save_options():
+                saved_file = open("Autopublish options", "w")
 
-            def upload_story_button():
-                if upload_story_check.get() == 1:
-                    upload_story_check_button["bg"] = "green"
-                if upload_story_check.get() == 0:
-                    upload_story_check_button["bg"] = "steelblue"
+                # Save table
+                with open("table file.csv", "w", newline='')as my_file:
+                    csv_writer = csv.writer(my_file, delimiter=',')
 
-            upload_photo_check_button = Checkbutton(auto_publish_frame, text="Upload photo", bg="steelblue", fg="white",
-                                                    variable=upload_photo_check, command=upload_photo_button)
-            upload_photo_check_button.place(x=50, y=500, height=50, width=150)
+                    for row_id in table.get_children():
+                        row = table.item(row_id)['values']
+                        print('save row: ', row)
+                        csv_writer.writerow(row)
 
-            upload_video_check_button = Checkbutton(auto_publish_frame, text="Upload video", bg="steelblue", fg="white",
-                                                    variable=upload_video_check, command=upload_video_button)
-            upload_video_check_button.place(x=300, y=500, height=50, width=150)
+                saved_file.write(caption_text.get(1.0, 'end-1c') + ':')
+                saved_file.close()
 
-            upload_story_check_button = Checkbutton(auto_publish_frame, text="Upload story", bg="steelblue", fg="white",
-                                                    variable=upload_story_check, command=upload_story_button)
-            upload_story_check_button.place(x=550, y=500, height=50, width=150)
+            # Function set to save user options
+            def load_options():
+                load_file = open("Autopublish options", "r")
+
+                # load table
+                with open("table file.csv") as my_file:
+                    csv_read = csv.reader(my_file, delimiter=',')
+
+                    for row in csv_read:
+                        print('load row: ', row)
+                        table.insert("", 'end', values=row)
+
+                data = load_file.read()
+                data_split = data.split(sep=':')
+                caption_text.insert('1.0', data_split[0])
+                load_file.close()
+
+            # Set save and load button
+            save_button = Button(auto_publish_frame, text="Save", command=save_options)
+            save_button.place(x=350, y=0, height=50, width=100)
+
+            load_button = Button(auto_publish_frame, text='Load', command=load_options)
+            load_button.place(x=500, y=0, height=50, width=100)
 
         def unfollow(event):
             dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -454,6 +497,7 @@ class MainPage:
                 print(tuple_value)
                 t_unfollow = Thread(target=ig_unfollow, args=(tuple_value, white_list_value))
                 t_unfollow.start()
+
             start_un_follower_bot_button.bind("<Button-1>", start_unfollow_bot)
 
         def direct(event):
@@ -738,12 +782,10 @@ class MainPage:
             location_text = Text(location_likes_frame, height=10)
             location_text.grid(row=0, column=0, sticky="ew")
 
-
             location_scrollbar = Scrollbar(location_likes_frame, orient="vertical", command=location_text.yview)
             location_scrollbar.grid(row=0, column=1, sticky="ns")
 
             location_text['yscrollcommand'] = location_scrollbar.set
-
 
         def follow(event):
 
@@ -1032,7 +1074,6 @@ class MainPage:
 
             start_follower_bot_button.bind("<Button-1>", start_follow_bot)
 
-
         def dashboard(event):
 
             f = open("Credenziali", "r")
@@ -1051,6 +1092,7 @@ class MainPage:
                     else:
                         pass
                 return proxies
+
             if self.is_login == 1:
                 dashboard_frame.place(x=300, y=0, height=600, width=900)
 
@@ -1088,6 +1130,7 @@ class MainPage:
                     t_logout.start()
                     self.is_login = 0
                     dashboard(0)
+
                 logout_button.bind("<Button-1>", logout)
 
             else:
@@ -1124,8 +1167,8 @@ class MainPage:
                 def ig_background_login_check():
                     background_progress.destroy()
                     log_file_str = os.listdir(
-                        "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
-                    log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
+                        r"C:\Users\39377\Desktop\InstaBot\config\log")
+                    log_file = open(r"C:\Users\39377\Desktop\InstaBot\config\log\\"
                                     + log_file_str[0], "r")
                     ll = StringVar
                     for last_line in log_file:
@@ -1194,7 +1237,8 @@ class MainPage:
                         if username_text and password_text:
                             proxy_list1 = getProxies()
                             instagram_access_button.destroy()
-                            instagram_info_label = Label(instagram_login_frame, text="Login in process: ", bg="white")
+                            instagram_info_label = Label(instagram_login_frame, text="Login in process: ",
+                                                         bg="white")
                             instagram_info_label.place(x=0, y=195, height=50, width=150)
                             progress = ttk.Progressbar(instagram_login_frame, orient=HORIZONTAL,
                                                        length=100, mode='determinate', )
@@ -1211,14 +1255,15 @@ class MainPage:
                             t_pb.start()
                             var1 = 1
 
-                            t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
+                            t1_login = Thread(target=ig_login,
+                                              args=(proxy_list1, username_text, password_text, var1))
                             t1_login.start()
 
                             def ig_login_check():
                                 progress.destroy()
                                 log_file_str = os.listdir(
-                                    "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
-                                log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
+                                    r"C:\Users\39377\Desktop\InstaBot\config\log")
+                                log_file = open(r"C:\Users\39377\Desktop\InstaBot\config\log\\"
                                                 + log_file_str[0], "r")
                                 ll = StringVar
                                 for last_line in log_file:
@@ -1228,14 +1273,14 @@ class MainPage:
                                     messagebox.showinfo("Login fail", "Username or password wrong")
                                     dashboard(0)
                                 if "too many requests" in ll:
-                                    messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
+                                    messagebox.showinfo("Login fail",
+                                                        "To many request from instagram, wait 5 minutes")
                                     dashboard(0)
                                 self.is_login = 1
                                 instagram_login_frame.destroy()
                                 dashboard(0)
 
                     instagram_access_button.bind("<Button-1>", access_try)
-
 
         auto_publish_button.bind("<Button-1>", auto_publish)
         unfollow_button.bind("<Button-1>", unfollow)

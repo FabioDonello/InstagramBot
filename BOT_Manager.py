@@ -10,8 +10,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 
 import shutil
 
-
-file_path = '/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/'
+file_path = r'C:\Users\39377\Desktop\InstaBot\config\log'
 shutil.rmtree(file_path)
 bot = Bot()
 file_id = format(id(bot))
@@ -22,7 +21,7 @@ def ig_login(proxy_list, username, password, var):
     # cookie_del = glob.glob("config/*cookie.json")
     # os.remove(cookie_del[0])
     if var == 1:
-        #bot.login(username=username, password=password, is_threaded=True)
+        # bot.login(username=username, password=password, is_threaded=True)
         f = open("Credenziali", "w")
         f.write(username)
         f.write("\n")
@@ -36,7 +35,7 @@ def ig_login(proxy_list, username, password, var):
         username = f.readline()
         password = f.readline()
         f.close()
-        #bot.login(username=username, password=password, is_threaded=True)
+        # bot.login(username=username, password=password, is_threaded=True)
         x = 1
         print("Login riuscito B")
 
@@ -46,9 +45,8 @@ def ig_logout():
     username = f.readline()
     f.close()
     f = open("Credenziali", "w").close()
-    #bot.logout(username=username, is_threaded=True)
+    # bot.logout(username=username, is_threaded=True)
     print("Logout eseguito")
-
 
 
 # Set follow
@@ -93,7 +91,6 @@ def ig_follow_account(accounts):
         for user in users:
             bot.follow(user)
             print(time.sleep(300))
-
 
 
 # Set Likes
@@ -144,15 +141,17 @@ def schedule_upload_photo():
 
 scheduler.start()
 '''
-=======
-def ig_unfollow(list_value, white_list):
 
+
+def ig_unfollow(list_value, white_list):
     f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/followed.txt"
+
     def file_len(f_name):
         with open(f_name, "r") as followed_file:
             for i, l in enumerate(followed_file):
                 pass
         return i + 1
+
     followed_file_len = file_len(f_name)
     print(followed_file_len)
     with open(f_name, "r") as followed_file:
@@ -198,6 +197,7 @@ def ig_direct(list_value, message):
     if list_value[1][0] == 1:
         print("sono dentro")
         f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/followed.txt"
+
         def file_len(f_name):
             with open(f_name, "r") as followed_file:
                 for i, l in enumerate(followed_file):
@@ -231,4 +231,3 @@ def ig_direct(list_value, message):
             for hashtag_user in hashtag_users:
                 bot.send_message(hashtag_user, message)
                 time.sleep(3)
-
