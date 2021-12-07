@@ -17,8 +17,8 @@ class Login:
         self.root.resizable(False, False)
 
         # Background image
-        #self.bg_login_image = ImageTk.PhotoImage(file="temp.png")
-        #self.bg_login = Label(self.root, image=self.bg_login_image).place(x=0, y=0, relheight=2, relwidth=2)
+        # self.bg_login_image = ImageTk.PhotoImage(file="temp.png")
+        # self.bg_login = Label(self.root, image=self.bg_login_image).place(x=0, y=0, relheight=2, relwidth=2)
 
         # Create login frame
         frame_login = Frame(self.root, bd=5, bg="white")

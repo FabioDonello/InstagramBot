@@ -20,7 +20,6 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
-
 class MainPage:
 
     def __init__(self, root):
@@ -526,9 +525,9 @@ class MainPage:
                     start_un_follower_bot_button["text"] = "Stop"
                     unfollow_stp(1)
                     unfollow_stp(2)
-                    
+
             def save_unfollow_options(event):
-                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/unfollow_options"
+                dir = r"C:\Users\39377\Desktop\InstaBot\data options\unfollow_options"
                 saved_file = open(dir, "w")
 
                 saved_file.write(str(replacemant_time_var.get()) + ":")
@@ -538,8 +537,9 @@ class MainPage:
                 saved_file.write(white_list_text.get(1.0, "end-1c") + ":")
 
                 saved_file.close()
+
             def upload_unfollow_options(event):
-                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/unfollow_options"
+                dir = r"C:\Users\39377\Desktop\InstaBot\data options\unfollow_options"
                 saved_file = open(dir, "r")
                 data = saved_file.read()
                 data_split = data.split(":")
@@ -726,17 +726,17 @@ class MainPage:
                 t_direct.start()
 
             def save_direct_options(event):
-                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/direct_options"
+                dir = r"C:\Users\39377\Desktop\InstaBot\data options\direct_options"
                 saved_file = open(dir, "w").close()
                 saved_file = open(dir, "w")
                 saved_file.write(account_text.get(1.0, "end-1c") + ":")
                 saved_file.write(hashtag_text.get(1.0, "end-1c") + ":")
                 saved_file.write(message_text.get(1.0, "end-1c") + ":")
 
-
                 saved_file.close()
+
             def upload_direct_options(event):
-                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/direct_options"
+                dir = r"C:\Users\39377\Desktop\InstaBot\data options\direct_options"
                 saved_file = open(dir, "r")
                 data = saved_file.read()
                 data_split = data.split(":")
@@ -860,7 +860,7 @@ class MainPage:
             location_scrollbar.grid(row=0, column=1, sticky="ns")
 
             location_text['yscrollcommand'] = location_scrollbar.set
-            
+
             # Function set to save user options
             def save_options():
                 saved_file = open("Likes options", "w")
@@ -891,7 +891,7 @@ class MainPage:
             load_likes_options_button.place(x=300, y=0, height=50, width=100)
 
             # Function set for start bot
-            
+
         def follow(event):
 
             dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -925,7 +925,6 @@ class MainPage:
 
             upload_follower_option_button = Button(follow_frame, text="Upload", command="set")
             upload_follower_option_button.place(x=300, y=0, height=50, width=100)
-
 
             follow_by_hashtag_label = Label(follow_frame, text="Follow by hashtag:", bg="grey")
             follow_by_hashtag_label.place(x=0, y=75, width=900)
@@ -1148,20 +1147,19 @@ class MainPage:
                     t_follow_account.start()
 
             def save_options(event):
-                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/follow_options"
+                dir = r"C:\Users\39377\Desktop\InstaBot\data options\follow_options"
                 saved_file = open(dir, "w")
 
-
-                saved_file.write(hashtag_text.get(1.0, "end-1c")+":")
-                saved_file.write(str(country_text.get())+":")
+                saved_file.write(hashtag_text.get(1.0, "end-1c") + ":")
+                saved_file.write(str(country_text.get()) + ":")
                 saved_file.write(str(region_text.get()) + ":")
                 saved_file.write(str(city_text.get()) + ":")
-                saved_file.write(account_text.get(1.0, "end-1c")+":")
+                saved_file.write(account_text.get(1.0, "end-1c") + ":")
 
                 saved_file.close()
 
             def upload_options(event):
-                dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/follow_options"
+                dir = r"C:\Users\39377\Desktop\InstaBot\data options\follow_options"
                 saved_file = open(dir, "r")
                 data = saved_file.read()
                 data_split = data.split()
@@ -1172,6 +1170,7 @@ class MainPage:
                 account_text.insert("1.0", data_split[4])
 
                 saved_file.close()
+
             start_follower_bot_button.bind("<Button-1>", start_follow_bot)
             save_follower_option_button.bind("<Button-1>", save_options)
             upload_follower_option_button.bind("<Button-1>", upload_options)
@@ -1224,7 +1223,7 @@ class MainPage:
 
                     # the figure that will contain the plot
                     follower_fig = Figure(figsize=(4, 4),
-                                 dpi=100)
+                                          dpi=100)
                     # adding the subplot
                     follower_plot = follower_fig.add_subplot(111)
                     print(follower_data)
@@ -1237,7 +1236,7 @@ class MainPage:
                     # creating the Tkinter canvas
                     # containing the Matplotlib figure
                     follower_canvas = FigureCanvasTkAgg(follower_fig,
-                                               master=dashboard_frame)
+                                                        master=dashboard_frame)
 
                     # placing the canvas on the Tkinter window
                     follower_canvas.draw()
@@ -1248,7 +1247,7 @@ class MainPage:
                 def set_like_plot(like_data):
                     # the figure that will contain the plot
                     like_fig = Figure(figsize=(4, 4),
-                                          dpi=100)
+                                      dpi=100)
                     # adding the subplot
                     like_plot = like_fig.add_subplot(111)
                     like_plot.set_ylabel("Like")
@@ -1257,12 +1256,10 @@ class MainPage:
                     like_plot.plot(like_data)
                     like_plot.title.set_text("Like statistic")
 
-
-
                     # creating the Tkinter canvas
                     # containing the Matplotlib figure
                     like_canvas = FigureCanvasTkAgg(like_fig,
-                                                        master=dashboard_frame)
+                                                    master=dashboard_frame)
 
                     # placing the canvas on the Tkinter window
                     like_canvas.draw()
@@ -1275,6 +1272,7 @@ class MainPage:
 
                     # placing the toolbar on the Tkinter window
                     like_canvas.get_tk_widget().place(x=500, y=100)
+
                 set_follower_plot(0)
                 set_like_plot(0)
 
@@ -1296,8 +1294,6 @@ class MainPage:
                         follower_int_data = [int(i) for i in follower_data]
                         set_follower_plot(follower_int_data)
 
-
-
                 def get_like_data(event):
                     t_like_number = Thread(target=ig_get_like_number())
                     t_like_number.start()
@@ -1316,7 +1312,7 @@ class MainPage:
                 refresh_like_button.bind("<Button-1>", get_like_data)
 
             else:
-              
+
                 if credential != "":
                     print("ho le credenziali")
 
@@ -1342,6 +1338,7 @@ class MainPage:
                             background_progress['value'] = val
                             time.sleep(0.1)
                         ig_background_login_check()
+
                     t_bk_pb = Thread(target=progress_control)
                     t_bk_pb.start()
                     t1_bk_login = Thread(target=ig_login, args=("", "", 0))
@@ -1375,9 +1372,10 @@ class MainPage:
                                         time.sleep(0.1)
                                     instagram_background_login_frame.destroy()
                                     dashboard(0)
+
                                 progress_wait_control()
 
-                        #self.is_login = is_login()
+                        # self.is_login = is_login()
                         self.is_login = True
                         if self.is_login == True:
                             instagram_background_login_frame.destroy()
@@ -1474,6 +1472,7 @@ class MainPage:
                                 else:
                                     messagebox.showinfo("Login fail", "Something wrong")
                                     dashboard(0)
+
                     instagram_access_button.bind("<Button-1>", access_try)
 
         auto_publish_button.bind("<Button-1>", auto_publish)

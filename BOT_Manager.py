@@ -13,27 +13,29 @@ shutil.rmtree(file_path)
 bot = Bot()
 file_id = format(id(bot))
 
+
 def richieste():
     print(bot.api.total_requests)
+
 
 def is_login():
     return bot.api.is_logged_in
 
+
 def ig_login(username, password, var):
-    #cookie_del = glob.glob("config/*cookie.json")
-    #os.remove(cookie_del[0])
-    #proxy="Selfabiodonello989:J0q9FyC@45.8.197.222:45785"
+    # cookie_del = glob.glob("config/*cookie.json")
+    # os.remove(cookie_del[0])
+    # proxy="Selfabiodonello989:J0q9FyC@45.8.197.222:45785"
     richieste()
     print("faccio il login")
     if var == 1:
-
         bot.login(username=username, password=password, use_cookie=True, is_threaded=True)
         f = open("Credenziali", "w")
         f.write(username)
         f.write(":")
         f.write(password)
         f.close()
-        print("Login riuscito senza avere le creddenziali")
+        print("Login riuscito senza avere le credenziali")
     if var == 0:
         f = open("Credenziali", "r")
         text = f.read()
@@ -48,6 +50,7 @@ def ig_login(username, password, var):
         b = bot.api.is_logged_in
         print(b)
 
+
 def ig_logout():
     f = open("Credenziali", "r")
     username = f.readline()
@@ -55,6 +58,7 @@ def ig_logout():
     f = open("Credenziali", "w").close()
     # bot.logout(username=username, is_threaded=True)
     print("Logout eseguito")
+
 
 # Set follow
 def ig_follow_hashtag(hashtags):
@@ -65,6 +69,7 @@ def ig_follow_hashtag(hashtags):
         for user in users:
             bot.follow(user)
             print(time.sleep(300))
+
 
 def ig_follow_location(location):
     app = Nominatim(user_agent="tutorial")
@@ -79,6 +84,7 @@ def ig_follow_location(location):
         for users in user_position:
             bot.follow_followers(user_id=users)
             time.sleep(240)
+
 
 def ig_follow_account(accounts):
     print(accounts)
@@ -139,8 +145,9 @@ def schedule_upload_photo():
 scheduler.start()
 '''
 
-
 val = False
+
+
 def unfollow_stp(a):
     global val
     if a == 1:
@@ -148,8 +155,9 @@ def unfollow_stp(a):
     if a == 2:
         val = False
 
+
 def ig_unfollow(list_value, white_list):
-    f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/followed.txt"
+    f_name = r"C:\Users\39377\Desktop\InstaBot\config\followed.txt"
 
     def file_len(f_name):
         with open(f_name, "r") as followed_file:
@@ -205,7 +213,7 @@ def ig_direct(list_value, message):
     # Direct your following
     if list_value[1][0] == 1:
         print("sono dentro")
-        f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/followed.txt"
+        f_name = r"C:\Users\39377\Desktop\InstaBot\config\followed.txt"
 
         def file_len(f_name):
             with open(f_name, "r") as followed_file:
@@ -240,7 +248,6 @@ def ig_direct(list_value, message):
             for hashtag_user in hashtag_users:
                 bot.send_message(hashtag_user, message)
                 time.sleep(3)
-
 
 
 def ig_get_follow_number():
