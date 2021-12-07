@@ -17,6 +17,7 @@ import re
 import threading
 import csv
 from datetime import datetime
+from PIL import Image, ImageTk
 
 
 class MainPage:
@@ -144,9 +145,14 @@ class MainPage:
             # Set view files selected
             table = ttk.Treeview(auto_publish_frame)
             table.place(x=0, y=285, height=150, width=350)
-            table_scroll = ttk.Scrollbar(auto_publish_frame, orient="vertical", command=table.yview)
-            table_scroll.place(x=350, y=285, height=150)
-            table.configure(yscrollcommand=table_scroll.set)
+
+            table_scroll_y = ttk.Scrollbar(auto_publish_frame, orient="vertical", command=table.yview)
+            table_scroll_y.place(x=350, y=285, height=150)
+            table.configure(yscrollcommand=table_scroll_y.set)
+
+            table_scroll_x = ttk.Scrollbar(auto_publish_frame, orient="horizontal", command=table.xview)
+            table_scroll_x.place(x=0, y=435, width=350)
+            table.configure(xscrollcommand=table_scroll_x.set)
 
             table['columns'] = ('File', 'Datetime')
 
@@ -175,7 +181,7 @@ class MainPage:
                             my_file.write(line)
 
             remove = Button(auto_publish_frame, text="Remove", command=remove_file)
-            remove.place(x=380, y=285, height=50, width=150)
+            remove.place(x=0, y=470, height=50, width=100)
 
             # Sort column
             def tree_view_sort_column(tv, col):
@@ -187,10 +193,10 @@ class MainPage:
 
             # Set Enter the caption
             caption_label = Label(auto_publish_frame, text="Enter the caption", bg="whitesmoke")
-            caption_label.place(x=580, y=285, height=50, width=100)
+            caption_label.place(x=450, y=285, height=50, width=100)
 
             caption_frame = Frame(auto_publish_frame, bd=5, bg="silver")
-            caption_frame.place(x=580, y=325, height=110, width=300)
+            caption_frame.place(x=450, y=325, height=110, width=400)
             caption_frame.grid_columnconfigure(0, weight=1)
             caption_frame.grid_rowconfigure(0, weight=1)
 
@@ -224,6 +230,8 @@ class MainPage:
                             tree_view_sort_column(table, "Datetime")
                             with open("File photo.txt", "a") as my_file:
                                 my_file.write(name_file + ", " + date_time + "\n")
+                            messagebox.showinfo(title='INFO',
+                                                message='Do not delete or move the file to your computer, it could cause an error!')
                         else:
                             messagebox.showerror(title='ERROR', message='Select date and time')
                     else:
@@ -231,7 +239,7 @@ class MainPage:
 
             choose_file_button = Button(auto_publish_frame, text="Choose file", command=choose_file,
                                         bg="whitesmoke")
-            choose_file_button.place(x=230, y=0, height=50, width=100)
+            choose_file_button.place(x=200, y=0, height=50, width=100)
 
             # Search for files by comparing dates to upload
             def search_file():
@@ -288,10 +296,22 @@ class MainPage:
 
             # Set save and load button
             save_button = Button(auto_publish_frame, text="Save", command=save_options)
-            save_button.place(x=350, y=0, height=50, width=100)
+            save_button.place(x=300, y=0, height=50, width=100)
 
             load_button = Button(auto_publish_frame, text='Load', command=load_options)
-            load_button.place(x=500, y=0, height=50, width=100)
+            load_button.place(x=400, y=0, height=50, width=100)
+
+            # Function set to view image
+            def view_file():
+                global item_text
+
+                for item in table.selection():
+                    item_text = table.item(item, 'values')[0]
+                im = Image.open(item_text)
+                im.show()
+
+            view_button = Button(auto_publish_frame, text='View', command=view_file)
+            view_button.place(x=150, y=470, height=50, width=100)
 
         def unfollow(event):
             dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -693,10 +713,6 @@ class MainPage:
             start_likes_bot_button = Button(like_dislike_frame, text="Start", command="set")
             start_likes_bot_button.place(x=100, y=0, height=50, width=100)
 
-            # Save likes option button
-            save_likes_options_button = Button(like_dislike_frame, text="Save", command="set")
-            save_likes_options_button.place(x=200, y=0, height=50, width=100)
-
             hashtag = IntVar()
             location_check = IntVar()
             account = IntVar()
@@ -786,6 +802,37 @@ class MainPage:
             location_scrollbar.grid(row=0, column=1, sticky="ns")
 
             location_text['yscrollcommand'] = location_scrollbar.set
+
+            # Function set to save user options
+            def save_options():
+                saved_file = open("Likes options", "w")
+
+                saved_file.write(hashtag_text.get(1.0, 'end-1c') + ":")
+                saved_file.write(location_text.get(1.0, 'end-1c') + ':')
+                saved_file.write(account_text.get(1.0, 'end-1c') + ':')
+
+                saved_file.close()
+
+            # Function set to save user options
+            def load_options():
+                load_file = open("Likes options", "r")
+
+                data = load_file.read()
+                data_split = data.split(':')
+                hashtag_text.insert('1.0', data_split[0])
+                location_text.insert('1.0', data_split[1])
+                account_text.insert('1.0', data_split[2])
+
+                load_file.close()
+
+            # Save and load likes option button
+            save_likes_options_button = Button(like_dislike_frame, text="Save", command=save_options)
+            save_likes_options_button.place(x=200, y=0, height=50, width=100)
+
+            load_likes_options_button = Button(like_dislike_frame, text='Load', command=load_options)
+            load_likes_options_button.place(x=300, y=0, height=50, width=100)
+
+            # Function set for start bot
 
         def follow(event):
 
