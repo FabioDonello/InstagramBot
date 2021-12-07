@@ -3,7 +3,7 @@ import os
 if os.path.isfile("path/to/config/file.json"):
     os.remove("path/to/config/file.json")
 
-
+import threading
 from tkinter import *
 from tkcalendar import *
 from tkinter import filedialog
@@ -11,17 +11,11 @@ from datetime import date
 from tkinter import ttk
 from threading import Thread
 from BOT_Manager import *
-import requests
-from bs4 import BeautifulSoup
 from tkinter import messagebox
-import re
-from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPDF, renderPM
-import leather
-from PIL import Image, ImageTk
 from tkinter import *
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import re
 
 
 
@@ -447,9 +441,24 @@ class MainPage:
                 if account_media_check_var.get() == 1:
                     a4[0] = 1
                 tuple_value = (a1, a2, a3, a4)
-                print(tuple_value)
-                t_unfollow = Thread(target=ig_unfollow, args=(tuple_value, white_list_value))
-                t_unfollow.start()
+                if start_un_follower_bot_button["text"] == "Start":
+                    start_un_follower_bot_button["text"] = "Stop"
+                    t_unfollow = Thread(target=ig_unfollow, args=(tuple_value, white_list_value))
+                    t_unfollow.start()
+                else:
+                    start_un_follower_bot_button["text"] = "Stop"
+                    unfollow_stp(1)
+                    unfollow_stp(2)
+
+
+
+
+
+
+
+
+
+
             def save_unfollow_options(event):
                 dir = "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/data options/unfollow_options"
                 saved_file = open(dir, "w")
@@ -790,7 +799,6 @@ class MainPage:
 
             location_text['yscrollcommand'] = location_scrollbar.set
 
-
         def follow(event):
 
             dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -1026,7 +1034,7 @@ class MainPage:
                     t_follow_hashtag.start()
 
                 if country_check_var:
-                    if country_text != "Select region":
+                    if country_text != "Select country":
                         t_follow_country = Thread(target=ig_follow_location, args=(country_text,))
                         t_follow_country.start()
 
@@ -1036,7 +1044,7 @@ class MainPage:
                         t_follow_region.start()
 
                 if city_check_var:
-                    if city_text != "Select region":
+                    if city_text != "Select city":
                         t_follow_city = Thread(target=ig_follow_location, args=(city_text,))
                         t_follow_city.start()
 
@@ -1077,26 +1085,12 @@ class MainPage:
             save_follower_option_button.bind("<Button-1>", save_options)
             upload_follower_option_button.bind("<Button-1>", upload_options)
 
-
-
         def dashboard(event):
 
             f = open("Credenziali", "r")
             credential = f.read()
             f.close()
 
-            def getProxies():
-                r = requests.get('https://free-proxy-list.net/')
-                soup = BeautifulSoup(r.content, 'html.parser')
-                table = soup.find('tbody')
-                proxies = []
-                for row in table:
-                    if row.find_all('td')[4].text == 'elite proxy':
-                        proxy = ':'.join([row.find_all('td')[0].text, row.find_all('td')[1].text])
-                        proxies.append(proxy)
-                    else:
-                        pass
-                return proxies
             if self.is_login == 1:
                 dashboard_frame.place(x=300, y=0, height=600, width=900)
 
@@ -1135,34 +1129,6 @@ class MainPage:
                     self.is_login = 0
                     dashboard(0)
 
-                """data = [
-                    (0, 3),
-                    (4, 5),
-                    (7, 9),
-                    (8, 4),
-                    (9, 6)
-
-                ]
-
-                chart = leather.Chart('Linear')
-                chart.add_x_scale(0, 20)
-                chart.add_y_scale(0, 10)
-                chart.add_line(data)
-                chart.to_svg('examples/charts/linear.svg')
-                drawing = svg2rlg('examples/charts/linear.svg')
-                renderPM.drawToFile(drawing, "temp.png", fmt="PNG")
-                img = Image.open('temp.png')
-                img = img.resize((300, 300), Image.ANTIALIAS)
-                img.save(fp="temp.png")
-                self.pimg = ImageTk.PhotoImage(img)
-                size = img.size
-                print(size)
-
-                img_frame = Frame(dashboard_frame, bd=2, bg="black")
-                img_frame.place(x=0, y=100, height=300, width=300)
-                img_label = Label(img_frame, image=self.pimg)
-                img_label.pack()"""
-
                 def set_follower_plot(follower_data):
 
                     # the figure that will contain the plot
@@ -1185,12 +1151,6 @@ class MainPage:
                     # placing the canvas on the Tkinter window
                     follower_canvas.draw()
                     follower_canvas.get_tk_widget().place(x=100, y=100)
-
-                    """creating the Matplotlib toolbar
-                    toolbar = NavigationToolbar2Tk(canvas,
-                                                 dashboard_frame)
-                    toolbar.update()"""
-
                     # placing the toolbar on the Tkinter window
                     follower_canvas.get_tk_widget().place(x=100, y=100)
 
@@ -1267,6 +1227,7 @@ class MainPage:
 
             else:
                 if credential != "":
+                    print("ho le credenziali")
 
                     # Login with ig credential in a file
                     dashboard_frame.place(x=300, y=0, height=0, width=0)
@@ -1286,58 +1247,61 @@ class MainPage:
                     background_progress['value'] = 0
 
                     def progress_control():
-                        for a in range(100):
-                            background_progress['value'] = a
+                        for val in range(100):
+                            background_progress['value'] = val
                             time.sleep(0.1)
                         ig_background_login_check()
                     t_bk_pb = Thread(target=progress_control)
                     t_bk_pb.start()
-                    var1 = 0
-                    proxy_list1 = getProxies()
-                    t1_bk_login = Thread(target=ig_login, args=(proxy_list1, "", "", var1))
+                    t1_bk_login = Thread(target=ig_login, args=("", "", 0))
                     t1_bk_login.start()
 
                     def ig_background_login_check():
-                        log_file_str = os.listdir(
-                            "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
-                        log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
-                                        + log_file_str[0], "r")
-                        ll = StringVar
-                        for last_line in log_file:
-                            ll = last_line
-                            pass
-                        if "Username or password is incorrect" in ll:
-                            instagram_background_login_frame.destroy()
-                            messagebox.showinfo("Login fail", "Username or password wrong")
-                            dashboard(0)
-                        if "too many requests" in ll:
-                            messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
-
-                            def progress_wait_control():
-                                instagram_wait_label = Label(instagram_background_login_frame,
-                                                             text="Aspetto 5 minuti:",
-                                                             bg="white")
-                                instagram_wait_label.place(x=400, y=250)
-
-                                background_wait = ttk.Progressbar(instagram_background_login_frame, orient=HORIZONTAL,
-                                                                  length=300, mode='determinate', )
-                                background_wait.place(x=400, y=275)
-                                background_wait['value'] = 0
-
-                                for a in range(300):
-                                    background_wait['value'] = a
-                                    time.sleep(1)
+                        last_message = bot.api.last_response
+                        if last_message:
+                            if "Username or password is incorrect" in last_message:
                                 instagram_background_login_frame.destroy()
+                                messagebox.showinfo("Login fail", "Username or password wrong")
                                 dashboard(0)
-                            progress_wait_control()
-                        self.is_login = 1
-                        instagram_background_login_frame.destroy()
-                        log_file.close()
-                        dashboard(0)
+                            if "429" in last_message:
+                                messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
+
+                                def progress_wait_control():
+
+                                    instagram_wait_label = Label(instagram_background_login_frame,
+                                                                 text="Aspetto 5 minuti:",
+                                                                 bg="white")
+                                    instagram_wait_label.place(x=400, y=250)
+
+                                    background_wait = ttk.Progressbar(instagram_background_login_frame,
+                                                                      orient=HORIZONTAL,
+                                                                      length=100, mode='determinate', )
+                                    background_wait.place(x=400, y=275)
+                                    background_wait['value'] = 0
+
+                                    for a in range(100):
+                                        background_wait['value'] = a
+                                        time.sleep(0.1)
+                                    instagram_background_login_frame.destroy()
+                                    dashboard(0)
+                                progress_wait_control()
+
+                        #self.is_login = is_login()
+                        self.is_login = True
+                        if self.is_login == True:
+                            instagram_background_login_frame.destroy()
+                            dashboard(0)
+                        else:
+                            messagebox.showinfo("Login fail", "Something wrong")
+                            dashboard(0)
+
+
+
 
                 # ----------------------------------------------------------------------------------------------------
                 # Login with a request of ig credential
                 if credential == "":
+                    print("non ho le credenziali")
                     dashboard_frame.place(x=300, y=0, height=0, width=0)
                     # Create instagram login frame
                     instagram_login_frame = Frame(self.root, bd=5, bg="white")
@@ -1383,7 +1347,6 @@ class MainPage:
                         print(username_text)
                         print(password_text)
                         if username_text and password_text:
-                            proxy_list1 = getProxies()
                             instagram_access_button.destroy()
                             instagram_info_label = Label(instagram_login_frame, text="Login in process: ", bg="white")
                             instagram_info_label.place(x=0, y=195, height=50, width=150)
@@ -1400,31 +1363,31 @@ class MainPage:
 
                             t_pb = Thread(target=progress_control)
                             t_pb.start()
-                            var1 = 1
-
-                            t1_login = Thread(target=ig_login, args=(proxy_list1, username_text, password_text, var1))
+                            t1_login = Thread(target=ig_login, args=(username_text, password_text, 1))
                             t1_login.start()
 
                             def ig_login_check():
+                                last_message = bot.api.last_response
+                                if last_message:
+                                    if "Username or password is incorrect" in last_message:
+                                        messagebox.showinfo("Login fail", "Username or password wrong")
+                                        dashboard(0)
+                                    if "429" in last_message:
+                                        messagebox.showinfo("Login fail",
+                                                            "To many request from instagram, wait 5 minutes")
+                                        dashboard(0)
 
-                                progress.destroy()
-                                log_file_str = os.listdir(
-                                    "/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log")
-                                log_file = open("/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/"
-                                                + log_file_str[0], "r")
-                                ll = StringVar
-                                for last_line in log_file:
-                                    ll = last_line
-                                    pass
-                                if "Username or password is incorrect" in ll:
-                                    messagebox.showinfo("Login fail", "Username or password wrong")
+                                self.is_login = is_login()
+                                if self.is_login == True:
+                                    instagram_login_frame.destroy()
                                     dashboard(0)
-                                if "too many requests" in ll:
-                                    messagebox.showinfo("Login fail", "To many request from instagram, wait 5 minutes")
+                                else:
+                                    messagebox.showinfo("Login fail", "Something wrong")
                                     dashboard(0)
-                                self.is_login = 1
-                                instagram_login_frame.destroy()
-                                dashboard(0)
+
+
+
+
 
                     instagram_access_button.bind("<Button-1>", access_try)
 
