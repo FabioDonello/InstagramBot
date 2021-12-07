@@ -8,8 +8,7 @@ from requests.auth import HTTPProxyAuth
 import shutil
 from instabot import API
 
-
-file_path = '/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/log/'
+file_path = r'C:\Users\39377\Desktop\InstaBot\config\log'
 shutil.rmtree(file_path)
 bot = Bot()
 file_id = format(id(bot))
@@ -27,6 +26,7 @@ def ig_login(username, password, var):
     richieste()
     print("faccio il login")
     if var == 1:
+
         bot.login(username=username, password=password, use_cookie=True, is_threaded=True)
         f = open("Credenziali", "w")
         f.write(username)
@@ -53,7 +53,7 @@ def ig_logout():
     username = f.readline()
     f.close()
     f = open("Credenziali", "w").close()
-    #bot.logout(username=username, is_threaded=True)
+    # bot.logout(username=username, is_threaded=True)
     print("Logout eseguito")
 
 # Set follow
@@ -139,6 +139,7 @@ def schedule_upload_photo():
 scheduler.start()
 '''
 
+
 val = False
 def unfollow_stp(a):
     global val
@@ -205,6 +206,7 @@ def ig_direct(list_value, message):
     if list_value[1][0] == 1:
         print("sono dentro")
         f_name = r"/Users/fabiodonello/Desktop/Esame OOP/InstgramBot_2/config/followed.txt"
+
         def file_len(f_name):
             with open(f_name, "r") as followed_file:
                 for i, l in enumerate(followed_file):
@@ -240,6 +242,7 @@ def ig_direct(list_value, message):
                 time.sleep(3)
 
 
+
 def ig_get_follow_number():
     """f = open("Credenziali", "r")
     username = f.readline()
@@ -267,6 +270,3 @@ def ig_get_like_number():
     f2 = open(f_name, "a")
     print(str(n_like) + ":")
     f2.close()"""
-
-
-
