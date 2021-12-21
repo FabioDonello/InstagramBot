@@ -15,7 +15,7 @@ from tkinter import messagebox
 import re
 import csv
 from datetime import datetime
-from PIL import Image, ImageTk
+from PIL import Image
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
@@ -167,14 +167,15 @@ class MainPage:
             # Remove selected file
             def remove_file():
                 global item_text
+                path_file_photo = r"C:\Users\39377\Desktop\InstaBot\config\File photo.txt"
                 for item in table.selection():
                     item_text = table.item(item, 'values')[0]
                     print(item_text + "\n")
                     table.delete(item)
 
-                with open("File photo.txt", "r") as my_file:
+                with open(path_file_photo, "r") as my_file:
                     lines = my_file.readlines()
-                with open("File photo.txt", "w")as my_file:
+                with open(path_file_photo, "w")as my_file:
                     for line in lines:
                         if line.split(sep=', ')[0] != item_text:
                             print(line.split(sep=', ')[0])
@@ -211,13 +212,13 @@ class MainPage:
             # Set Choose file button
 
             def choose_file():
+                path_file_photo = r"C:\Users\39377\Desktop\InstaBot\config\File photo.txt"
                 auto_publish_frame.filename = filedialog.askopenfilename(initialdir="/desktop",
                                                                          title="Select a file",
                                                                          filetypes=(
                                                                              ("all files", "*.*"),
                                                                              ("jpg files", "*.jpg"),
                                                                              ("jpeg files", "*.jpeg"),
-                                                                             ("gif files", "*.gif"),
                                                                              ("png files", "*.png")))
                 ext = os.path.splitext(auto_publish_frame.filename)
                 name_file = os.path.relpath(auto_publish_frame.filename)
@@ -228,7 +229,7 @@ class MainPage:
                         if select_time() != "-- : --":
                             table.insert(parent='', index='end', values=(name_file, date_time))
                             tree_view_sort_column(table, "Datetime")
-                            with open("File photo.txt", "a") as my_file:
+                            with open(path_file_photo, "a") as my_file:
                                 my_file.write(name_file + ", " + date_time + "\n")
                             messagebox.showinfo(title='INFO',
                                                 message='Do not delete or move the file to your computer, it could cause an error!')
@@ -243,30 +244,38 @@ class MainPage:
 
             # Search for files by comparing dates to upload
             def search_file():
+                path_file_photo = r"C:\Users\39377\Desktop\InstaBot\config\File photo.txt"
                 while True:
-                    with open("File photo.txt") as my_file:
+                    with open(path_file_photo) as my_file:
                         while True:
                             try:
-                                line = my_file.readline().split(sep=', ')[1]
+                                line = my_file.readline()
+                                photo_line = line.split(sep=', ')[0]
+                                print(photo_line.strip())
+                                date_line = line.split(sep=', ')[1]
+                                print(date_line.strip())
+
                             except IndexError:
                                 break
-                            datetime.strptime(line.strip(), '%d/%m/%Y %H:%M')
+                            datetime.strptime(date_line.strip(), '%d/%m/%Y %H:%M')
                             date_curr = datetime.now().strftime('%d/%m/%Y %H:%M')
-                            print(line.strip())
                             print(date_curr)
-                            if line.strip() == date_curr:
-                                print("done")
-                                # add method to shoot it on IG
+                            if date_line.strip() == date_curr:
+                                print('done')
+                                caption_text_string = str(caption_text.get(1.0, 'end-1c'))
+                                ig_upload_photo(photo=photo_line.strip(), caption=caption_text_string)
                             time.sleep(10)
 
             threading.Thread(target=lambda: search_file()).start()
 
             # Function set to save user options
             def save_options():
-                saved_file = open("Autopublish options", "w")
+                path_file = r"C:\Users\39377\Desktop\InstaBot\data options\Autopublish options"
+                path_table_file = r"C:\Users\39377\Desktop\InstaBot\config\table file.csv"
+                saved_file = open(path_file, "w")
 
                 # Save table
-                with open("table file.csv", "w", newline='')as my_file:
+                with open(path_table_file, "w", newline='')as my_file:
                     csv_writer = csv.writer(my_file, delimiter=',')
 
                     for row_id in table.get_children():
@@ -279,10 +288,12 @@ class MainPage:
 
             # Function set to save user options
             def load_options():
-                load_file = open("Autopublish options", "r")
+                path_file = r"C:\Users\39377\Desktop\InstaBot\data options\Autopublish options"
+                path_table_file = r"C:\Users\39377\Desktop\InstaBot\config\table file.csv"
+                load_file = open(path_file, "r")
 
                 # load table
-                with open("table file.csv") as my_file:
+                with open(path_table_file) as my_file:
                     csv_read = csv.reader(my_file, delimiter=',')
 
                     for row in csv_read:
@@ -767,43 +778,16 @@ class MainPage:
             likes_label = Label(like_dislike_frame, text="Like", bg="steelblue", fg="white")
             likes_label.place(x=0, y=0, height=50, width=100)
 
-            # Start likes bot
-            start_likes_bot_button = Button(like_dislike_frame, text="Start", command="set")
-            start_likes_bot_button.place(x=100, y=0, height=50, width=100)
+            # Set  title Label likes option
 
-            hashtag = IntVar()
-            location_check = IntVar()
-            account = IntVar()
+            hashtag_label = Label(like_dislike_frame, text="Likes by hashtag", bg="steelblue")
+            hashtag_label.place(x=10, y=75, width=900)
 
-            def hashtag_button():
-                if hashtag.get() == 1:
-                    hashtag_check_button["bg"] = "green"
-                if hashtag.get() == 0:
-                    hashtag_check_button["bg"] = "steelblue"
+            location_label = Label(like_dislike_frame, text="Likes by location", bg="steelblue")
+            location_label.place(x=10, y=275, width=900)
 
-            def location_button():
-                if location_check.get() == 1:
-                    location_check_button["bg"] = "green"
-                if location_check.get() == 0:
-                    location_check_button["bg"] = "steelblue"
-
-            def account_button():
-                if account.get() == 1:
-                    account_check_button["bg"] = "green"
-                if account.get() == 0:
-                    account_check_button["bg"] = "steelblue"
-
-            hashtag_check_button = Checkbutton(like_dislike_frame, text="Likes by hashtag", bg="steelblue",
-                                               variable=hashtag, command=hashtag_button)
-            hashtag_check_button.place(x=10, y=75, width=900)
-
-            location_check_button = Checkbutton(like_dislike_frame, text="Likes by location", bg="steelblue",
-                                                variable=location_check, command=location_button)
-            location_check_button.place(x=10, y=275, width=900)
-
-            account_check_button = Checkbutton(like_dislike_frame, text="Likes by account", bg="steelblue",
-                                               variable=account, command=account_button)
-            account_check_button.place(x=10, y=400, width=900)
+            account_label = Label(like_dislike_frame, text="Likes by account", bg="steelblue")
+            account_label.place(x=10, y=400, width=900)
 
             # Set likes by hashtag
             hashtag_likes_label = Label(like_dislike_frame, text="Enter hashtag", bg="whitesmoke")
@@ -862,8 +846,10 @@ class MainPage:
             location_text['yscrollcommand'] = location_scrollbar.set
 
             # Function set to save user options
+            path_file_likes_options = r"C:\Users\39377\Desktop\InstaBot\data options\Likes options"
+
             def save_options():
-                saved_file = open("Likes options", "w")
+                saved_file = open(path_file_likes_options, "w")
 
                 saved_file.write(hashtag_text.get(1.0, 'end-1c') + ":")
                 saved_file.write(location_text.get(1.0, 'end-1c') + ':')
@@ -873,7 +859,7 @@ class MainPage:
 
             # Function set to save user options
             def load_options():
-                load_file = open("Likes options", "r")
+                load_file = open(path_file_likes_options, "r")
 
                 data = load_file.read()
                 data_split = data.split(':')
@@ -891,6 +877,39 @@ class MainPage:
             load_likes_options_button.place(x=300, y=0, height=50, width=100)
 
             # Function set for start bot
+            def start_bot():
+                global hashtags_string
+                global locations_string
+                global accounts_string
+
+                if hashtag_text != '':
+                    hashtags_string = str(hashtag_text.get(1.0, 'end-1c'))
+                    hashtags_string = hashtags_string.split(' ')
+                    print(hashtags_string)
+
+                if location_text != '':
+                    locations_string = str(location_text.get(1.0, 'end-1c'))
+                    locations_string = locations_string.split(' ')
+                    print(locations_string)
+
+                if account_text != '':
+                    accounts_string = str(account_text.get(1.0, 'end-1c'))
+                    accounts_string = accounts_string.split(' ')
+                    print(accounts_string)
+
+                if start_likes_bot_button['text'] == 'Start':
+                    start_likes_bot_button['text'] = 'Stop'
+                    Thread(target=lambda: ig_likes_hashtag(hashtags_string)).start()
+                    Thread(target=lambda: ig_likes_location(locations_string)).start()
+                    Thread(target=lambda: ig_likes_account(accounts_string)).start()
+                else:
+                    start_likes_bot_button['text'] = 'Start'
+                    likes_stp(1)
+                    likes_stp(2)
+
+            # Start likes bot
+            start_likes_bot_button = Button(like_dislike_frame, text="Start", command=start_bot)
+            start_likes_bot_button.place(x=100, y=0, height=50, width=100)
 
         def follow(event):
 

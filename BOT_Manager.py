@@ -7,10 +7,13 @@ import requests
 from requests.auth import HTTPProxyAuth
 import shutil
 from instabot import API
+import math
+from PIL import Image
+import threading
 
 file_path = r'C:\Users\39377\Desktop\InstaBot\config\log'
 shutil.rmtree(file_path)
-bot = Bot()
+bot = Bot(filter_private_users=False, filter_users=False)
 file_id = format(id(bot))
 
 
@@ -98,52 +101,54 @@ def ig_follow_account(accounts):
 
 # Set Likes
 def ig_likes_hashtag(hashtags):
-    for hashtag in hashtags:
-        medias = bot.get_hashtag_medias(hashtag)
-        for media in medias:
-            bot.like(media)
-            time.sleep(30)
+    if hashtags:
+        for hashtag in hashtags:
+            print('like by hashtag')
+            bot.like_hashtag(hashtag=hashtag)
+            # ensures 40 likes/h
+            time.sleep(90)
 
 
 def ig_likes_location(location):
-    app = Nominatim(user_agent="tutorial")
-    localization = app.geocode(location).raw
+    if location:
+        app = Nominatim(user_agent="tutorial")
+        localization = app.geocode(location).raw
 
-    latitude = localization['lat']
-    longitude = localization['lon']
-    position = bot.get_locations_from_coordinates(latitude=latitude, longitude=longitude)
+        latitude = float(localization['lat'])
+        longitude = float(localization['lon'])
+        position = bot.get_locations_from_coordinates(latitude=latitude, longitude=longitude)
 
-    amount = 850
-    while amount != 0:
-        bot.like_location_feed(place=position, amount=1)
-        time.sleep(40)
-        amount = amount - 1
+        for positions in position:
+            bot.like_location_feed(place=positions, amount=1)
+            print('like by location')
+            time.sleep(90)
 
 
 def ig_likes_account(accounts):
-    for account in accounts:
-        bot.like_followers(user_id=account, nlikes=3)
-        time.sleep(90)
+    if accounts:
+        for account in accounts:
+            bot.like_followers(user_id=account)
+            print('Like by account')
+            time.sleep(90)
+
+
+def likes_stp(var):
+    global tmp
+    if var == 1:
+        tmp = True
+    if var == 2:
+        tmp = False
 
 
 # Set auto-publish
-'''def ig_upload_photo():
-    print("Done")
-    print(datetime.datetime.now())
+def ig_upload_photo(photo, caption):
+    im = Image.open(photo)
+    new_size = (1080, 1080)
+    im1 = im.resize(new_size)
+    im1.save(photo)
+    bot.upload_photo(photo=photo, caption=caption)
+    bot.approve_pending_thread_requests()
 
-def schedule_upload_photo():
-
-    scheduler = BlockingScheduler(timezone='Europe/Rome')
-    n = 2
-    while n != 0:
-        scheduler.add_job(ig_upload_photo, 'interval', seconds=20)
-         print(datetime.datetime.now())
-        n = n - 1
-        scheduler.get_jobs()
-        time.sleep(10)
-
-scheduler.start()
-'''
 
 val = False
 
