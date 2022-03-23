@@ -7,12 +7,11 @@ import requests
 from requests.auth import HTTPProxyAuth
 import shutil
 from instabot import API
-
-file_path = r'C:\Users\39377\Desktop\InstaBot\config\log'
+from instapy import InstaPy
+file_path = r'/Users/fabiodonello/Desktop/Esame OOP/InstagramBot_4/config/log'
 shutil.rmtree(file_path)
 bot = Bot()
 file_id = format(id(bot))
-
 
 def richieste():
     print(bot.api.total_requests)
@@ -29,7 +28,7 @@ def ig_login(username, password, var):
     richieste()
     print("faccio il login")
     if var == 1:
-        bot.login(username=username, password=password, use_cookie=True, is_threaded=True)
+        bot.login(username=username, password=password, use_cookie=True, is_threaded=False)
         f = open("Credenziali", "w")
         f.write(username)
         f.write(":")
@@ -45,7 +44,9 @@ def ig_login(username, password, var):
         print(username)
         print(password)
         f.close()
-        bot.login(username=username, password=password, use_cookie=True, is_threaded=True)
+        session = InstaPy(username=username, password=password, headless_browser=False)
+        print("porco dio")
+        session.login()
         print("Login riuscito avendo le credenziali")
         b = bot.api.is_logged_in
         print(b)
